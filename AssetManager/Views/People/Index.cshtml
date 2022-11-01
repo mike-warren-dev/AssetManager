@@ -1,5 +1,46 @@
-﻿@page
-@model AssetManager.Views.People.IndexModel
+﻿@model List<Person>
+
 @{
+    ViewData["Title"] = "Index";
 }
-<p>People, yo!</p>
+
+<h2>People</h2>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th scope="col">People ID</th>
+                <th scope="col">External ID</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email Address</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.PersonId</td>
+                        <td>@p.ExternalId</td>
+                        <td>@p.FirstName</td>
+                        <td>@p.LastName</td>
+                        <td>@p.EmailAddress</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-bars"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <li><button class="dropdown-item" type="button">Edit</button></li>
+                                    <li><button class="dropdown-item" type="button">Delete</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

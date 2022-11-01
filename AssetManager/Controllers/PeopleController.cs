@@ -1,14 +1,26 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AssetManager.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssetManager.Controllers
 {
     public class PeopleController : Controller
     {
+        private readonly ILogger<PeopleController> _logger;
+        private IDataStore _context;
+
+        public PeopleController(ILogger<PeopleController> logger, IDataStore context)
+        {
+            _logger = logger;
+            _context = context;
+        }
+        
         // GET: PeopleController
         public ActionResult Index()
         {
-            return View();
+            var people = _context.People.ToList();
+
+            return View(people);
         }
 
         // GET: PeopleController/Details/5
