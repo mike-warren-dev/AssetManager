@@ -1,7 +1,10 @@
+using AssetManager.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IDataStore, TempDataStore>();
 
 var app = builder.Build();
 
