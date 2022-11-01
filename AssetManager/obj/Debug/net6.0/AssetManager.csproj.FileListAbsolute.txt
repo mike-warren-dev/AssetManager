@@ -24,3 +24,9 @@ C:\Users\Warren\source\repos\AssetManager\AssetManager\obj\Debug\net6.0\refint\A
 C:\Users\Warren\source\repos\AssetManager\AssetManager\obj\Debug\net6.0\AssetManager.pdb
 C:\Users\Warren\source\repos\AssetManager\AssetManager\obj\Debug\net6.0\AssetManager.genruntimeconfig.cache
 C:\Users\Warren\source\repos\AssetManager\AssetManager\obj\Debug\net6.0\ref\AssetManager.dll
+C:\Users\Warren\source\repos\AssetManager\AssetManager\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\Warren\source\repos\AssetManager\AssetManager\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\Warren\source\repos\AssetManager\AssetManager\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.InMemory.dll
+C:\Users\Warren\source\repos\AssetManager\AssetManager\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\Warren\source\repos\AssetManager\AssetManager\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Warren\source\repos\AssetManager\AssetManager\obj\Debug\net6.0\AssetManager.csproj.CopyComplete
