@@ -45,30 +45,27 @@ public class PeopleController : Controller
 
     // POST: PeopleController/Create
     [HttpPost]
-    //[ValidateAntiForgeryToken]
-    public ActionResult Create(PersonViewModel submission)
+    [ValidateAntiForgeryToken]
+    public ActionResult Create(PersonCreateDto submission)
     {
         try
         {
-            //return RedirectToAction(nameof(Index));
-
             Person person = new()
             {
                 PersonId = _context.People.Max(p => p.PersonId) + 1,
-                ExternalId = submission.NewPerson.ExternalId == null ? Guid.NewGuid().ToString() : submission.ExternalId,
-                FirstName = submission.NewPerson.FirstName,
-                LastName = submission.NewPerson.LastName,
-                Email = submission.NewPerson.Email,
-                RoleId = submission.NewPerson.RoleId
+                FirstName = submission.FirstName,
+                LastName = submission.LastName,
+                Email = submission.Email,
+                RoleId = submission.RoleId
             };
-            Debug.WriteLine("before:");
-            Debug.WriteLine(_context.People.Count);
-            _context.People.Add(person);
-            Debug.WriteLine("after:");
-            Debug.WriteLine(_context.People.Count);
 
-            //return CreatedAtRoute(); //how do I actually do this, though? 
-            return Ok();
+            _context.People.Add(person);
+
+            //should I be doing this? 
+            //return CreatedAtRoute();
+
+            //this is reloading the whole grid... 
+            return RedirectToAction(nameof(Index));
         }
         catch
         {
