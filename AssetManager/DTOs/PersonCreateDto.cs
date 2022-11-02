@@ -1,8 +1,7 @@
-﻿namespace AssetManager.Models;
+﻿namespace AssetManager.DTOs;
 
-public class Person
+public class PersonCreateDto
 {
-    public int PersonId { get; set; }
     public string ExternalId { get; set; } = null!;
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
