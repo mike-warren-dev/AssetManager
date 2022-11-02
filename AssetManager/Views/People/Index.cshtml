@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Index";
 }
+
 <div class="d-flex justify-content-between">
 <h2>People</h2>
 <button type="button" id="addNewPerson" class="btn btn-primary h-25" >Add Person</button>
@@ -13,7 +14,6 @@
         <thead>
             <tr>
                 <th scope="col">People ID</th>
-                <th scope="col">External ID</th>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
                 <th scope="col">Email Address</th>
@@ -26,7 +26,6 @@
                 {
                     <tr>
                         <td>@p.PersonId</td>
-                        <td>@p.ExternalId</td>
                         <td>@p.FirstName</td>
                         <td>@p.LastName</td>
                         <td>@p.Email</td>
@@ -50,57 +49,18 @@
     <div id="newPersonModal" class="modal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form method="post" asp-controller="People" asp-action="Create">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Person</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">                    
-                    <div class="form-group">
-                        <label asp-for="NewPerson.FirstName"></label>
-                        <input class="form-control" type="text" asp-for="NewPerson.FirstName" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="NewPerson.LastName"></label>
-                        <input class="form-control" type="text" asp-for="NewPerson.LastName" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="NewPerson.ExternalId"></label>
-                        <input class="form-control" type="text" asp-for="NewPerson.ExternalId" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="NewPerson.Email"></label>
-                        <input class="form-control" type="text" asp-for="NewPerson.Email" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="NewPerson.RoleId"></label>
-                        <input class="form-control" type="text" asp-for="NewPerson.RoleId" />
-                    </div>
-                    @*<button type="submit" class="btn btn-primary">Save</button>                    *@
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>                    
-                </div>
-                </form>
+                <partial name="_CreateEditModal" model=Model.NewPerson/>
             </div>
         </div>
     </div>
 
+
 </div>
 
 <script>
-    var submitted = false;
 
-    //$("#addNewPerson").click(function(e){
-    //    $("#newPersonModal").modal("show");
-    //});
     $("#addNewPerson").click(function(e){
-        $.get("@Url.Action("People","CreatePartial")",
-        function (data) {
-        $('.modal-body').html(data);
-        });
-
         $("#newPersonModal").modal("show");
     });
+
 </script>

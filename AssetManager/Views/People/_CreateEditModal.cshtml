@@ -1,0 +1,53 @@
+﻿@using AssetManager.DTOs;
+
+@model PersonCreateDto
+
+<div>
+    @using (Html.BeginForm("Create", "People"))
+    {
+        <div class="modal-header">
+            <h5 class="modal-title">Add Person</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            @Html.AntiForgeryToken()
+
+            @Html.LabelFor(m => m.FirstName, "First Name")
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control"})
+            <div style="min-height:15px">
+                @Html.ValidationMessageFor(m => m.FirstName, String.Empty, new { @class = "text-danger small"})
+            </div>
+            
+            @Html.LabelFor(m => m.LastName, "Last Name")
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control"})
+            <div style="min-height:15px">
+                @Html.ValidationMessageFor(m => m.LastName, String.Empty, new { @class = "text-danger small"})
+            </div>
+
+            @Html.LabelFor(m => m.Email, "Email")
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control"})
+            <div style="min-height:15px">
+                @Html.ValidationMessageFor(m => m.Email, String.Empty, new { @class = "text-danger small"})
+            </div>
+            
+            @{
+                var list = new List<SelectListItem> {
+                    new SelectListItem() { Text = "No Access", Value = "1"},
+                    new SelectListItem() { Text = "Admin",     Value = "2"},
+                    new SelectListItem() { Text = "User",      Value = "3"}
+                    };
+            }
+            @Html.LabelFor(m => m.RoleId, "Role")
+            @Html.DropDownListFor(m => m.RoleId, list, new { @class = "form-select"})
+            <div style="min-height:15px">
+                @Html.ValidationMessageFor(m => m.RoleId, String.Empty, new { @class = "text-danger small"})
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="saveNewPerson" type="submit" class="btn btn-primary">Save</button>
+        </div>
+    }
+</div>
