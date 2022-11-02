@@ -55,7 +55,7 @@ public class PeopleController : Controller
             Person person = new()
             {
                 PersonId = _context.People.Max(p => p.PersonId) + 1,
-                ExternalId = submission.NewPerson.ExternalId == null ? Guid.NewGuid().ToString() : submission.ExternalId,
+                ExternalId = submission.NewPerson.ExternalId == null ? Guid.NewGuid().ToString() : submission.NewPerson.ExternalId,
                 FirstName = submission.NewPerson.FirstName,
                 LastName = submission.NewPerson.LastName,
                 Email = submission.NewPerson.Email,
