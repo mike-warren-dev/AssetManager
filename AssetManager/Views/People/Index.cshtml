@@ -1,10 +1,13 @@
-﻿@model List<Person>
+﻿@using AssetManager.ViewModels
+@model PersonViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
-
+<div class="d-flex justify-content-between">
 <h2>People</h2>
+<button type="button" id="addNewPerson" class="btn btn-primary h-25" >Add Person</button>
+</div>
 <div class="table-responsive">
     <table class="table table-striped table-sm">
         <thead>
@@ -19,20 +22,20 @@
         </thead>
         <tbody>
             @{
-                foreach (var p in Model)
+                foreach (var p in Model.People)
                 {
                     <tr>
                         <td>@p.PersonId</td>
                         <td>@p.ExternalId</td>
                         <td>@p.FirstName</td>
                         <td>@p.LastName</td>
-                        <td>@p.EmailAddress</td>
+                        <td>@p.Email</td>
                         <td>
                             <div class="dropdown">
-                                <button class="btn btn-secondary" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button class="btn btn-secondary" type="button" id="personDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa-solid fa-bars"></i>
                                 </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <ul class="dropdown-menu" aria-labelledby="personDropdown">
                                     <li><button class="dropdown-item" type="button">Edit</button></li>
                                     <li><button class="dropdown-item" type="button">Delete</button></li>
                                 </ul>
@@ -43,4 +46,61 @@
             }
         </tbody>
     </table>
+
+    <div id="newPersonModal" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" asp-controller="People" asp-action="Create">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Person</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">                    
+                    <div class="form-group">
+                        <label asp-for="NewPerson.FirstName"></label>
+                        <input class="form-control" type="text" asp-for="NewPerson.FirstName" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NewPerson.LastName"></label>
+                        <input class="form-control" type="text" asp-for="NewPerson.LastName" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NewPerson.ExternalId"></label>
+                        <input class="form-control" type="text" asp-for="NewPerson.ExternalId" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NewPerson.Email"></label>
+                        <input class="form-control" type="text" asp-for="NewPerson.Email" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NewPerson.RoleId"></label>
+                        <input class="form-control" type="text" asp-for="NewPerson.RoleId" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<script>
+    var submitted = false;
+
+    //$("#addNewPerson").click(function(e){
+    //    $("#newPersonModal").modal("show");
+    //});
+    $("#addNewPerson").click(function(e){
+        $.get("@Url.Action("People","CreatePartial")",
+        function (data) {
+        $('.modal-body').html(data);
+        });
+
+        $("#newPersonModal").modal("show");
+    });
+</script>

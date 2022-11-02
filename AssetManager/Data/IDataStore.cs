@@ -1,9 +1,8 @@
 ﻿using AssetManager.Models;
 
-namespace AssetManager.Data
+namespace AssetManager.Data;
+
+public interface IDataStore
 {
-    public interface IDataStore
-    {
-        List<Person> People { get; set; }
-    }
+    List<Person> People { get; set; }
 }
