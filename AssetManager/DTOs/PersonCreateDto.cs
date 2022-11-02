@@ -8,6 +8,7 @@ public class PersonCreateDto
     [Required(ErrorMessage = "First Name is required")]
     [StringLength(50, ErrorMessage = "First Name is limited to 50 characters")]
     [DisplayName("First Name")]
+    [DisplayName("First Name")]
     public string FirstName { get; set; } = null!;
     
     [Required(ErrorMessage = "Last Name is required")]
