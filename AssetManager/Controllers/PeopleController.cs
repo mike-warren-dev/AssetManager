@@ -101,39 +101,13 @@ public class PeopleController : Controller
         }
     }
 
-    // POST: PeopleController/Edit/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Edit(int id, IFormCollection collection)
-    {
-        try
-        {
-            return RedirectToAction(nameof(Index));
-        }
-        catch
-        {
-            return View();
-        }
-    }
-
-    // GET: PeopleController/Delete/5
+    // DELETE: PeopleController/Delete/5
+    [HttpDelete]
     public ActionResult Delete(int id)
     {
-        return View();
+        _repository.Delete(id);
+
+        return RedirectToAction(nameof(Index));
     }
 
-    // POST: PeopleController/Delete/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Delete(int id, IFormCollection collection)
-    {
-        try
-        {
-            return RedirectToAction(nameof(Index));
-        }
-        catch
-        {
-            return View();
-        }
-    }
 }

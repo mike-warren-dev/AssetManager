@@ -49,8 +49,11 @@ public class PersonRepository : IPersonRepository
         }
     }
 
-    public void Delete()
+    public void Delete(int id)
     {
-
+        Person? person = _context.People.FirstOrDefault(p => p.PersonId == id);
+        
+        if (person != null)
+            _context.People.Remove(person); 
     }
 }
