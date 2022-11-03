@@ -8,6 +8,6 @@ namespace AssetManager.Repos
         Person? GetPersonById(int id);
         void Create(PersonCreateDto submission);
         void Update(PersonCreateDto submission);
-        void Delete();
+        void Delete(int id);
     }
 }

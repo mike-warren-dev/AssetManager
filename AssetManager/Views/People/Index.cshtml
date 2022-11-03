@@ -24,7 +24,7 @@
             @{
                 foreach (var p in Model.People)
                 {
-                                <tr>
+                            <tr>
                                     <td>@p.PersonId</td>
                                     <td>@p.FirstName</td>
                                     <td>@p.LastName</td>
@@ -35,8 +35,8 @@
                                                 <i class="fa-solid fa-bars"></i>
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="personDropdown">
-                                    <li><button class="dropdown-item" type="button" onclick="addEditPerson(@p.PersonId)">Edit</button></li>
-                                                <li><button class="dropdown-item" type="button">Delete</button></li>
+                                                <li><button class="dropdown-item" type="button" onclick="addEditPerson(@p.PersonId)">Edit</button></li>
+                                                <li><button class="dropdown-item" type="button" onclick="deletePerson(@p.PersonId)">Delete</button></li>
                                             </ul>
                                         </div>
                                     </td>
@@ -66,4 +66,17 @@
         $("#newPersonModalContents").load(url);
     };
 
+    function deletePerson(personId){
+        var url = `/People/Delete/${personId}`;
+        
+        $.ajax({
+            method: "DELETE",
+            url: url,
+            success: function (data, textStatus) {
+                if (textStatus == 'success')
+                {
+                    location.href = "/People";
+                }
+            }
+    })};
 </script>
