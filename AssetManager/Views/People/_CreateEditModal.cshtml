@@ -3,7 +3,7 @@
 @model PersonCreateDto
 
 <div>
-    @using (Html.BeginForm("Create", "People"))
+    @using (Html.BeginForm("AddEdit", "People"))
     {
         <div class="modal-header">
             <h5 class="modal-title">Add Person</h5>
@@ -12,6 +12,8 @@
         <div class="modal-body">
 
             @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(m => m.PersonId)
 
             @Html.LabelFor(m => m.FirstName, "First Name")
             @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control"})
