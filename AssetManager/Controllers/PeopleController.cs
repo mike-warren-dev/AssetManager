@@ -2,12 +2,8 @@
 using AssetManager.DTOs;
 using AssetManager.Models;
 using AssetManager.Repos;
-using AssetManager.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Diagnostics;
-using System.Dynamic;
+
 
 namespace AssetManager.Controllers;
 
@@ -27,12 +23,14 @@ public class PeopleController : Controller
     // GET: PeopleController
     public ActionResult Index()
     {
-        PersonViewModel vm = new();
+        List<PersonDisplayDto> list = _context.People.Select(p => new PersonDisplayDto {
+                                                                PersonId = p.PersonId,
+                                                                FirstName = p.FirstName,
+                                                                LastName = p.LastName,
+                                                                Email = p.Email,
+                                                                RoleId = p.RoleId}).ToList();
 
-        vm.People = _context.People.ToList();
-        vm.NewPerson = new PersonCreateDto();
-
-        return View(vm);
+        return View(list);
     }
 
     // GET: PeopleController/Details/5
