@@ -17,18 +17,16 @@
 
             <input asp-for="AssetId" type="hidden">
 
-            <label asp-for="AssetType">Asset Type</label>
+            <label asp-for="AssetType">Asset Type</label><span style="color:red">*</span>
             <select asp-for="AssetType" class="form-select"
                     asp-items="Html.GetEnumSelectList<AssetType>()">
-                <option disabled selected >
-                    <span class ="text-muted small">select</span>
-                    </option>
+                <option disabled selected class="text-muted">select</option>
             </select>
             <div style="min-height:15px">
                 <span asp-validation-for="AssetType" class="text-danger small"></span>
             </div>
 
-            <label asp-for="Model">Model</label>
+            <label asp-for="Model">Model</label><span style="color:red">*</span>
             <select asp-for="Model" class="form-select"
                     asp-items="Html.GetEnumSelectList<Product>()">
                 <option disabled selected class="text-muted">select</option>
@@ -37,7 +35,7 @@
                 <span asp-validation-for="Model" class="text-danger small"></span>
             </div>
 
-            <label asp-for="Site">Site</label>
+            <label asp-for="Site">Site</label><span style="color:red">*</span>
             <select asp-for="Site" class="form-select"
                     asp-items="Html.GetEnumSelectList<Site>()">
                 <option disabled selected class="text-muted">select</option>
