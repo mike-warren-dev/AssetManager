@@ -15,8 +15,8 @@
 
             @Html.HiddenFor(m => m.PersonId)
 
-            @Html.LabelFor(m => m.FirstName, "First Name")
-            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control"})
+            <label asp-for="FirstName">First Name</label>
+            <input asp-for="FirstName" class="form-control"/>
             <div style="min-height:15px">
                 @Html.ValidationMessageFor(m => m.FirstName, String.Empty, new { @class = "text-danger small"})
             </div>

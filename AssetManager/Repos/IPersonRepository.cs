@@ -5,6 +5,7 @@ namespace AssetManager.Repos
 {
     public interface IPersonRepository
     {
+        IEnumerable<PersonDisplayDto> GetAll();
         Person? GetPersonById(int id);
         void Create(PersonCreateDto submission);
         void Update(PersonCreateDto submission);

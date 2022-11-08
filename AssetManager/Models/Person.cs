@@ -4,6 +4,11 @@ namespace AssetManager.Models;
 
 public class Person
 {
+    public Person()
+    {
+        Assets = new List<Asset>();       
+    }
+
     public int PersonId { get; set; }
     [Required]
     public string FirstName { get; set; } = null!;
@@ -13,4 +18,5 @@ public class Person
     public string Email { get; set; } = null!;
     [Required]
     public int? RoleId { get; set; }
+    public List<Asset> Assets { get; set; } 
 }

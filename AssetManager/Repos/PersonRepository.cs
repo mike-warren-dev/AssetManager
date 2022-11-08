@@ -13,6 +13,17 @@ public class PersonRepository : IPersonRepository
         _context = context;
     }
 
+    public IEnumerable<PersonDisplayDto> GetAll()
+    {
+        var list = _context.People.Select(p => new PersonDisplayDto {
+                                    PersonId = p.PersonId,
+                                    FirstName = p.FirstName,
+                                    LastName = p.LastName,
+                                    Email = p.Email,
+                                    RoleId = p.RoleId}).ToList();
+
+        return list;
+    }
     public Person? GetPersonById(int id)
     {
         return _context.People.FirstOrDefault(p => p.PersonId == id); ;
