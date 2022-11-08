@@ -20,18 +20,19 @@ namespace AssetManager.Controllers
 
             return View(list);
         }
+
         //GET: Assets/AddEdit/{id}
         public IActionResult AddEdit(int id)
         {
             if (id == 0)
             {
-                return PartialView("_AddEditModal");
+                return PartialView("_AddEditAssetModal");
             }
             else
             {
                 var asset = _repository.GetAssetById(id);
 
-                if (asset == null) return PartialView("_AddEditModal");
+                if (asset == null) return PartialView("_AddEditAssetModal");
 
                 AssetAddEditDto dto = new()
                 {
@@ -42,7 +43,7 @@ namespace AssetManager.Controllers
                     PersonId = asset.PersonId
                 };
 
-                return PartialView("_AddEditModal",dto);
+                return PartialView("_AddEditAssetModal",dto);
             }
         }
 

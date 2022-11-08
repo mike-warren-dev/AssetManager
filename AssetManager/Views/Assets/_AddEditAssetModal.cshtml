@@ -18,27 +18,22 @@
             <input asp-for="AssetId" type="hidden">
 
             <label asp-for="AssetType">Asset Type</label>
-            <select asp-for="AssetType" class="form-select">
-                <option value="Laptop">Laptop</option>
-                <option value="Monitor">Monitor</option>
-            </select>
+            <select asp-for="AssetType" class="form-select"
+                    asp-items="Html.GetEnumSelectList<AssetType>()"></select>
             <div style="min-height:15px">
                 <span asp-validation-for="AssetType" class="text-danger small"></span>
             </div>
 
             <label asp-for="Model">Model</label>
             <select asp-for="Model" class="form-select"
-                    asp-items="Html.GetEnumSelectList<Product>()">                
-            </select>
+                    asp-items="Html.GetEnumSelectList<Product>()"></select>
             <div style="min-height:15px">
                 <span asp-validation-for="Model" class="text-danger small"></span>
             </div>
 
             <label asp-for="Site">Site</label>
-            <select asp-for="Site" class="form-select">
-                <option value="TheWoodlands">The Woodlands</option>
-                <option value="Boston">Boston</option>
-            </select>
+            <select asp-for="Site" class="form-select"
+                    asp-items="Html.GetEnumSelectList<Site>()"></select>
             <div style="min-height:15px">
                 <span asp-validation-for="Site" class="text-danger small"></span>
             </div>

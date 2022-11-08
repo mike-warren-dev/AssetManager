@@ -42,7 +42,7 @@ public class PeopleController : Controller
 
         if (id == 0)
         {
-            return PartialView("_CreateEditModal");
+            return PartialView("_AddEditPersonModal");
         }
         else
         {
@@ -61,7 +61,7 @@ public class PeopleController : Controller
                 return RedirectToAction(nameof(Index));
             }
 
-            return PartialView("_CreateEditModal", person);
+            return PartialView("_AddEditPersonModal", person);
         }
         
     }
