@@ -37,6 +37,7 @@
             <label asp-for="RoleId">Role</label><span style="color:red">*</span>
             <select asp-for="RoleId" class="form-select"
                     asp-items="Html.GetEnumSelectList<Role>()">
+                <option disabled selected class="text-muted">select</option>
             </select>
             <div style="height:18px">
                 <span asp-validation-for="RoleId" class="text-danger small"></span>
