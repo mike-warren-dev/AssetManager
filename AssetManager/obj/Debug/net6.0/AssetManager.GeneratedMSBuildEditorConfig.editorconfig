@@ -19,8 +19,8 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Warren/source/repos/AssetManager/AssetManager/Views/Assets/_AddEditModal.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRzXF9BZGRFZGl0TW9kYWwuY3NodG1s
+[C:/Users/Warren/source/repos/AssetManager/AssetManager/Views/Assets/_AddEditAssetModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRzXF9BZGRFZGl0QXNzZXRNb2RhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Warren/source/repos/AssetManager/AssetManager/Views/Home/Index.cshtml]
@@ -39,8 +39,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVvcGxlXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Warren/source/repos/AssetManager/AssetManager/Views/People/_CreateEditModal.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVvcGxlXF9DcmVhdGVFZGl0TW9kYWwuY3NodG1s
+[C:/Users/Warren/source/repos/AssetManager/AssetManager/Views/People/_AddEditPersonModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVvcGxlXF9BZGRFZGl0UGVyc29uTW9kYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Warren/source/repos/AssetManager/AssetManager/Views/Shared/Error.cshtml]
