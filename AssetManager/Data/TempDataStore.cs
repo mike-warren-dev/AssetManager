@@ -6,6 +6,7 @@ public class TempDataStore : IDataStore
 {
     public List<Person> People { get; set; }
     public List<Asset> Assets { get; set; }
+    public List<Order> Orders { get; set; }
 
     public static TempDataStore Data { get; } = new TempDataStore();
 
@@ -61,7 +62,7 @@ public class TempDataStore : IDataStore
             {
                 AssetId = 1,
                 AssetType = Enums.AssetType.Laptop,
-                Model = "Thinkpad X1 - Gen 8",
+                Model = Enums.Product.ThinkpadX1Gen8,
                 Site = Enums.Site.TheWoodlands,
                 PersonId = 1
             },
@@ -69,7 +70,7 @@ public class TempDataStore : IDataStore
             {
                 AssetId = 2,
                 AssetType = Enums.AssetType.Laptop,
-                Model = "Thinkpad X1 - Gen 8",
+                Model = Enums.Product.ThinkpadX1Gen8,
                 Site = Enums.Site.TheWoodlands,
                 PersonId = 3
             },
@@ -77,7 +78,7 @@ public class TempDataStore : IDataStore
             {
                 AssetId = 3,
                 AssetType = Enums.AssetType.Laptop,
-                Model = "Thinkpad X1 - Gen 9",
+                Model = Enums.Product.ThinkpadX1Gen9,
                 Site = Enums.Site.TheWoodlands,
                 PersonId = 4
             },
@@ -85,7 +86,7 @@ public class TempDataStore : IDataStore
             {
                 AssetId = 4,
                 AssetType = Enums.AssetType.Laptop,
-                Model = "Thinkpad X1 - Gen 9",
+                Model = Enums.Product.ThinkpadX1Gen9,
                 Site = Enums.Site.Remote,
                 PersonId = 5
             },
@@ -93,9 +94,39 @@ public class TempDataStore : IDataStore
             {
                 AssetId = 5,
                 AssetType = Enums.AssetType.Laptop,
-                Model = "Thinkpad X1 - Gen 9",
+                Model = Enums.Product.ThinkpadX1Gen9,
                 Site = Enums.Site.Remote,
                 PersonId = 2
+            }
+        };
+
+        Orders = new List<Order>()
+        {
+            new Order()
+            {
+                OrderId = 1,
+                ExternalOrderId = "OD-0024873",
+                VendorId = Enums.Vendor.CDW,
+                Products = new List<Enums.Product>() { Enums.Product.ThinkpadX1Gen9, 
+                                                       Enums.Product.ThinkpadX1Gen9, 
+                                                       Enums.Product.ThinkpadX1Gen9, 
+                                                       Enums.Product.ThinkpadX1Gen9, 
+                                                       Enums.Product.ThinkpadX1Gen9 },
+                Cost = 3753.52m,
+                PurchaserId = 1,
+                ApproverId = 2,
+                ApprovedDttm = DateTime.Now
+            },
+            new Order()
+            {
+                OrderId = 1,
+                ExternalOrderId = "OD-0024371",
+                VendorId = Enums.Vendor.CDW,
+                Products = new List<Enums.Product>() { Enums.Product.MacbookPro15Inch },
+                Cost = 750.53m,
+                PurchaserId = 1,
+                ApproverId = 2,
+                ApprovedDttm = null
             }
         };
     }

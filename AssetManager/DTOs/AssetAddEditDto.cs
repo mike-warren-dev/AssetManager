@@ -9,7 +9,7 @@ public class AssetAddEditDto
     [Required]
     public AssetType AssetType { get; set; }
     [Required]
-    public string Model { get; set; } = null!;
+    public Product Model { get; set; }
     [Required]
     public Site Site { get; set; }
     public int? PersonId { get; set; }
