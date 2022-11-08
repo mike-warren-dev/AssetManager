@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IAssetRepository, AssetRepository>();
 builder.Services.AddSingleton<IDataStore, TempDataStore>();
 
 var app = builder.Build();

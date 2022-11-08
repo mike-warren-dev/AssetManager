@@ -20,26 +20,21 @@ public class PeopleController : Controller
         _repository = repository;
     }
     
-    // GET: PeopleController
+    // GET: People/
     public ActionResult Index()
     {
-        List<PersonDisplayDto> list = _context.People.Select(p => new PersonDisplayDto {
-                                                                PersonId = p.PersonId,
-                                                                FirstName = p.FirstName,
-                                                                LastName = p.LastName,
-                                                                Email = p.Email,
-                                                                RoleId = p.RoleId}).ToList();
+        IEnumerable<PersonDisplayDto> list = _repository.GetAll();
 
         return View(list);
     }
 
-    // GET: PeopleController/Details/5
+    // GET: People/Details/5
     public ActionResult Details(int id)
     {
         return View();
     }
 
-    // GET: PeopleController/Create
+    // GET: People/Create
     public ActionResult AddEdit(int id)
     {
         PersonCreateDto? person = new();
@@ -70,7 +65,7 @@ public class PeopleController : Controller
         
     }
 
-    // POST: PeopleController/Create
+    // POST: People/AddEdit
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult AddEdit(PersonCreateDto submission)
@@ -99,7 +94,7 @@ public class PeopleController : Controller
         }
     }
 
-    // DELETE: PeopleController/Delete/5
+    // DELETE: People/Delete/5
     [HttpDelete]
     public ActionResult Delete(int id)
     {

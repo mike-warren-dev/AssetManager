@@ -1,0 +1,57 @@
+﻿@using AssetManager.Models;
+@using AssetManager.DTOs;
+@using AssetManager.Enums
+@using System.Web.Mvc.Html;
+
+@model AssetAddEditDto
+
+<div>
+    @using (Html.BeginForm("AddEdit", "Assets"))
+    {
+        <div class="modal-header">
+            <h5 class="modal-title">Add Asset</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(a => a.AssetId)
+
+            <label asp-for="AssetType">Asset Type</label>
+            <select asp-for="AssetType" class="form-select">
+                <option value="Laptop">Laptop</option>
+                <option value="Monitor">Monitor</option>
+            </select>
+            <div style="min-height:15px">
+                @Html.ValidationMessageFor(a => a.AssetType, String.Empty, new { @class = "text-danger small"})
+            </div>
+
+            <label asp-for="Model">Model</label>
+            <input asp-for="Model" class="form-control"/>
+            <div style="min-height:15px">
+                @Html.ValidationMessageFor(m => m.Model, String.Empty, new { @class = "text-danger small"})
+            </div>
+
+            <label asp-for="Site">Site</label>
+            <select asp-for="Site" class="form-select">
+                <option value="TheWoodlands">The Woodlands</option>
+                <option value="Boston">Boston</option>
+            </select>
+            <div style="min-height:15px">
+                @Html.ValidationMessageFor(m => m.Site, String.Empty, new { @class = "text-danger small"})
+            </div>
+
+            <label asp-for="PersonId">Person</label>
+            <input asp-for="PersonId" class="form-control" />
+                        <div style="min-height:15px">
+                @Html.ValidationMessageFor(m => m.PersonId, String.Empty, new { @class = "text-danger small"})
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="saveNewAsset" type="submit" class="btn btn-primary">Save</button>
+        </div>
+    }
+</div>

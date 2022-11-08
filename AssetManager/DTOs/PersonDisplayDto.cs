@@ -1,14 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
+﻿namespace AssetManager.DTOs;
 
-namespace AssetManager.DTOs
+public class PersonDisplayDto
 {
-    public class PersonDisplayDto
-    {
-        public int PersonId { get; set; }
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public string Email { get; set; } = null!;
-        public int? RoleId { get; set; }
-    }
+    public int PersonId { get; set; }
+    public string FirstName { get; set; } = null!;
+    public string LastName { get; set; } = null!;
+    public string Email { get; set; } = null!;
+    public int? RoleId { get; set; }
 }

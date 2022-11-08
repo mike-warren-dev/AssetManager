@@ -5,6 +5,7 @@ namespace AssetManager.Data;
 public class TempDataStore : IDataStore
 {
     public List<Person> People { get; set; }
+    public List<Asset> Assets { get; set; }
 
     public static TempDataStore Data { get; } = new TempDataStore();
 
@@ -52,6 +53,50 @@ public class TempDataStore : IDataStore
                 Email = "Ryan.Mills@SnyderCorp.com",
                 RoleId = null
             },
+        };
+
+        Assets = new List<Asset>()
+        {
+            new Asset()
+            {
+                AssetId = 1,
+                AssetType = Enums.AssetType.Laptop,
+                Model = "Thinkpad X1 - Gen 8",
+                Site = Enums.Site.TheWoodlands,
+                PersonId = 1
+            },
+            new Asset()
+            {
+                AssetId = 2,
+                AssetType = Enums.AssetType.Laptop,
+                Model = "Thinkpad X1 - Gen 8",
+                Site = Enums.Site.TheWoodlands,
+                PersonId = 3
+            },
+            new Asset()
+            {
+                AssetId = 3,
+                AssetType = Enums.AssetType.Laptop,
+                Model = "Thinkpad X1 - Gen 9",
+                Site = Enums.Site.TheWoodlands,
+                PersonId = 4
+            },
+            new Asset()
+            {
+                AssetId = 4,
+                AssetType = Enums.AssetType.Laptop,
+                Model = "Thinkpad X1 - Gen 9",
+                Site = Enums.Site.Remote,
+                PersonId = 5
+            },
+            new Asset()
+            {
+                AssetId = 5,
+                AssetType = Enums.AssetType.Laptop,
+                Model = "Thinkpad X1 - Gen 9",
+                Site = Enums.Site.Remote,
+                PersonId = 2
+            }
         };
     }
 }
