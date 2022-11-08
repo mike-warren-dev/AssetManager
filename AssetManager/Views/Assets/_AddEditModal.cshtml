@@ -27,7 +27,9 @@
             </div>
 
             <label asp-for="Model">Model</label>
-            <input asp-for="Model" class="form-control"/>
+            <select asp-for="Model" class="form-select"
+                    asp-items="Html.GetEnumSelectList<Product>()">                
+            </select>
             <div style="min-height:15px">
                 <span asp-validation-for="Model" class="text-danger small"></span>
             </div>

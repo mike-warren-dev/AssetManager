@@ -9,7 +9,7 @@ public class Asset
     public int AssetId { get; set; }
     [DisplayName("Asset Type")]
     public AssetType AssetType { get; set; }
-    public string Model { get; set; } = null!;
+    public Product Model { get; set; }
     public Site Site { get; set; }
     [DisplayName("Assigned To")]
     public int? PersonId { get; set; }
