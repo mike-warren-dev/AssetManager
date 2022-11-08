@@ -48,7 +48,7 @@ public class PersonRepository : IPersonRepository
 
         if (person != null)
         {
-            person.PersonId = submission.PersonId;
+            person.PersonId = submission.PersonId == null ? 0 : (int)submission.PersonId;
             person.FirstName = submission.FirstName;
             person.LastName = submission.LastName;
             person.Email = submission.Email;

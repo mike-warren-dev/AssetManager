@@ -34,6 +34,7 @@ public class PeopleController : Controller
         return View();
     }
 
+
     // GET: People/Create
     public ActionResult AddEdit(int id)
     {
@@ -67,30 +68,35 @@ public class PeopleController : Controller
 
     // POST: People/AddEdit
     [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult AddEdit(PersonCreateDto submission)
+    //[ValidateAntiForgeryToken]
+    public ActionResult AddEdit([Bind("PersonId,FirstName,LastName,Email,RoleId")]PersonCreateDto submission)
     {
-        if (submission == null) return View();
-
-        try
+        if (ModelState.IsValid)
         {
-            if (submission.PersonId == 0) 
+            try
             {
-                _repository.Create(submission);
+                if (submission.PersonId == null)
+                {
+                    _repository.Create(submission);
 
-                //this is reloading the whole grid!
-                return RedirectToAction(nameof(Index));
+                    //this is reloading the whole grid!
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    _repository.Update(submission);
+
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            else
+            catch
             {
-                _repository.Update(submission);
-                
-                return RedirectToAction(nameof(Index));
+                return View();
             }
         }
-        catch
+        else
         {
-            return View();
+            return RedirectToAction(nameof(Index));
         }
     }
 

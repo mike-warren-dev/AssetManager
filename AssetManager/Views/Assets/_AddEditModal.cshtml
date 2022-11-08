@@ -1,7 +1,6 @@
 ﻿@using AssetManager.Models;
 @using AssetManager.DTOs;
 @using AssetManager.Enums
-@using System.Web.Mvc.Html;
 
 @model AssetAddEditDto
 
@@ -16,7 +15,7 @@
 
             @Html.AntiForgeryToken()
 
-            @Html.HiddenFor(a => a.AssetId)
+            <input asp-for="AssetId" type="hidden">
 
             <label asp-for="AssetType">Asset Type</label>
             <select asp-for="AssetType" class="form-select">
@@ -24,13 +23,13 @@
                 <option value="Monitor">Monitor</option>
             </select>
             <div style="min-height:15px">
-                @Html.ValidationMessageFor(a => a.AssetType, String.Empty, new { @class = "text-danger small"})
+                <span asp-validation-for="AssetType" class="text-danger small"></span>
             </div>
 
             <label asp-for="Model">Model</label>
             <input asp-for="Model" class="form-control"/>
             <div style="min-height:15px">
-                @Html.ValidationMessageFor(m => m.Model, String.Empty, new { @class = "text-danger small"})
+                <span asp-validation-for="Model" class="text-danger small"></span>
             </div>
 
             <label asp-for="Site">Site</label>
@@ -39,13 +38,13 @@
                 <option value="Boston">Boston</option>
             </select>
             <div style="min-height:15px">
-                @Html.ValidationMessageFor(m => m.Site, String.Empty, new { @class = "text-danger small"})
+                <span asp-validation-for="Site" class="text-danger small"></span>
             </div>
 
             <label asp-for="PersonId">Person</label>
             <input asp-for="PersonId" class="form-control" />
                         <div style="min-height:15px">
-                @Html.ValidationMessageFor(m => m.PersonId, String.Empty, new { @class = "text-danger small"})
+                <span asp-validation-for="PersonId" class="text-danger small"></span>
             </div>
 
         </div>
@@ -55,3 +54,6 @@
         </div>
     }
 </div>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
