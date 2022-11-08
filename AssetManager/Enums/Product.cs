@@ -1,9 +1,14 @@
-﻿namespace AssetManager.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
+
+namespace AssetManager.Enums;
 
 public enum Product
 {
     // from 400-599
+    [Display(Name = "MacBook Pro - 13\"")]
     MacbookPro13Inch = 400,
+    [Display(Name = "MacBook Pro - 15\"")]
     MacbookPro15Inch = 401,
 
 
@@ -12,7 +17,7 @@ public enum Product
 
 
 
-
+    [Display(Name = "Dell Inspiron 14")]
     DellInspiron14 = 410,
 
 
@@ -22,12 +27,14 @@ public enum Product
 
 
 
-
+    [Display(Name = "Thinkpad E14 - Gen 3")]
     ThinkpadE14Gen3 = 420,
+    [Display(Name = "Thinkpad E14 - Gen 4")]
     ThinkpadE14Gen4 = 421,
 
 
-
+    [Display(Name = "Thinkpad X1 - Gen 8")]
     ThinkpadX1Gen8 = 425,
+    [Display(Name = "Thinkpad X1 - Gen 9")]
     ThinkpadX1Gen9 = 426
 }

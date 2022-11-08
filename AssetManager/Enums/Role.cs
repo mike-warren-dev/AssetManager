@@ -1,4 +1,7 @@
-﻿namespace AssetManager.Enums
+﻿using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
+
+namespace AssetManager.Enums
 {
     public enum Role
     {

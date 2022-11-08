@@ -19,21 +19,29 @@
 
             <label asp-for="AssetType">Asset Type</label>
             <select asp-for="AssetType" class="form-select"
-                    asp-items="Html.GetEnumSelectList<AssetType>()"></select>
+                    asp-items="Html.GetEnumSelectList<AssetType>()">
+                <option disabled selected >
+                    <span class ="text-muted small">select</span>
+                    </option>
+            </select>
             <div style="min-height:15px">
                 <span asp-validation-for="AssetType" class="text-danger small"></span>
             </div>
 
             <label asp-for="Model">Model</label>
             <select asp-for="Model" class="form-select"
-                    asp-items="Html.GetEnumSelectList<Product>()"></select>
+                    asp-items="Html.GetEnumSelectList<Product>()">
+                <option disabled selected class="text-muted">select</option>
+            </select>
             <div style="min-height:15px">
                 <span asp-validation-for="Model" class="text-danger small"></span>
             </div>
 
             <label asp-for="Site">Site</label>
             <select asp-for="Site" class="form-select"
-                    asp-items="Html.GetEnumSelectList<Site>()"></select>
+                    asp-items="Html.GetEnumSelectList<Site>()">
+                <option disabled selected class="text-muted">select</option>
+            </select>
             <div style="min-height:15px">
                 <span asp-validation-for="Site" class="text-danger small"></span>
             </div>
