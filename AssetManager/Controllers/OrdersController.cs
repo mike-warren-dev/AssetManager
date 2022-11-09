@@ -85,25 +85,13 @@ namespace AssetManager.Controllers
             }
         }
 
-        // GET: Orders/Delete/5
+        // DELETE: Orders/Delete/5
+        [HttpDelete]
         public ActionResult Delete(int id)
         {
-            return View();
-        }
+            _repository.Delete(id);
 
-        // POST: Orders/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

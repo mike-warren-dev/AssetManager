@@ -50,7 +50,7 @@ public class OrderRepository : IOrderRepository
     {
         Order order = new()
         {
-            OrderId = submission.OrderId == null ? _context.Orders.Max(o => o.OrderId) : (int)submission.OrderId,
+            OrderId = submission.OrderId == null ? _context.Orders.Max(o => o.OrderId) + 1 : (int)submission.OrderId,
             ExternalOrderId = submission.ExternalOrderId,
             VendorId = submission.VendorId,
             Products = submission.Products == null ? new List<Product>() : submission.Products,
@@ -83,6 +83,20 @@ public class OrderRepository : IOrderRepository
 
                 _context.Orders[n] = order;
             }
+        }
+    }
+
+    public void Delete(int id)
+    {
+        if (id > 0)
+        {
+            Order? order = _context.Orders.FirstOrDefault(o => o.OrderId == id);
+
+            if (order != null)
+            {
+                _context.Orders.Remove(order);
+            }
+
         }
     }
 }
