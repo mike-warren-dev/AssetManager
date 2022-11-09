@@ -8,5 +8,6 @@ namespace AssetManager.Repos
         OrderAddEditDto? GetOrderById(int id);
         void Create(OrderAddEditDto submission);
         void Update(OrderAddEditDto submission);
+        void Delete(int id);
     }
 }

@@ -29,41 +29,41 @@
             @{
                 foreach (var o in Model)
                 {
-                                            <tr>
-                                                <td class="align-middle">@o.OrderId</td>
-                                                <td class="align-middle">@o.ExternalOrderId</td>
-                                                <td class="align-middle">@o.VendorId</td>
-                                                <td class="align-middle">
-                                                @{
-                                if(o.Products.Any())
-                                {
-                                                                            <ul style="margin-bottom: 0px;">
-                                                                                @{foreach (var p in o.Products)
-                                            {
-                                                                                                            <li>@p.ToString()</li>
-                                            }         
-                                                                                }
-                                                                            </ul>
-                                }
-                                                }    
-                                                </td>
-                                                <td class="align-middle">@o.Cost.ToString("C2")</td>
-                                                <td class="align-middle">@o.PurchaserId</td>
-                                                <td class="align-middle">@o.ApproverId</td>
-                                                <td class="align-middle">@o.ApprovedDttm?.ToString("g")</td>
-                                                <td class="align-middle">
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-secondary" type="button" id="orderDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="fa-solid fa-bars"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu" aria-labelledby="orderDropdown">
-                                                            <li><button class="dropdown-item" type="button" onclick="addEditOrder(@o.OrderId)">Edit</button></li>
-                                                            <li><button class="dropdown-item" type="button" onclick="confirmDelete(@o.OrderId)">Delete</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                }
+                    <tr>
+                        <td class="align-middle">@o.OrderId</td>
+                        <td class="align-middle">@o.ExternalOrderId</td>
+                        <td class="align-middle">@o.VendorId</td>
+                        <td class="align-middle">
+                        @{
+                            if(o.Products != null && o.Products.Any())
+                            {
+                                <ul style="margin-bottom: 0px;">
+                                    @{foreach (var p in o.Products)
+                                        {
+                                            <li>@p.ToString()</li>
+                                        }         
+                                    }
+                                </ul>
+                            }
+                        }    
+                        </td>
+                        <td class="align-middle">@o.Cost.ToString("C2")</td>
+                        <td class="align-middle">@o.PurchaserId</td>
+                        <td class="align-middle">@o.ApproverId</td>
+                        <td class="align-middle">@o.ApprovedDttm?.ToString("g")</td>
+                        <td class="align-middle">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary" type="button" id="orderDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-bars"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="orderDropdown">
+                                    <li><button class="dropdown-item" type="button" onclick="addEditOrder(@o.OrderId)">Edit</button></li>
+                                    <li><button class="dropdown-item" type="button" onclick="confirmDelete(@o.OrderId)">Delete</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }   
             }
         </tbody>
     </table>
@@ -86,7 +86,7 @@
                     <div>Are you sure you want to delete this order?</div>
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
-                    <button id="deleteOrderButton" type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deletePerson(this)">Delete</button>
+                    <button id="deleteOrderButton" type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteOrder(this)">Delete</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -101,4 +101,25 @@
         $("#newOrderModal").modal("show");
         $("#newOrderModalContents").load(url);
     }
+
+    function confirmDelete(orderId){
+        $("#deleteConfirmation").modal("show");
+        $("#deleteOrderButton").attr("data-id", `${orderId}`);
+    }
+
+    function deleteOrder(el){
+        var orderId = $(el).attr("data-id");
+        var url = `/Orders/Delete/${orderId}`;
+
+        $.ajax({
+            method: "DELETE",
+            url: url,
+            success: function (data, textStatus) {
+                if (textStatus == 'success') {
+                    location.href = "/Orders";
+                }
+            }
+        });
+    }
+
 </script>
