@@ -1,4 +1,5 @@
-﻿using AssetManager.Repos;
+﻿using AssetManager.DTOs;
+using AssetManager.Repos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssetManager.Controllers
@@ -20,30 +21,46 @@ namespace AssetManager.Controllers
             return View(list);
         }
 
-        // GET: Orders/Details/5
-        public ActionResult Details(int id)
+        // GET: Orders/AddEdit/5
+        public ActionResult AddEdit(int id)
         {
-            return View();
-        }
+            if (id == 0)
+            {
+                return PartialView("_AddEditOrderModal");
+            }
+            else
+            {
+                OrderAddEditDto? dto = _repository.GetOrderById(id);
 
-        // GET: Orders/Create
-        public ActionResult Create()
-        {
-            return View();
+                if (dto != null)
+                {
+                    return PartialView("_AddEditOrderModal", dto);
+                }
+                else
+                {
+                    return PartialView("_AddEditOrderModal");
+                }
+                
+            }
+            
         }
 
         // POST: Orders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult AddEdit(OrderAddEditDto submission)
         {
-            try
+            if (submission != null && submission.OrderId == null)
             {
+                _repository.Create(submission);
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
-                return View();
+                _repository.Update(submission);
+
+                return RedirectToAction(nameof(Index));
             }
         }
 
