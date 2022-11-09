@@ -15,6 +15,7 @@ public class Person
     [Required]
     public string LastName { get; set; } = null!;
     [Required]
+    [EmailAddress]
     public string Email { get; set; } = null!;
     [Required]
     public int? RoleId { get; set; }

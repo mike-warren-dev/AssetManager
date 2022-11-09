@@ -19,6 +19,7 @@ public class PersonCreateDto
 
     [Required(ErrorMessage = "Email is required")]
     [StringLength(254, ErrorMessage = "Email is limited to 254 characters")]
+    [EmailAddress]
     [DisplayName("Email")]
     public string Email { get; set; } = null!;
 

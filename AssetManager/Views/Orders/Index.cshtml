@@ -29,40 +29,40 @@
             @{
                 foreach (var o in Model)
                 {
-                        <tr>
-                            <td class="align-middle">@o.OrderId</td>
-                            <td class="align-middle">@o.ExternalOrderId</td>
-                            <td class="align-middle">@o.VendorId</td>
-                            <td class="align-middle">
-                            @{
+                                            <tr>
+                                                <td class="align-middle">@o.OrderId</td>
+                                                <td class="align-middle">@o.ExternalOrderId</td>
+                                                <td class="align-middle">@o.VendorId</td>
+                                                <td class="align-middle">
+                                                @{
                                 if(o.Products.Any())
                                 {
-                                    <ul style="margin-bottom: 0px;">
-                                        @{foreach (var p in o.Products)
+                                                                            <ul style="margin-bottom: 0px;">
+                                                                                @{foreach (var p in o.Products)
                                             {
-                                                <li>@p.ToString()</li>
+                                                                                                            <li>@p.ToString()</li>
                                             }         
-                                        }
-                                    </ul>
+                                                                                }
+                                                                            </ul>
                                 }
-                            }    
-                            </td>
-                            <td class="align-middle">@o.Cost.ToString("C2")</td>
-                            <td class="align-middle">@o.PurchaserId</td>
-                            <td class="align-middle">@o.ApproverId</td>
-                            <td class="align-middle">@o.ApprovedDttm?.ToString("g")</td>
-                            <td class="align-middle">
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary" type="button" id="orderDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa-solid fa-bars"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="orderDropdown">
-                                        <li><button class="dropdown-item" type="button" onclick="addEditOrder(@o.OrderId)">Edit</button></li>
-                                        <li><button class="dropdown-item" type="button" onclick="confirmDelete(@o.OrderId)">Delete</button></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                                                }    
+                                                </td>
+                                                <td class="align-middle">@o.Cost.ToString("C2")</td>
+                                                <td class="align-middle">@o.PurchaserId</td>
+                                                <td class="align-middle">@o.ApproverId</td>
+                                                <td class="align-middle">@o.ApprovedDttm?.ToString("g")</td>
+                                                <td class="align-middle">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-secondary" type="button" id="orderDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="fa-solid fa-bars"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu" aria-labelledby="orderDropdown">
+                                                            <li><button class="dropdown-item" type="button" onclick="addEditOrder(@o.OrderId)">Edit</button></li>
+                                                            <li><button class="dropdown-item" type="button" onclick="confirmDelete(@o.OrderId)">Delete</button></li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
                 }
             }
         </tbody>
@@ -96,5 +96,9 @@
 </div>
 
 <script>
-
+    function addEditOrder(orderId){
+        url = `/Orders/AddEdit/${orderId}`;
+        $("#newOrderModal").modal("show");
+        $("#newOrderModalContents").load(url);
+    }
 </script>
