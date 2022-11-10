@@ -107,11 +107,14 @@ public class TempDataStore : IDataStore
                 OrderId = 1,
                 ExternalOrderId = "OD-0024873",
                 VendorId = Enums.Vendor.CDW,
-                Products = new List<Enums.Product>() { Enums.Product.ThinkpadX1Gen9, 
-                                                       Enums.Product.ThinkpadX1Gen9, 
-                                                       Enums.Product.ThinkpadX1Gen9, 
-                                                       Enums.Product.ThinkpadX1Gen9, 
-                                                       Enums.Product.ThinkpadX1Gen9 },
+                Products = new List<ProductOrder>()
+                    { 
+                        new ProductOrder()
+                        {
+                            Product = Enums.Product.ThinkpadX1Gen9,
+                            Count = 5
+                        }
+                    },
                 Cost = 3753.52m,
                 PurchaserId = 1,
                 ApproverId = 2,
@@ -122,7 +125,14 @@ public class TempDataStore : IDataStore
                 OrderId = 2,
                 ExternalOrderId = "OD-0024371",
                 VendorId = Enums.Vendor.CDW,
-                Products = new List<Enums.Product>() { Enums.Product.MacbookPro15Inch },
+                Products = new List<ProductOrder>() 
+                {
+                        new ProductOrder()
+                        {
+                            Product = Enums.Product.MacbookPro15Inch,
+                            Count = 1
+                        }
+                    },
                 Cost = 750.53m,
                 PurchaserId = 1,
                 ApproverId = 2,

@@ -40,7 +40,7 @@
                                 <ul style="margin-bottom: 0px;">
                                     @{foreach (var p in o.Products)
                                         {
-                                            <li>@p.ToString()</li>
+                                            <li>@p.Product.ToString()</li>
                                         }         
                                     }
                                 </ul>
@@ -69,7 +69,7 @@
     </table>
 
     <div id="newOrderModal" class="modal" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div id="newOrderModalContents" class="modal-content">
             </div>
         </div>

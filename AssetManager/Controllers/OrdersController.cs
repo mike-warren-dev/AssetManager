@@ -1,5 +1,6 @@
 ﻿using AssetManager.DTOs;
 using AssetManager.Repos;
+using AssetManager.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssetManager.Controllers
@@ -26,7 +27,10 @@ namespace AssetManager.Controllers
         {
             if (id == 0)
             {
-                return PartialView("_AddEditOrderModal");
+                OrderAddEditDto emptyDto = new();
+                emptyDto.Products.Add(new ProductOrder());
+
+                return PartialView("_AddEditOrderModal", emptyDto);
             }
             else
             {
