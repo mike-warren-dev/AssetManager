@@ -53,10 +53,10 @@ public class OrderRepository : IOrderRepository
             OrderId = submission.OrderId == null ? _context.Orders.Max(o => o.OrderId) + 1 : (int)submission.OrderId,
             ExternalOrderId = submission.ExternalOrderId,
             VendorId = submission.VendorId,
-            Products = submission.Products == null ? new List<Product>() : submission.Products,
-            Cost = submission.Cost,
-            PurchaserId = submission.PurchaserId,
-            ApproverId = submission.ApproverId,
+            Products = submission.Products == null ? new List<ProductOrder>() : submission.Products,
+            Cost = submission.Cost == null ? 0 : (decimal)submission.Cost,
+            PurchaserId = submission.PurchaserId == null ? 0 : (int)submission.PurchaserId,
+            ApproverId = submission.ApproverId == null ? 0 : (int)submission.ApproverId,
             ApprovedDttm = submission.ApprovedDttm
         };
         
@@ -75,10 +75,10 @@ public class OrderRepository : IOrderRepository
 
                 order.ExternalOrderId = submission.ExternalOrderId;
                 order.VendorId = submission.VendorId;
-                order.Products = submission.Products == null ? new List<Product>() : submission.Products;
-                order.Cost = submission.Cost;
-                order.PurchaserId = submission.PurchaserId;
-                order.ApproverId = submission.ApproverId;
+                order.Products = submission.Products == null ? new List<ProductOrder>() : submission.Products;
+                order.Cost = submission.Cost == null ? 0 : (decimal)submission.Cost;
+                order.PurchaserId = submission.PurchaserId == null ? 0 : (int)submission.PurchaserId;
+                order.ApproverId = submission.ApproverId == null ? 0 : (int)submission.ApproverId;
                 order.ApprovedDttm = submission.ApprovedDttm;
 
                 _context.Orders[n] = order;
