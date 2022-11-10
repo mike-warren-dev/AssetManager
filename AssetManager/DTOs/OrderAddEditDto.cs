@@ -34,4 +34,5 @@ public class OrderAddEditDto
     [Required]
     public int? ApproverId { get; set; }
     public DateTime? ApprovedDttm { get; set; }
+    public DateTime? ReceivedDttm { get; set; }
 }

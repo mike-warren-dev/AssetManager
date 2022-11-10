@@ -13,5 +13,4 @@ public class Asset
     public Site Site { get; set; }
     [DisplayName("Assigned To")]
     public int? PersonId { get; set; }
-
 }

@@ -13,4 +13,5 @@ public class OrderDisplayDto
     public int PurchaserId { get; set; }
     public int ApproverId { get; set; }
     public DateTime? ApprovedDttm { get; set; }
+    public DateTime? ReceivedDttm { get; set; }
 }
