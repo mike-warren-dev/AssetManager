@@ -23,6 +23,7 @@ public class Order
     [Required]
     public int ApproverId { get; set; }
     public DateTime? ApprovedDttm { get; set; }
+    public DateTime? ReceivedDttm { get; set; }
 }
 
 public class ProductOrder

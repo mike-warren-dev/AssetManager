@@ -9,5 +9,6 @@ namespace AssetManager.Repos
         void Create(OrderAddEditDto submission);
         void Update(OrderAddEditDto submission);
         void Delete(int id);
+        void ReceiveOrder(int id);
     }
 }

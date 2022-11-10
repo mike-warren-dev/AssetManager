@@ -118,7 +118,8 @@ public class TempDataStore : IDataStore
                 Cost = 3753.52m,
                 PurchaserId = 1,
                 ApproverId = 2,
-                ApprovedDttm = DateTime.Now
+                ApprovedDttm = DateTime.Now,
+                ReceivedDttm = null
             },
             new Order()
             {
@@ -136,7 +137,8 @@ public class TempDataStore : IDataStore
                 Cost = 750.53m,
                 PurchaserId = 1,
                 ApproverId = 2,
-                ApprovedDttm = null
+                ApprovedDttm = null,
+                ReceivedDttm = DateTime.Now
             }
         };
     }

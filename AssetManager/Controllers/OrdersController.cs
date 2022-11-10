@@ -89,13 +89,28 @@ namespace AssetManager.Controllers
             }
         }
 
-        // DELETE: Orders/Delete/5
+        // DELETE: Orders/Delete/{id}
         [HttpDelete]
         public ActionResult Delete(int id)
         {
             _repository.Delete(id);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        // POST: Orders/Receive/{id}
+        [HttpPost]
+        public ActionResult ReceiveOrder(int id)
+        {
+            if (id > 0)
+            {
+                _repository.ReceiveOrder(id);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

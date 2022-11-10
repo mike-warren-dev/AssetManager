@@ -3,7 +3,7 @@
 @model List<OrderDisplayDto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Orders Grid";
 }
 
 <div class="d-flex justify-content-between">
@@ -22,6 +22,7 @@
                 <th scope="col">Purchaser</th>
                 <th scope="col">Approver</th>
                 <th scope="col">Approved</th>
+                <th scope="col">Received</th>
                 <th scope="col">Options</th>
             </tr>
         </thead>
@@ -39,9 +40,9 @@
                             {
                                 <ul style="margin-bottom: 0px;">
                                     @{foreach (var p in o.Products)
-                                        {
-                                            <li>@p.Product.ToString()</li>
-                                        }         
+                                    {
+                                        <li>@($"{p.Count.ToString()}X - {p.Product.ToString()}")</li>
+                                    }         
                                     }
                                 </ul>
                             }
@@ -51,6 +52,7 @@
                         <td class="align-middle">@o.PurchaserId</td>
                         <td class="align-middle">@o.ApproverId</td>
                         <td class="align-middle">@o.ApprovedDttm?.ToString("g")</td>
+                        <td class="align-middle">@o.ReceivedDttm?.ToString("g")</td>
                         <td class="align-middle">
                             <div class="dropdown">
                                 <button class="btn btn-secondary" type="button" id="orderDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -58,6 +60,20 @@
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="orderDropdown">
                                     <li><button class="dropdown-item" type="button" onclick="addEditOrder(@o.OrderId)">Edit</button></li>
+                                    @{
+                                        if (o.ReceivedDttm == null)
+                                        {
+                                            <li>
+                                                <button class="dropdown-item" type="button" onclick="confirmReceive(@o.OrderId)">Mark Received</button>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <button class="dropdown-item" type="button" onclick="confirmReceive(@o.OrderId)" disabled>Mark Received</button>
+                                            </li>
+                                        }
+                                    }
                                     <li><button class="dropdown-item" type="button" onclick="confirmDelete(@o.OrderId)">Delete</button></li>
                                 </ul>
                             </div>
@@ -93,6 +109,24 @@
         </div>
     </div>
 
+    <div id="receiveConfirmation" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#F2F2F2">
+                    <h5 class="modal-title text-black">Receive Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex justify-content-center align-items-center" style="height: 100px; font-size:1.25rem">
+                    <div>Mark Order as received and create Assets?</div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button id="receiveOrderButton" type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="receiveOrder(this)">Received</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -122,4 +156,24 @@
         });
     }
 
+    function confirmReceive(id) {
+        $("#receiveConfirmation").modal("show");
+        $("#receiveOrderButton").attr("data-id",`${id}`);
+    }
+
+    function receiveOrder(el)
+    {
+        var orderId = $(el).attr("data-id");
+        var url = `/Orders/ReceiveOrder/${orderId}`;
+
+        $.ajax({
+            method: "POST",
+            url: url,
+            success: function (data, textStatus) {
+                if (textStatus == 'success') {
+                    location.href = "/Orders";
+                }
+            }
+        });
+    }
 </script>
