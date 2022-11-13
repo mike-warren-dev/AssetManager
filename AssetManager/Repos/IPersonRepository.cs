@@ -10,5 +10,6 @@ namespace AssetManager.Repos
         void Create(PersonCreateDto submission);
         void Update(PersonCreateDto submission);
         void Delete(int id);
+        void RemoveAsset(int personId, int assetId);
     }
 }

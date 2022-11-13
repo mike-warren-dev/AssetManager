@@ -1,10 +1,16 @@
-﻿using System.ComponentModel;
+﻿using AssetManager.Models;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace AssetManager.DTOs;
 
 public class PersonCreateDto
 {
+    public PersonCreateDto()
+    {
+        Assets = new List<Asset>();
+    }
+
     public int? PersonId { get; set; } = 0;
 
     [Required(ErrorMessage = "First Name is required")]
@@ -27,4 +33,6 @@ public class PersonCreateDto
     [Range(200, 299, ErrorMessage = "Please select a valid Role")]
     [DisplayName("Role")]
     public int? RoleId { get; set; }
+
+    public List<Asset> Assets { get; set; } = null!;
 }

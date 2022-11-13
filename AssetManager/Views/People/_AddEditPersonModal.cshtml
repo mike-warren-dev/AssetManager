@@ -7,40 +7,100 @@
     @using (Html.BeginForm("AddEdit", "People"))
     {
         <div class="modal-header" style="background-color:#F2F2F2">
-            <h5 class="modal-title text-black">Add Person</h5>
+            <h5 class="modal-title text-black">@(Model == null ? "Add" : "Edit") Person</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+            if (Model != null)
+            {
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Person</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Assets</button>
+                    </li>
+                </ul>       
+            }
         <div class="modal-body">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    @Html.AntiForgeryToken()
 
-            @Html.AntiForgeryToken()
+                    <input asp-for="PersonId" type="hidden" />
 
-            <input asp-for="PersonId" type="hidden"/>
+                    <label asp-for="FirstName">First Name</label><span style="color:red">*</span>
+                    <input asp-for="FirstName" class="form-control" />
+                    <div style="height:18px">
+                        <span asp-validation-for="FirstName" class="text-danger small"></span>
+                    </div>
 
-            <label asp-for="FirstName">First Name</label><span style="color:red">*</span>
-            <input asp-for="FirstName" class="form-control"/>
-            <div style="height:18px">
-                <span asp-validation-for="FirstName" class="text-danger small"></span>
-            </div>
+                    <label asp-for="LastName">Last Name</label><span style="color:red">*</span>
+                    <input asp-for="LastName" class="form-control" />
+                    <div style="height:18px">
+                        <span asp-validation-for="LastName" class="text-danger small"></span>
+                    </div>
 
-            <label asp-for="LastName">Last Name</label><span style="color:red">*</span>
-            <input asp-for="LastName" class="form-control"/>
-            <div style="height:18px">
-                <span asp-validation-for="LastName" class="text-danger small"></span>
-            </div>
+                    <label asp-for="Email">Email</label><span style="color:red">*</span>
+                    <input asp-for="Email" class="form-control" />
+                    <div style="height:18px">
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
 
-            <label asp-for="Email">Email</label><span style="color:red">*</span>
-            <input asp-for="Email" class="form-control" />
-            <div style="height:18px">
-                <span asp-validation-for="Email" class="text-danger small"></span>
-            </div>
-            
-            <label asp-for="RoleId">Role</label><span style="color:red">*</span>
-            <select asp-for="RoleId" class="form-select"
-                    asp-items="Html.GetEnumSelectList<Role>()">
-                <option disabled selected class="text-muted">select</option>
-            </select>
-            <div style="height:18px">
-                <span asp-validation-for="RoleId" class="text-danger small"></span>
+                    <label asp-for="RoleId">Role</label><span style="color:red">*</span>
+                    <select asp-for="RoleId" class="form-select"
+                        asp-items="Html.GetEnumSelectList<Role>()">
+                        <option disabled selected class="text-muted">select</option>
+                    </select>
+                    <div style="height:18px">
+                        <span asp-validation-for="RoleId" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="row d-flex justify-content-around">
+                        <div class="col-6">
+                            <input class="form-control"/>
+                        </div>
+                        <div class="col-3">
+                            <button class="btn btn-primary">Add Asset</button>
+                        </div>
+                    </div>
+                    <hr />
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Asset ID</th>
+                                <th scope="col">Asset Type</th>
+                                <th scope="col">Model</th>
+                                <th scope="col" class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model != null)
+                                {
+                                    foreach (var a in Model.Assets)
+                                    {
+                                        <tr>
+                                            <td>@a.AssetId</td>
+                                            <td>@a.AssetType</td>
+                                            <td>@a.Model.ToString()</td>
+                                            <td class="text-center">
+                                                <i  class="btn fa-solid fa-xmark" 
+                                                    style="color:red" 
+                                                    onclick="unmapAsset(this)"
+                                                    data-asset-id="@a.AssetId" 
+                                                    data-person-id="@Model.PersonId"></i>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+
             </div>
 
         </div>
@@ -53,3 +113,31 @@
 
 <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+<script>
+    function unmapAsset(el){
+        console.log("running.."); 
+        
+        var assetId = $(el).attr('data-asset-id');
+        var personId = $(el).attr('data-person-id');
+        
+        console.log(`assetId = ${assetId}`);
+        console.log(`personId = ${personId}`);
+
+        var removeAssetUrl = `/People/RemoveAsset`;
+
+        $.ajax({
+            method: "POST",
+            url: removeAssetUrl,
+            data: { assetId:assetId, personId:personId },
+            success: function (data, textStatus){
+                
+                $(el).parent().parent().toggle();
+
+                //if (textStatus == 'success') {
+                //    location.href = "/People";
+                //}
+            }
+        });
+    }
+</script>

@@ -20,7 +20,34 @@ public class TempDataStore : IDataStore
                 FirstName = "Melvin",
                 LastName = "Snyder",
                 Email = "Melvin.Snyder@SnyderCorp.com",
-                RoleId = null
+                RoleId = null, 
+                Assets = new List<Asset>() 
+                { 
+                    new Asset()
+                    {
+                        AssetId = 1,
+                        AssetType = Enums.AssetType.Laptop,
+                        Model = Enums.Product.ThinkpadX1Gen8,
+                        Site = Enums.Site.TheWoodlands,
+                        PersonId = 1
+                    },
+                    new Asset()
+                    {
+                        AssetId = 11,
+                        AssetType = Enums.AssetType.Laptop,
+                        Model = Enums.Product.ThinkpadX1Gen8,
+                        Site = Enums.Site.TheWoodlands,
+                        PersonId = 1
+                    },
+                    new Asset()
+                    {
+                        AssetId = 12,
+                        AssetType = Enums.AssetType.Laptop,
+                        Model = Enums.Product.ThinkpadX1Gen8,
+                        Site = Enums.Site.TheWoodlands,
+                        PersonId = 1
+                    }
+                }
             },
             new Person()
             {

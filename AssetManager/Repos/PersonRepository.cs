@@ -67,4 +67,19 @@ public class PersonRepository : IPersonRepository
         if (person != null)
             _context.People.Remove(person); 
     }
+
+    public void RemoveAsset(int personId, int assetId)
+    {
+        Person? person = _context.People.FirstOrDefault(p => p.PersonId == personId);
+
+        if (person != null)
+        {
+            var asset = person.Assets.FirstOrDefault(a => a.AssetId == assetId);
+            
+            if (asset != null)
+            {
+                person.Assets.Remove(asset);
+            }
+        }
+    }
 }
