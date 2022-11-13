@@ -28,13 +28,6 @@ public class PeopleController : Controller
         return View(list);
     }
 
-    // GET: People/Details/5
-    public ActionResult Details(int id)
-    {
-        return View();
-    }
-
-
     // GET: People/Create
     public ActionResult AddEdit(int id)
     {
@@ -55,6 +48,7 @@ public class PeopleController : Controller
                 person.LastName = p.LastName;
                 person.Email = p.Email;
                 person.RoleId = p.RoleId;
+                person.Assets = p.Assets;
             }
             else
             {
@@ -105,6 +99,15 @@ public class PeopleController : Controller
     public ActionResult Delete(int id)
     {
         _repository.Delete(id);
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    // DELETE: People/RemoveAsset
+    [HttpPost]
+    public ActionResult RemoveAsset(int personId, int assetId)
+    {
+        _repository.RemoveAsset(personId, assetId);
 
         return RedirectToAction(nameof(Index));
     }
