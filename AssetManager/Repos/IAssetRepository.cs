@@ -10,5 +10,6 @@ namespace AssetManager.Repos
         void Create(AssetAddEditDto asset);
         void Delete(int id);
         void Update(AssetAddEditDto asset);
+        AssetDisplayDto? GetAssetDisplayDtoById(int id);
     }
 }

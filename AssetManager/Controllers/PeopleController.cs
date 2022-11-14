@@ -3,7 +3,7 @@ using AssetManager.DTOs;
 using AssetManager.Models;
 using AssetManager.Repos;
 using Microsoft.AspNetCore.Mvc;
-
+using Newtonsoft.Json;
 
 namespace AssetManager.Controllers;
 
@@ -107,9 +107,50 @@ public class PeopleController : Controller
     [HttpPost]
     public ActionResult RemoveAsset(int personId, int assetId)
     {
-        _repository.RemoveAsset(personId, assetId);
+        _repository.RemoveAssetMap(personId, assetId);
 
         return RedirectToAction(nameof(Index));
     }
 
+    // DELETE: People/MapAsset
+    [HttpPost]
+    public ActionResult MapAsset(int personId, int assetId)
+    {
+        Person? person = _repository.GetPersonById(personId);
+        Asset? asset = _context.Assets.FirstOrDefault(a => a.AssetId == assetId);
+        
+
+        if (person == null) return BadRequest("The Person is not valid.");
+
+        if (asset == null) return BadRequest("Enter a valid Asset ID");
+
+        if (asset.PersonId != null)
+        {
+            Person? otherPerson = _repository.GetPersonById((int)asset.PersonId);
+
+            if (otherPerson != null)
+            {
+                return BadRequest($"The Asset is already mapped to {otherPerson.FirstName} {otherPerson.LastName}");
+            }
+            else
+            {
+                return BadRequest($"The Asset is already mapped.");
+            }   
+        }
+
+        if (person.Assets.Contains(asset) == true) return BadRequest($"The Asset is already mapped.");
+
+        _repository.AddAssetMap(personId, assetId);
+
+        var dto = new AssetDisplayDto()
+        {
+            AssetId = asset.AssetId,
+            AssetType = asset.AssetType.ToString(),
+            Model = asset.Model.ToString(),
+            Site = asset.Site.ToString(),
+            PersonId = asset.PersonId
+        };
+
+        return Ok(JsonConvert.SerializeObject(dto));
+    }
 }
