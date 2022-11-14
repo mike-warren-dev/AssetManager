@@ -58,11 +58,12 @@
 
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="row d-flex justify-content-around">
-                        <div class="col-6">
-                            <input class="form-control"/>
+                        <div class="col-9">
+                            <input id="assetIdSearchField" class="form-control" placeholder="asset id / barcode" />
+                            <span id="assetIdSearchFieldValidation" class="text-danger small field-validation-error"></span>
                         </div>
                         <div class="col-3">
-                            <button class="btn btn-primary">Add Asset</button>
+                            <button id="addAssetButton" type="button" class="btn btn-primary" onclick="addAsset()">Add Asset</button>
                         </div>
                     </div>
                     <hr />
@@ -75,24 +76,24 @@
                                 <th scope="col" class="text-center">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="assetTable">
                             @{
                                 if (Model != null)
                                 {
                                     foreach (var a in Model.Assets)
                                     {
-                                        <tr>
-                                            <td>@a.AssetId</td>
-                                            <td>@a.AssetType</td>
-                                            <td>@a.Model.ToString()</td>
-                                            <td class="text-center">
-                                                <i  class="btn fa-solid fa-xmark" 
-                                                    style="color:red" 
-                                                    onclick="unmapAsset(this)"
-                                                    data-asset-id="@a.AssetId" 
-                                                    data-person-id="@Model.PersonId"></i>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td>@a.AssetId</td>
+                                                <td>@a.AssetType</td>
+                                                <td>@a.Model.ToString()</td>
+                                                <td class="text-center">
+                                                    <i  class="btn fa-solid fa-xmark" 
+                                                        style="color:red" 
+                                                        onclick="unmapAsset(this)"
+                                                        data-asset-id="@a.AssetId" 
+                                                        data-person-id="@Model.PersonId"></i>
+                                                </td>
+                                            </tr>
                                     }
                                 }
                             }
@@ -116,13 +117,8 @@
 
 <script>
     function unmapAsset(el){
-        console.log("running.."); 
-        
         var assetId = $(el).attr('data-asset-id');
         var personId = $(el).attr('data-person-id');
-        
-        console.log(`assetId = ${assetId}`);
-        console.log(`personId = ${personId}`);
 
         var removeAssetUrl = `/People/RemoveAsset`;
 
@@ -131,13 +127,40 @@
             url: removeAssetUrl,
             data: { assetId:assetId, personId:personId },
             success: function (data, textStatus){
-                
                 $(el).parent().parent().toggle();
-
-                //if (textStatus == 'success') {
-                //    location.href = "/People";
-                //}
             }
         });
     }
+
+    function addAsset(){
+        $("#assetIdSearchFieldValidation").html("");
+
+        var assetId = $("#assetIdSearchField").val();
+        var getAssetUrl = `/People/MapAsset`;
+        var personId = @(Model == null ? null : Model.PersonId);
+        
+        $.ajax({
+            method:"POST",
+            url: getAssetUrl,
+            data: { personId: @(Model == null ? null : Model.PersonId), assetId: assetId },
+            success: function (data, textStatus)
+            {
+                $("#assetIdSearchField").val("");
+                
+                var asset = JSON.parse(data);
+
+                $("#assetTable").append(`<tr><td>${asset.AssetId}</td><td>${asset.AssetType}</td><td>${asset.Model}</td><td class="text-center"><i  class="btn fa-solid fa-xmark" style="color:red" onclick="unmapAsset(this)" data-asset-id="${asset.AssetId}" data-person-id="${personId}"></i></td></tr>`);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $("#assetIdSearchFieldValidation").html(jqXHR.responseText);
+            }
+        });
+    }
+
+    $("#assetIdSearchField").on("keypress", function(event) {
+        if(event.keyCode == 13){
+            addAsset();
+            event.preventDefault();
+        }
+    });
 </script>

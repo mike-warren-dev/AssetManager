@@ -1,6 +1,7 @@
 ﻿using AssetManager.Data;
 using AssetManager.DTOs;
 using AssetManager.Models;
+using Newtonsoft.Json;
 
 namespace AssetManager.Repos;
 
@@ -68,9 +69,13 @@ public class PersonRepository : IPersonRepository
             _context.People.Remove(person); 
     }
 
-    public void RemoveAsset(int personId, int assetId)
+    public void RemoveAssetMap(int personId, int assetId)
     {
         Person? person = _context.People.FirstOrDefault(p => p.PersonId == personId);
+
+        var a = _context.Assets.FirstOrDefault(a => a.AssetId == assetId);
+
+        if (a != null) a.PersonId = null;
 
         if (person != null)
         {
@@ -78,8 +83,19 @@ public class PersonRepository : IPersonRepository
             
             if (asset != null)
             {
+                asset.PersonId = null;
                 person.Assets.Remove(asset);
             }
         }
+    }
+
+    public void AddAssetMap(int personId, int assetId)
+    {
+        // IMPORTANT: This method assumes you've already done your null-checking upstream.
+
+        var person = _context.People.FirstOrDefault(p => p.PersonId == personId);
+        var asset = _context.Assets.FirstOrDefault(a => a.AssetId == assetId);
+        asset.PersonId = person.PersonId;
+        person.Assets.Add(asset);
     }
 }

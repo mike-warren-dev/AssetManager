@@ -55,7 +55,17 @@ public class TempDataStore : IDataStore
                 FirstName = "Kevin",
                 LastName = "Wells",
                 Email = "Kevin.Wells@SnyderCorp.com",
-                RoleId = null
+                RoleId = null,
+                Assets=new List<Asset>(){
+                    new Asset()
+                    {
+                        AssetId = 2,
+                        AssetType = Enums.AssetType.Laptop,
+                        Model = Enums.Product.ThinkpadX1Gen8,
+                        Site = Enums.Site.TheWoodlands,
+                        PersonId = 3
+                    }
+                }
             },
             new Person()
             {
@@ -71,7 +81,18 @@ public class TempDataStore : IDataStore
                 FirstName = "Rose",
                 LastName = "O'Reilly",
                 Email = "Rose.OReilly@SnyderCorp.com",
-                RoleId = null
+                RoleId = null,
+                Assets = new List<Asset>()
+                {
+                    new Asset()
+                    {
+                        AssetId = 3,
+                        AssetType = Enums.AssetType.Laptop,
+                        Model = Enums.Product.ThinkpadX1Gen9,
+                        Site = Enums.Site.TheWoodlands,
+                        PersonId = 4
+                    }
+                }
             },
            new Person()
             {
@@ -79,7 +100,18 @@ public class TempDataStore : IDataStore
                 FirstName = "Ryan",
                 LastName = "Mills",
                 Email = "Ryan.Mills@SnyderCorp.com",
-                RoleId = null
+                RoleId = null,
+                Assets = new List<Asset>()
+                {
+                    new Asset()
+                    {
+                        AssetId = 5,
+                        AssetType = Enums.AssetType.Laptop,
+                        Model = Enums.Product.ThinkpadX1Gen9,
+                        Site = Enums.Site.Remote,
+                        PersonId = 2
+                    }
+                }
             },
         };
 
@@ -124,7 +156,24 @@ public class TempDataStore : IDataStore
                 Model = Enums.Product.ThinkpadX1Gen9,
                 Site = Enums.Site.Remote,
                 PersonId = 2
+            },
+            new Asset()
+            {
+                AssetId = 100,
+                AssetType = Enums.AssetType.Monitor,
+                Model = Enums.Product.Dell_22Inch_SE2222H,
+                Site = Enums.Site.TheWoodlands,
+                PersonId = null
+            },
+            new Asset()
+            {
+                AssetId = 101,
+                AssetType = Enums.AssetType.Monitor,
+                Model = Enums.Product.Dell_24Inch_SE2424H,
+                Site = Enums.Site.TheWoodlands,
+                PersonId = null
             }
+
         };
 
         Orders = new List<Order>()

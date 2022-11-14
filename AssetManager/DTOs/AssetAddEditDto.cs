@@ -15,4 +15,5 @@ public class AssetAddEditDto
     [Required]
     public Site Site { get; set; }
     public int? PersonId { get; set; }
+
 }

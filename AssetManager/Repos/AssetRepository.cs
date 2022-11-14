@@ -18,9 +18,9 @@ public class AssetRepository : IAssetRepository
         List<AssetDisplayDto> list = _context.Assets.Select(a => new AssetDisplayDto()
                                                     {
                                                         AssetId = a.AssetId,
-                                                        AssetType = a.AssetType,
-                                                        Model = a.Model,
-                                                        Site = a.Site,
+                                                        AssetType = a.AssetType.ToString(),
+                                                        Model = a.Model.ToString(),
+                                                        Site = a.Site.ToString(),
                                                         PersonId = a.PersonId
                                                     }).ToList();
 
@@ -40,6 +40,28 @@ public class AssetRepository : IAssetRepository
             return null;
         }
     }
+
+    public AssetDisplayDto? GetAssetDisplayDtoById(int id)
+    {
+        if (id > 0)
+        {
+            var asset = _context.Assets.Where(a => a.AssetId == id).FirstOrDefault();
+
+            return new AssetDisplayDto()
+            {
+                AssetId = asset.AssetId,
+                AssetType = asset.AssetType.ToString(),
+                Model = asset.Model.ToString(),
+                Site = asset.Site.ToString(),
+                PersonId = asset.PersonId
+            };
+        }
+        else
+        {
+            return null;
+        }
+
+    }    
 
     public void Create(AssetAddEditDto asset)
     {

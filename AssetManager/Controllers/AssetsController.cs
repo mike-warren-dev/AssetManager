@@ -1,6 +1,8 @@
 ﻿using AssetManager.DTOs;
+using AssetManager.Models;
 using AssetManager.Repos;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace AssetManager.Controllers
 {
@@ -70,5 +72,6 @@ namespace AssetManager.Controllers
             _repository.Delete(id);
             return RedirectToAction(nameof(Index));
         }
+
     }
 }
