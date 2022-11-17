@@ -26,24 +26,24 @@
             @{
                 foreach (var a in Model)
                 {
-                            <tr>
-                                <td class="align-middle">@a.AssetId</td>
-                                <td class="align-middle">@a.AssetType</td>
-                                <td class="align-middle">@a.Model</td>
-                                <td class="align-middle">@a.Site</td>
-                                <td class="align-middle">@a.PersonId</td>
-                                <td class="align-middle">
-                                    <div class="dropdown">
-                                        <button class="btn btn-secondary" type="button" id="assetDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-bars"></i>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="assetDropdown">
-                                            <li><button class="dropdown-item" type="button" onclick="addEditAsset(@a.AssetId)">Edit</button></li>
-                                            <li><button class="dropdown-item" type="button" onclick="confirmDelete(@a.AssetId)">Delete</button></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
+                    <tr>
+                        <td class="align-middle">@a.AssetId</td>
+                        <td class="align-middle">@a.AssetType</td>
+                        <td class="align-middle">@a.Model</td>
+                        <td class="align-middle">@a.Site</td>
+                        <td class="align-middle">@a.PersonName</td>
+                        <td class="align-middle">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary" type="button" id="assetDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-bars"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="assetDropdown">
+                                    <li><button class="dropdown-item" type="button" onclick="addEditAsset(@a.AssetId)">Edit</button></li>
+                                    <li><button class="dropdown-item" type="button" onclick="confirmDelete(@a.AssetId)">Delete</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
                 }
             }
         </tbody>

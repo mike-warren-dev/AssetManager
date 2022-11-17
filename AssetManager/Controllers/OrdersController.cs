@@ -15,7 +15,6 @@ namespace AssetManager.Controllers
             _orderService = orderService;
         }
 
-        // GET: Orders
         public ActionResult Index()
         {
             var list = _orderService.GetAllOrders();
@@ -23,7 +22,6 @@ namespace AssetManager.Controllers
             return View(list);
         }
 
-        // GET: Orders/AddEdit/5
         public ActionResult AddEdit(int id)
         {
             
@@ -73,13 +71,11 @@ namespace AssetManager.Controllers
             }
         }
 
-        // GET: Orders/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Orders/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -94,7 +90,6 @@ namespace AssetManager.Controllers
             }
         }
 
-        // DELETE: Orders/Delete/{id}
         [HttpDelete]
         public ActionResult Delete(int id)
         {
@@ -103,7 +98,6 @@ namespace AssetManager.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // POST: Orders/Receive/{id}
         [HttpPost]
         public ActionResult ReceiveOrder(int id)
         {

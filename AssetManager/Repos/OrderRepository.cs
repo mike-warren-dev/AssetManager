@@ -21,16 +21,22 @@ public class OrderRepository : IOrderRepository
 
     public List<OrderDisplayDto> GetAllOrders()
     {
-        return _context.Orders.Select(o => new OrderDisplayDto() {
-                                                OrderId = o.OrderId,
-                                                ExternalOrderId = o.ExternalOrderId,
-                                                VendorId = o.VendorId,
-                                                Products = o.Products,
-                                                Cost = o.Cost,
-                                                PurchaserId = o.PurchaserId,
-                                                ApproverId = o.ApproverId,
-                                                ApprovedDttm = o.ApprovedDttm,
-                                                ReceivedDttm = o.ReceivedDttm}).AsNoTracking().ToList();
+        return _context.Orders.Include(o => o.Approver)
+                              .Include(o => o.Purchaser)
+                              .Select(o => new OrderDisplayDto() 
+                              {
+                                OrderId = o.OrderId,
+                                ExternalOrderId = o.ExternalOrderId,
+                                VendorId = o.VendorId,
+                                Products = o.Products,
+                                Cost = o.Cost,
+                                PurchaserId = o.PurchaserId,
+                                PurchaserName = o.Purchaser != null ? $"{o.Purchaser.FirstName} {o.Purchaser.LastName}" : "",
+                                ApproverId = o.ApproverId,
+                                ApproverName = o.Approver  != null ? $"{o.Approver.FirstName} {o.Approver.LastName}" : "",
+                                ApprovedDttm = o.ApprovedDttm,
+                                ReceivedDttm = o.ReceivedDttm
+                              }).AsNoTracking().ToList();
     }
 
     public OrderAddEditDto? GetOrderById(int id)
@@ -113,51 +119,6 @@ public class OrderRepository : IOrderRepository
             order.ReceivedDttm = DateTime.Now;
             Save();
         }
-        
-
-        //var order = _context.Orders.Find(id);
-
-        //if (order != null)
-        //{
-        //    //var n = _context.Orders.IndexOf(order);
-        //    //var nextIndex = _context.Assets.Max(a => a.AssetId) + 1;
-
-        //    order.ReceivedDttm = DateTime.Now;
-
-        //    //should implement a service layer to avoid having to implement the Assets stuff in the order repo or rely on other repo...
-        //    foreach (var p in order.Products)
-        //    {
-        //        List<Asset> assets = new();
-
-        //        for (var i = 0; i < p.Count; i++)
-        //        {
-        //            assets.Add( new Asset()
-        //            {
-        //                AssetId = nextIndex,
-        //                AssetType = p.Product switch
-        //                {
-        //                    Enums.Product.MacbookPro13Inch => Enums.AssetType.Laptop,
-        //                    Enums.Product.MacbookPro15Inch => Enums.AssetType.Laptop,
-        //                    Enums.Product.DellInspiron14 => Enums.AssetType.Laptop,
-        //                    Enums.Product.ThinkpadE14Gen3 => Enums.AssetType.Laptop,
-        //                    Enums.Product.ThinkpadE14Gen4 => Enums.AssetType.Laptop,
-        //                    Enums.Product.ThinkpadX1Gen8 => Enums.AssetType.Laptop,
-        //                    Enums.Product.ThinkpadX1Gen9 => Enums.AssetType.Laptop,
-        //                    _ => Enums.AssetType.Laptop
-        //                },
-        //                Model = p.Product,
-        //                Site = Enums.Site.TheWoodlands,
-        //                PersonId = null
-        //            });
-
-        //            nextIndex++;
-        //        }
-
-        //        _context.Assets.AddRange(assets);
-        //    }
-
-        //    _context.Orders[n] = order;
-        //}
     }
 
     private void Save()
