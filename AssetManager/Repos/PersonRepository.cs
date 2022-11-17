@@ -1,15 +1,15 @@
 ﻿using AssetManager.Data;
 using AssetManager.DTOs;
 using AssetManager.Models;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace AssetManager.Repos;
 
 public class PersonRepository : IPersonRepository
 {
-    public IDataStore _context;
-
-    public PersonRepository(IDataStore context)
+    public AssetManagerContext _context;
+    public PersonRepository(AssetManagerContext context)
     {
         _context = context;
     }
@@ -25,15 +25,16 @@ public class PersonRepository : IPersonRepository
 
         return list;
     }
+
     public Person? GetPersonById(int id)
     {
-        return _context.People.FirstOrDefault(p => p.PersonId == id); ;
+        return _context.People.Include(p => p.Assets).FirstOrDefault(p => p.PersonId == id);
     }
+
     public void Create(PersonCreateDto submission)
     {
         Person person = new()
         {
-            PersonId = _context.People.Max(p => p.PersonId) + 1,
             FirstName = submission.FirstName,
             LastName = submission.LastName,
             Email = submission.Email,
@@ -41,6 +42,7 @@ public class PersonRepository : IPersonRepository
         };
 
         _context.People.Add(person);
+        Save();
     }
 
     public void Update(PersonCreateDto submission)
@@ -49,33 +51,35 @@ public class PersonRepository : IPersonRepository
 
         if (person != null)
         {
-            person.PersonId = submission.PersonId == null ? 0 : (int)submission.PersonId;
             person.FirstName = submission.FirstName;
             person.LastName = submission.LastName;
             person.Email = submission.Email;
             person.RoleId = submission.RoleId;
 
-            int index = _context.People.FindIndex(p => p.PersonId == person.PersonId);
-
-            _context.People[index] = person;
+            Save();
         }
     }
 
     public void Delete(int id)
     {
-        Person? person = _context.People.FirstOrDefault(p => p.PersonId == id);
-        
+        Person? person = _context.People.Include(p => p.Assets).FirstOrDefault(p => p.PersonId == id);
+
         if (person != null)
-            _context.People.Remove(person); 
+        {
+            foreach (var a in person.Assets)
+            {
+                a.PersonId = null;
+            }
+
+            _context.People.Remove(person);
+            Save();
+        }
+
     }
 
     public void RemoveAssetMap(int personId, int assetId)
     {
-        Person? person = _context.People.FirstOrDefault(p => p.PersonId == personId);
-
-        var a = _context.Assets.FirstOrDefault(a => a.AssetId == assetId);
-
-        if (a != null) a.PersonId = null;
+        Person? person = _context.People.Include(p => p.Assets).FirstOrDefault(p => p.PersonId == personId);
 
         if (person != null)
         {
@@ -84,7 +88,7 @@ public class PersonRepository : IPersonRepository
             if (asset != null)
             {
                 asset.PersonId = null;
-                person.Assets.Remove(asset);
+                Save();
             }
         }
     }
@@ -93,9 +97,14 @@ public class PersonRepository : IPersonRepository
     {
         // IMPORTANT: This method assumes you've already done your null-checking upstream.
 
-        var person = _context.People.FirstOrDefault(p => p.PersonId == personId);
+        var person = _context.People.Find(personId);
         var asset = _context.Assets.FirstOrDefault(a => a.AssetId == assetId);
-        asset.PersonId = person.PersonId;
         person.Assets.Add(asset);
+        Save();
+    }
+
+    private void Save()
+    {
+        _context.SaveChanges();
     }
 }

@@ -2,6 +2,7 @@
 using AssetManager.DTOs;
 using AssetManager.Models;
 using AssetManager.Repos;
+using AssetManager.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -9,29 +10,25 @@ namespace AssetManager.Controllers;
 
 public class PeopleController : Controller
 {
-    private readonly ILogger<PeopleController> _logger;
-    private IPersonRepository _repository;
-    private IDataStore _context;
+    private IPeopleService _peopleService;
+    private IAssetService _assetService;
 
-    public PeopleController(ILogger<PeopleController> logger, IDataStore context, IPersonRepository repository)
+    public PeopleController(ILogger<PeopleController> logger, IPersonRepository repository, IPeopleService peopleService, IAssetService assetService)
     {
-        _logger = logger;
-        _context = context;
-        _repository = repository;
+        _peopleService = peopleService;
+        _assetService = assetService;
     }
     
-    // GET: People/
     public ActionResult Index()
     {
-        IEnumerable<PersonDisplayDto> list = _repository.GetAll();
+        IEnumerable<PersonDisplayDto> list = _peopleService.GetAllPeople();
 
         return View(list);
     }
 
-    // GET: People/Create
     public ActionResult AddEdit(int id)
     {
-        PersonCreateDto? person = new();
+        PersonCreateDto dto = new();
 
         if (id == 0)
         {
@@ -39,46 +36,35 @@ public class PeopleController : Controller
         }
         else
         {
-            Person? p = _repository.GetPersonById(id);
-            
-            if (p != null)
+            try
             {
-                person.PersonId = p.PersonId;
-                person.FirstName = p.FirstName;
-                person.LastName = p.LastName;
-                person.Email = p.Email;
-                person.RoleId = p.RoleId;
-                person.Assets = p.Assets;
+                dto = _peopleService.GetPersonCreateDtoById(id);
             }
-            else
+            catch
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            return PartialView("_AddEditPersonModal", person);
+            return PartialView("_AddEditPersonModal", dto);
         }
-        
     }
 
-    // POST: People/AddEdit
-    [HttpPost]
-    //[ValidateAntiForgeryToken]
-    public ActionResult AddEdit([Bind("PersonId,FirstName,LastName,Email,RoleId")]PersonCreateDto submission)
+    [HttpPost] //[ValidateAntiForgeryToken]
+    public ActionResult AddEdit([Bind("PersonId,FirstName,LastName,Email,RoleId")]PersonCreateDto dto)
     {
         if (ModelState.IsValid)
         {
             try
             {
-                if (submission.PersonId == null)
+                if (dto.PersonId == null)
                 {
-                    _repository.Create(submission);
+                    _peopleService.Create(dto);
 
-                    //this is reloading the whole grid!
                     return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    _repository.Update(submission);
+                    _peopleService.Update(dto);
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -94,53 +80,43 @@ public class PeopleController : Controller
         }
     }
 
-    // DELETE: People/Delete/5
     [HttpDelete]
     public ActionResult Delete(int id)
     {
-        _repository.Delete(id);
+        _peopleService.Delete(id);
 
         return RedirectToAction(nameof(Index));
     }
 
-    // DELETE: People/RemoveAsset
     [HttpPost]
     public ActionResult RemoveAsset(int personId, int assetId)
     {
-        _repository.RemoveAssetMap(personId, assetId);
+        
+        _peopleService.RemoveAssetMap(personId, assetId);
 
         return RedirectToAction(nameof(Index));
     }
 
-    // DELETE: People/MapAsset
     [HttpPost]
     public ActionResult MapAsset(int personId, int assetId)
     {
-        Person? person = _repository.GetPersonById(personId);
-        Asset? asset = _context.Assets.FirstOrDefault(a => a.AssetId == assetId);
-        
+        Person? person = _peopleService.GetPersonById(personId);
+        Asset? asset = _assetService.GetAssetById(assetId);
 
         if (person == null) return BadRequest("The Person is not valid.");
 
         if (asset == null) return BadRequest("Enter a valid Asset ID");
 
         if (asset.PersonId != null)
-        {
-            Person? otherPerson = _repository.GetPersonById((int)asset.PersonId);
+        { 
+            Person? otherPerson = _peopleService.GetPersonById((int)asset.PersonId);
 
-            if (otherPerson != null)
-            {
-                return BadRequest($"The Asset is already mapped to {otherPerson.FirstName} {otherPerson.LastName}");
-            }
-            else
-            {
-                return BadRequest($"The Asset is already mapped.");
-            }   
+            return BadRequest($"The Asset is already mapped to {otherPerson.FirstName} {otherPerson.LastName}");
         }
 
         if (person.Assets.Contains(asset) == true) return BadRequest($"The Asset is already mapped.");
 
-        _repository.AddAssetMap(personId, assetId);
+        _peopleService.AddAssetMap(personId, assetId);
 
         var dto = new AssetDisplayDto()
         {

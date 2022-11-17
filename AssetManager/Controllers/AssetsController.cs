@@ -1,6 +1,7 @@
 ﻿using AssetManager.DTOs;
 using AssetManager.Models;
 using AssetManager.Repos;
+using AssetManager.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -8,22 +9,21 @@ namespace AssetManager.Controllers
 {
     public class AssetsController : Controller
     {
-        private IAssetRepository _repository;
+        private IAssetService _assetService;
 
-        public AssetsController(IAssetRepository repository)
+        public AssetsController(IAssetRepository repository, IAssetService assetService)
         {
-            _repository = repository;
+            _assetService = assetService;
         }
 
-        //GET: Assets
         public IActionResult Index()
         {
-            List<AssetDisplayDto> list = _repository.GetAll();
+            List<AssetDisplayDto> list = _assetService.GetAllAssets();
 
             return View(list);
         }
 
-        //GET: Assets/AddEdit/{id}
+        [HttpGet]
         public IActionResult AddEdit(int id)
         {
             if (id == 0)
@@ -32,7 +32,7 @@ namespace AssetManager.Controllers
             }
             else
             {
-                var asset = _repository.GetAssetById(id);
+                var asset = _assetService.GetAssetById(id);
 
                 if (asset == null) return PartialView("_AddEditAssetModal");
 
@@ -49,27 +49,25 @@ namespace AssetManager.Controllers
             }
         }
 
-        // POST: Assets/AddEdit
         [HttpPost]
         public IActionResult AddEdit(AssetAddEditDto asset)
         {
             if(asset.AssetId > 0)
             {
-                _repository.Update(asset);
+                _assetService.Update(asset);
                 return RedirectToAction(nameof(Index));
             }
             else
             {
-                _repository.Create(asset);
+                _assetService.Create(asset);
                 return RedirectToAction(nameof(Index));
             }
         }
 
-        // DELETE: Assets/Delete/{id}
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            _repository.Delete(id);
+            _assetService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 

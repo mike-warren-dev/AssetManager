@@ -8,12 +8,10 @@ namespace AssetManager.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private IDataStore _context;
 
-    public HomeController(ILogger<HomeController> logger, IDataStore context)
+    public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
-        _context = context;
     }
 
     public IActionResult Index()
