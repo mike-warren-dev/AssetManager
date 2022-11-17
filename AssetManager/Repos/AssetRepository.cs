@@ -1,6 +1,7 @@
 ﻿using AssetManager.Data;
 using AssetManager.DTOs;
 using AssetManager.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AssetManager.Repos;
 
@@ -15,14 +16,15 @@ public class AssetRepository : IAssetRepository
 
     public List<AssetDisplayDto> GetAllAssets()
     {
-        List<AssetDisplayDto> list = _context.Assets.Select(a => new AssetDisplayDto()
-                                                    {
-                                                        AssetId = a.AssetId,
-                                                        AssetType = a.AssetType.ToString(),
-                                                        Model = a.Model.ToString(),
-                                                        Site = a.Site.ToString(),
-                                                        PersonId = a.PersonId
-                                                    }).ToList();
+        List<AssetDisplayDto> list = _context.Assets.Include(a => a.Person).Select(a => new AssetDisplayDto()
+                                    {
+                                        AssetId = a.AssetId,
+                                        AssetType = a.AssetType.ToString(),
+                                        Model = a.Model.ToString(),
+                                        Site = a.Site.ToString(),
+                                        PersonId = a.PersonId,
+                                        PersonName = a.Person != null ? $"{a.Person.FirstName} {a.Person.LastName}" : ""
+                                    }).ToList();
 
         return list;
     }

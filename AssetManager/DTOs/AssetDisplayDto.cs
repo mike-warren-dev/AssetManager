@@ -9,4 +9,5 @@ public class AssetDisplayDto
     public string Model { get; set; } = null!;
     public string Site { get; set; } = null!;
     public int? PersonId { get; set; }
+    public string PersonName { get; set; } = null!;
 }
