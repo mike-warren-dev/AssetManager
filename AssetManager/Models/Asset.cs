@@ -1,5 +1,7 @@
 ﻿using AssetManager.Enums;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace AssetManager.Models;
 
@@ -13,5 +15,5 @@ public class Asset
     public Site Site { get; set; }
     [DisplayName("Assigned To")]
     public int? PersonId { get; set; }
-    
+    public Person? Person { get; set; }
 }

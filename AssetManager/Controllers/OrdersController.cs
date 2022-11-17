@@ -2,22 +2,23 @@
 using AssetManager.Repos;
 using AssetManager.Models;
 using Microsoft.AspNetCore.Mvc;
+using AssetManager.Services;
 
 namespace AssetManager.Controllers
 {
     public class OrdersController : Controller
     {
-        private IOrderRepository _repository;
+        private IOrderService _orderService;
 
-        public OrdersController(IOrderRepository repository)
+        public OrdersController(IOrderRepository repository, IOrderService orderService)
         {
-            _repository = repository;
+            _orderService = orderService;
         }
 
         // GET: Orders
         public ActionResult Index()
         {
-            var list = _repository.GetAllOrders().ToList();
+            var list = _orderService.GetAllOrders();
             
             return View(list);
         }
@@ -25,6 +26,8 @@ namespace AssetManager.Controllers
         // GET: Orders/AddEdit/5
         public ActionResult AddEdit(int id)
         {
+            
+            
             if (id == 0)
             {
                 OrderAddEditDto emptyDto = new();
@@ -34,10 +37,13 @@ namespace AssetManager.Controllers
             }
             else
             {
-                OrderAddEditDto? dto = _repository.GetOrderById(id);
+                OrderAddEditDto? dto = _orderService.GetOrderById(id);
 
                 if (dto != null)
                 {
+                    if (!dto.Products.Any())
+                        dto.Products.Add(new ProductOrder());
+
                     return PartialView("_AddEditOrderModal", dto);
                 }
                 else
@@ -49,20 +55,19 @@ namespace AssetManager.Controllers
             
         }
 
-        // POST: Orders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddEdit(OrderAddEditDto submission)
         {
             if (submission != null && submission.OrderId == null)
             {
-                _repository.Create(submission);
+                _orderService.Create(submission);
 
                 return RedirectToAction(nameof(Index));
             }
             else
             {
-                _repository.Update(submission);
+                _orderService.Update(submission);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -93,7 +98,7 @@ namespace AssetManager.Controllers
         [HttpDelete]
         public ActionResult Delete(int id)
         {
-            _repository.Delete(id);
+            _orderService.Delete(id);
 
             return RedirectToAction(nameof(Index));
         }
@@ -104,7 +109,7 @@ namespace AssetManager.Controllers
         {
             if (id > 0)
             {
-                _repository.ReceiveOrder(id);
+                _orderService.ReceiveOrder(id);
                 return RedirectToAction(nameof(Index));
             }
             else

@@ -1,4 +1,5 @@
 ﻿using AssetManager.Enums;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace AssetManager.Models;
@@ -17,15 +18,20 @@ public class Order
     public Vendor VendorId { get; set; }
     public List<ProductOrder> Products { get; set; }
     [Required]
-    public Decimal Cost { get; set; }
+    [Precision(18, 2)]
+    public decimal Cost { get; set; }
     [Required]
     public int PurchaserId { get; set; }
     [Required]
     public int ApproverId { get; set; }
     public DateTime? ApprovedDttm { get; set; }
     public DateTime? ReceivedDttm { get; set; }
+
+    public Person Purchaser { get; set; }
+    public Person Approver { get; set; }
 }
 
+[Owned]
 public class ProductOrder
 {
     [Required]

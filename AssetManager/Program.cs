@@ -1,15 +1,27 @@
 using AssetManager.Data;
 using AssetManager.Repos;
+using AssetManager.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Dependency Injection
+builder.Services.AddScoped<IPeopleService, PeopleService>();
+builder.Services.AddScoped<IAssetService, AssetService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IAssetRepository, AssetRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddSingleton<IDataStore, TempDataStore>();
+
+builder.Services.AddDbContext<AssetManagerContext>(options =>
+    options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

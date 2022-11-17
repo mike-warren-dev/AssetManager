@@ -25,23 +25,23 @@
             @{
                 foreach (var p in Model)
                 {
-                                            <tr>
-                                                <td class="align-middle">@p.PersonId</td>
-                                                <td class="align-middle">@p.FirstName</td>
-                                                <td class="align-middle">@p.LastName</td>
-                                                <td class="align-middle">@p.Email</td>
-                                                <td class="align-middle">
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-secondary" type="button" id="personDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="fa-solid fa-bars"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu" aria-labelledby="personDropdown">
-                                                            <li><button class="dropdown-item" type="button" onclick="addEditPerson(@p.PersonId)">Edit</button></li>
-                                                            <li><button class="dropdown-item" type="button" onclick="confirmDelete(@p.PersonId)">Delete</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                    <tr>
+                        <td class="align-middle">@p.PersonId</td>
+                        <td class="align-middle">@p.FirstName</td>
+                        <td class="align-middle">@p.LastName</td>
+                        <td class="align-middle">@p.Email</td>
+                        <td class="align-middle">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary" type="button" id="personDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-bars"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="personDropdown">
+                                    <li><button class="dropdown-item" type="button" onclick="addEditPerson(@p.PersonId)">Edit</button></li>
+                                    <li><button class="dropdown-item" type="button" onclick="confirmDelete(@p.PersonId)">Delete</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
                 }
             }
         </tbody>

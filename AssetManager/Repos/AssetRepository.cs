@@ -6,14 +6,14 @@ namespace AssetManager.Repos;
 
 public class AssetRepository : IAssetRepository
 {
-    private IDataStore _context { get; }
+    private AssetManagerContext _context;
 
-    public AssetRepository(IDataStore dataStore)
+    public AssetRepository(AssetManagerContext repoContext)
     {
-        _context = dataStore;
+        _context = repoContext;
     }
 
-    public List<AssetDisplayDto> GetAll()
+    public List<AssetDisplayDto> GetAllAssets()
     {
         List<AssetDisplayDto> list = _context.Assets.Select(a => new AssetDisplayDto()
                                                     {
@@ -31,7 +31,7 @@ public class AssetRepository : IAssetRepository
     {
         if (id > 0)
         {
-            var asset = _context.Assets.Where(a => a.AssetId == id).FirstOrDefault();
+            var asset = _context.Assets.Find(id);
 
             return asset;
         }
@@ -45,7 +45,7 @@ public class AssetRepository : IAssetRepository
     {
         if (id > 0)
         {
-            var asset = _context.Assets.Where(a => a.AssetId == id).FirstOrDefault();
+            var asset = _context.Assets.Find(id);
 
             return new AssetDisplayDto()
             {
@@ -63,42 +63,64 @@ public class AssetRepository : IAssetRepository
 
     }    
 
-    public void Create(AssetAddEditDto asset)
+    public void Create(AssetAddEditDto dto)
     {
-        Asset a = new() { 
-            AssetId = _context.Assets.Max(a => a.AssetId) + 1,
-            AssetType = asset.AssetType,
-            Model = asset.Model,
-            Site = asset.Site,
-            PersonId = asset.PersonId,
+        Asset asset = new() { 
+            AssetType = dto.AssetType,
+            Model = dto.Model,
+            Site = dto.Site,
+            PersonId = dto.PersonId,
         };
 
-        _context.Assets.Add(a);
+        _context.Assets.Add(asset);
+        Save();
     }
 
-    public void Update(AssetAddEditDto asset)
+    public void CreateAssets(IEnumerable<AssetAddEditDto> dtos)
     {
-        Asset? a = _context.Assets.FirstOrDefault(a => a.AssetId == asset.AssetId);
-
-        if (a != null)
+        if (dtos.Any())
         {
-            int n = _context.Assets.IndexOf(a);
+            _context.AddRange(dtos.Select(d => new Asset()
+                                        {
+                                            AssetType = d.AssetType,
+                                            Model = d.Model,
+                                            Site = d.Site,
+                                            PersonId = d.PersonId
+                                        })) ;
+            Save();
+        }
+    }
 
-            a.AssetType = asset.AssetType;
-            a.Model = asset.Model;
-            a.Site = asset.Site;
-            a.PersonId = asset.PersonId;
+    public void Update(AssetAddEditDto dto)
+    {
+        Asset? asset = _context.Assets.Find(dto.AssetId);
 
-            _context.Assets[n] = a;
+        if (asset != null)
+        {
+            asset.AssetType = dto.AssetType;
+            asset.Model = dto.Model;
+            asset.Site = dto.Site;
+            asset.PersonId = dto.PersonId;
+
+            Save();
         }
     }
 
     public void Delete(int id)
     {
-        Asset? asset = _context.Assets.FirstOrDefault(a => a.AssetId == id);
+        Asset? asset = _context.Assets.Find(id);
 
         if (asset != null)
+        {
             _context.Assets.Remove(asset);
+            Save();
+        }
+            
+    }
+
+    private void Save()
+    {
+        _context.SaveChanges();
     }
 
 }
