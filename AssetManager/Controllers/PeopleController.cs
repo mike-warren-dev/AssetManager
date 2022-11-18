@@ -26,6 +26,15 @@ public class PeopleController : Controller
         return View(list);
     }
 
+    [HttpGet]
+    public ActionResult GetPersonOptions()
+    {
+        IEnumerable<PersonDisplayDto> list = _peopleService.GetAllPeople();
+
+        return PartialView("_PersonOptions",list);
+    }
+
+    [HttpGet]
     public ActionResult AddEdit(int id)
     {
         PersonCreateDto dto = new();

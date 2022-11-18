@@ -2,6 +2,7 @@
 using AssetManager.Models;
 using AssetManager.Repos;
 using AssetManager.Services;
+using AssetManager.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -10,10 +11,12 @@ namespace AssetManager.Controllers
     public class AssetsController : Controller
     {
         private IAssetService _assetService;
+        private IPeopleService _peopleService;
 
-        public AssetsController(IAssetRepository repository, IAssetService assetService)
+        public AssetsController(IAssetRepository repository, IAssetService assetService, IPeopleService peopleService)
         {
             _assetService = assetService;
+            _peopleService = peopleService;
         }
 
         public IActionResult Index()
@@ -26,40 +29,44 @@ namespace AssetManager.Controllers
         [HttpGet]
         public IActionResult AddEdit(int id)
         {
+            AssetAddEditViewModel vm = new();
+            vm.People = _peopleService.GetAllPeople();
+
             if (id == 0)
             {
-                return PartialView("_AddEditAssetModal");
+                return PartialView("_AddEditAssetModal", vm);
             }
             else
             {
                 var asset = _assetService.GetAssetById(id);
 
-                if (asset == null) return PartialView("_AddEditAssetModal");
+                if (asset == null) return PartialView("_AddEditAssetModal", vm);                
 
-                AssetAddEditDto dto = new()
+                vm.AssetDto = new AssetAddEditDto()
                 {
                     AssetId = asset.AssetId,
                     AssetType = asset.AssetType,
                     Model = asset.Model,
                     Site = asset.Site,
-                    PersonId = asset.PersonId
+                    PersonId = asset.PersonId,
+                    PersonName = asset.Person != null ? $"{asset.Person.FirstName} {asset.Person.LastName}" : ""
                 };
 
-                return PartialView("_AddEditAssetModal",dto);
+                return PartialView("_AddEditAssetModal", vm);
             }
         }
 
         [HttpPost]
-        public IActionResult AddEdit(AssetAddEditDto asset)
+        public IActionResult AddEdit(AssetAddEditViewModel vm)
         {
-            if(asset.AssetId > 0)
+            if(vm.AssetDto.AssetId > 0)
             {
-                _assetService.Update(asset);
+                _assetService.Update(vm.AssetDto);
                 return RedirectToAction(nameof(Index));
             }
             else
             {
-                _assetService.Create(asset);
+                _assetService.Create(vm.AssetDto);
                 return RedirectToAction(nameof(Index));
             }
         }
