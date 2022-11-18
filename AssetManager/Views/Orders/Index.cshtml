@@ -59,19 +59,16 @@
                                     <i class="fa-solid fa-bars"></i>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="orderDropdown">
-                                    <li><button class="dropdown-item" type="button" onclick="addEditOrder(@o.OrderId)">Edit</button></li>
                                     @{
                                         if (o.ReceivedDttm == null)
                                         {
-                                            <li>
-                                                <button class="dropdown-item" type="button" onclick="confirmReceive(@o.OrderId)">Mark Received</button>
-                                            </li>
+                                            <li><button class="dropdown-item" type="button" onclick="addEditOrder(@o.OrderId)">Edit</button></li>
+                                            <li><button class="dropdown-item" type="button" onclick="confirmReceive(@o.OrderId)">Mark Received</button></li>
                                         }
                                         else
                                         {
-                                            <li>
-                                                <button class="dropdown-item" type="button" onclick="confirmReceive(@o.OrderId)" disabled>Mark Received</button>
-                                            </li>
+                                            <li><button class="dropdown-item" type="button" onclick="addEditOrder(@o.OrderId)" disabled>Edit</button></li>
+                                            <li><button class="dropdown-item" type="button" onclick="confirmReceive(@o.OrderId)" disabled>Mark Received</button></li>
                                         }
                                     }
                                     <li><button class="dropdown-item" type="button" onclick="confirmDelete(@o.OrderId)">Delete</button></li>
