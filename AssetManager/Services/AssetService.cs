@@ -22,7 +22,7 @@ public class AssetService : IAssetService
     {
         return _assetRepository.GetAssetById(id);
     }
-    
+
     public void Create(AssetAddEditDto asset)
     {
         _assetRepository.Create(asset);

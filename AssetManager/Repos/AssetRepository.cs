@@ -33,7 +33,7 @@ public class AssetRepository : IAssetRepository
     {
         if (id > 0)
         {
-            var asset = _context.Assets.Find(id);
+            var asset = _context.Assets.Include(a => a.Person).FirstOrDefault(a => a.AssetId == id);
 
             return asset;
         }

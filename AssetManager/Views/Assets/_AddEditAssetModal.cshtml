@@ -1,8 +1,9 @@
 ﻿@using AssetManager.Models;
 @using AssetManager.DTOs;
 @using AssetManager.Enums
+@using AssetManager.ViewModels
 
-@model AssetAddEditDto
+@model AssetAddEditViewModel
 
 <div>
     @using (Html.BeginForm("AddEdit", "Assets"))
@@ -15,39 +16,72 @@
 
             @Html.AntiForgeryToken()
 
-            <input asp-for="AssetId" type="hidden">
+            <input asp-for="AssetDto.AssetId" type="hidden">
 
-            <label asp-for="AssetType">Asset Type</label><span style="color:red">*</span>
-            <select asp-for="AssetType" class="form-select"
+            <label asp-for="AssetDto.AssetType">Asset Type</label><span style="color:red">*</span>
+            <select asp-for="AssetDto.AssetType" class="form-select"
                     asp-items="Html.GetEnumSelectList<AssetType>()">
                 <option disabled selected class="text-muted">select</option>
             </select>
             <div style="min-height:15px">
-                <span asp-validation-for="AssetType" class="text-danger small"></span>
+                <span asp-validation-for="AssetDto.AssetType" class="text-danger small"></span>
             </div>
 
-            <label asp-for="Model">Model</label><span style="color:red">*</span>
-            <select asp-for="Model" class="form-select"
+            <label asp-for="AssetDto.Model">Model</label><span style="color:red">*</span>
+            <select asp-for="AssetDto.Model" class="form-select"
                     asp-items="Html.GetEnumSelectList<Product>()">
                 <option disabled selected class="text-muted">select</option>
             </select>
             <div style="min-height:15px">
-                <span asp-validation-for="Model" class="text-danger small"></span>
+                <span asp-validation-for="AssetDto.Model" class="text-danger small"></span>
             </div>
 
-            <label asp-for="Site">Site</label><span style="color:red">*</span>
-            <select asp-for="Site" class="form-select"
+            <label asp-for="AssetDto.Site">Site</label><span style="color:red">*</span>
+            <select asp-for="AssetDto.Site" class="form-select"
                     asp-items="Html.GetEnumSelectList<Site>()">
                 <option disabled selected class="text-muted">select</option>
             </select>
             <div style="min-height:15px">
-                <span asp-validation-for="Site" class="text-danger small"></span>
+                <span asp-validation-for="AssetDto.Site" class="text-danger small"></span>
             </div>
 
-            <label asp-for="PersonId">Person</label>
-            <input asp-for="PersonId" class="form-control" />
-                        <div style="min-height:15px">
+            @*<label asp-for="PersonId">Person</label>
+            <input asp-for="PersonId" class="form-control"/>
+            <div style="min-height:15px">
                 <span asp-validation-for="PersonId" class="text-danger small"></span>
+            </div>*@
+
+            <label asp-for="AssetDto.PersonId">Person</label>
+            <select asp-for="AssetDto.PersonId" class="form-select" data-active-id="@(Model?.AssetDto?.PersonId != null ? Model.AssetDto.PersonId : 0)">
+                @{
+                    if (Model?.People != null)
+                    {
+                        if (Model.AssetDto == null)
+                        {
+                            <option disabled selected class="text-muted">select</option>
+                        }
+
+                        foreach (var item in Model.People)
+                        {
+                            if (item.PersonId == Model.AssetDto?.PersonId)
+                            {
+                                <option value="@item.PersonId" selected>@($"{item.FirstName} {item.LastName}")</option>
+                            }
+                            else
+                            {
+                                <option value="@item.PersonId">@($"{item.FirstName} {item.LastName}")</option>
+                            }
+                        }
+                    }
+                    
+                    //if (Model?.AssetDto.PersonId != null)
+                    //{
+                    //    <option value="@Model.AssetDto.PersonId">@Model.AssetDto.PersonName</option>
+                    //}
+                }                
+            </select>
+            <div style="min-height:15px">
+                <span asp-validation-for="AssetDto.PersonId" class="text-danger small"></span>
             </div>
 
         </div>
@@ -60,3 +94,17 @@
 
 <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+<script> 
+    //$(function () {
+    //    var active = $("#PersonId").attr("data-active-id");
+    //    var url = '/People/GetPersonOptions/';
+
+    //    $("#PersonId").load(url);
+
+    //    if (active > 0)
+    //    {
+    //        foreach(var el in $)
+    //    }
+    //});
+</script>
