@@ -3,16 +3,19 @@ using AssetManager.Repos;
 using AssetManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using AssetManager.Services;
+using AssetManager.ViewModels;
 
 namespace AssetManager.Controllers
 {
     public class OrdersController : Controller
     {
         private IOrderService _orderService;
+        private IPeopleService _peopleService;
 
-        public OrdersController(IOrderRepository repository, IOrderService orderService)
+        public OrdersController(IOrderRepository repository, IOrderService orderService, IPeopleService peopleService)
         {
             _orderService = orderService;
+            _peopleService = peopleService;
         }
 
         public ActionResult Index()
@@ -24,51 +27,46 @@ namespace AssetManager.Controllers
 
         public ActionResult AddEdit(int id)
         {
-            
+            OrderAddEditViewModel vm = new();
+            vm.OrderDto.Products.Add(new ProductOrder());
+            vm.People = _peopleService.GetAllPeople();
             
             if (id == 0)
             {
-                OrderAddEditDto emptyDto = new();
-                emptyDto.Products.Add(new ProductOrder());
-
-                return PartialView("_AddEditOrderModal", emptyDto);
+                return PartialView("_AddEditOrderModal", vm);
             }
             else
             {
-                OrderAddEditDto? dto = _orderService.GetOrderById(id);
+                var order = _orderService.GetOrderById(id);
 
-                if (dto != null)
+                if (order != null)
                 {
-                    if (!dto.Products.Any())
-                        dto.Products.Add(new ProductOrder());
-
-                    return PartialView("_AddEditOrderModal", dto);
+                    vm.OrderDto = order;
+                    return PartialView("_AddEditOrderModal", vm);
                 }
                 else
                 {
-                    return PartialView("_AddEditOrderModal");
+                    return PartialView("_AddEditOrderModal", vm);
                 }
-                
             }
-            
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddEdit(OrderAddEditDto submission)
+        public ActionResult AddEdit(OrderAddEditViewModel vm)
         {
-            if (submission != null && submission.OrderId == null)
+            if (vm.OrderDto == null) return RedirectToAction(nameof(Index));
+            
+            if (vm.OrderDto.OrderId == null)
             {
-                _orderService.Create(submission);
-
-                return RedirectToAction(nameof(Index));
+                _orderService.Create(vm.OrderDto);
             }
             else
             {
-                _orderService.Update(submission);
-
-                return RedirectToAction(nameof(Index));
+                _orderService.Update(vm.OrderDto);
             }
+
+            return RedirectToAction(nameof(Index));
         }
 
         public ActionResult Edit(int id)

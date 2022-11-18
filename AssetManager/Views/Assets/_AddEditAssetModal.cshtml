@@ -45,12 +45,6 @@
                 <span asp-validation-for="AssetDto.Site" class="text-danger small"></span>
             </div>
 
-            @*<label asp-for="PersonId">Person</label>
-            <input asp-for="PersonId" class="form-control"/>
-            <div style="min-height:15px">
-                <span asp-validation-for="PersonId" class="text-danger small"></span>
-            </div>*@
-
             <label asp-for="AssetDto.PersonId">Person</label>
             <select asp-for="AssetDto.PersonId" class="form-select" data-active-id="@(Model?.AssetDto?.PersonId != null ? Model.AssetDto.PersonId : 0)">
                 @{
