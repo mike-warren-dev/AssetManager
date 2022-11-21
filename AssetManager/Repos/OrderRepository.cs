@@ -27,7 +27,7 @@ public class OrderRepository : IOrderRepository
                               {
                                 OrderId = o.OrderId,
                                 ExternalOrderId = o.ExternalOrderId,
-                                VendorId = o.VendorId,
+                                Vendor = o.VendorId.GetDisplayName(),
                                 Products = o.Products,
                                 Cost = o.Cost,
                                 PurchaserId = o.PurchaserId,
