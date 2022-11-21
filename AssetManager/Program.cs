@@ -3,6 +3,7 @@ using AssetManager.Repos;
 using AssetManager.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 builder.Services.AddDbContext<AssetManagerContext>(options =>
     options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+//options.UseSqlServer(config.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")));
 
 var app = builder.Build();
 

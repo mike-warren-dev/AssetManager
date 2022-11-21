@@ -7,7 +7,7 @@ public class OrderDisplayDto
 {
     public int OrderId { get; set; }
     public string ExternalOrderId { get; set; } = null!;
-    public Vendor VendorId { get; set; }
+    public string Vendor { get; set; } = null!;
     public List<ProductOrder> Products { get; set; } = null!;
     public Decimal Cost { get; set; }
     public int PurchaserId { get; set; }

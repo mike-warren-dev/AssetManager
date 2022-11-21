@@ -1,5 +1,6 @@
 ﻿using AssetManager.Data;
 using AssetManager.DTOs;
+using AssetManager.Enums;
 using AssetManager.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,9 +20,9 @@ public class AssetRepository : IAssetRepository
         List<AssetDisplayDto> list = _context.Assets.Include(a => a.Person).Select(a => new AssetDisplayDto()
                                     {
                                         AssetId = a.AssetId,
-                                        AssetType = a.AssetType.ToString(),
-                                        Model = a.Model.ToString(),
-                                        Site = a.Site.ToString(),
+                                        AssetType = a.AssetType.GetDisplayName(),
+                                        Model = a.Model.GetDisplayName(),
+                                        Site = a.Site.GetDisplayName(),
                                         PersonId = a.PersonId,
                                         PersonName = a.Person != null ? $"{a.Person.FirstName} {a.Person.LastName}" : ""
                                     }).ToList();
@@ -52,9 +53,9 @@ public class AssetRepository : IAssetRepository
             return new AssetDisplayDto()
             {
                 AssetId = asset.AssetId,
-                AssetType = asset.AssetType.ToString(),
-                Model = asset.Model.ToString(),
-                Site = asset.Site.ToString(),
+                AssetType = asset.AssetType.GetDisplayName(),
+                Model = asset.Model.GetDisplayName(),
+                Site = asset.Site.GetDisplayName(),
                 PersonId = asset.PersonId
             };
         }

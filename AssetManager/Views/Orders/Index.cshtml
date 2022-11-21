@@ -1,4 +1,5 @@
 ﻿@using AssetManager.DTOs
+@using AssetManager.Enums
 
 @model List<OrderDisplayDto>
 
@@ -33,7 +34,7 @@
                     <tr>
                         <td class="align-middle">@o.OrderId</td>
                         <td class="align-middle">@o.ExternalOrderId</td>
-                        <td class="align-middle">@o.VendorId</td>
+                        <td class="align-middle">@o.Vendor</td>
                         <td class="align-middle">
                         @{
                             if(o.Products != null && o.Products.Any())
@@ -41,7 +42,7 @@
                                 <ul style="margin-bottom: 0px;">
                                     @{foreach (var p in o.Products)
                                     {
-                                        <li>@($"{p.Count.ToString()}X - {p.Product.ToString()}")</li>
+                                        <li>@($"{p.Count.ToString()}X - {p.Product.GetDisplayName()}")</li>
                                     }         
                                     }
                                 </ul>
