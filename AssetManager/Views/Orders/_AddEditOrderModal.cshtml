@@ -50,18 +50,18 @@
                             {
                                 if (Model.OrderDto.OrderId == null)
                                 {
-                                    <option disabled selected class="text-muted"></option>
+                                                                                                                <option disabled selected class="text-muted"></option>
                                 }
 
                                 foreach (var item in Model.People)
                                 {
                                     if (item.PersonId == Model.OrderDto?.ApproverId)
                                     {
-                                        <option value="@item.PersonId" selected>@($"{item.FirstName} {item.LastName}")</option>
+                                                                                                                    <option value="@item.PersonId" selected>@($"{item.FirstName} {item.LastName}")</option>
                                     }
                                     else
                                     {
-                                        <option value="@item.PersonId">@($"{item.FirstName} {item.LastName}")</option>
+                                                                                                                    <option value="@item.PersonId">@($"{item.FirstName} {item.LastName}")</option>
                                     }
                                 }
                             }
@@ -78,18 +78,18 @@
                             {
                                 if (Model.OrderDto.OrderId == null)
                                 {
-                                    <option disabled selected class="text-muted"></option>
+                                                                                                                <option disabled selected class="text-muted"></option>
                                 }
 
                                 foreach (var item in Model.People)
                                 {
                                     if (item.PersonId == Model.OrderDto?.ApproverId)
                                     {
-                                        <option value="@item.PersonId" selected>@($"{item.FirstName} {item.LastName}")</option>
+                                                                                                                    <option value="@item.PersonId" selected>@($"{item.FirstName} {item.LastName}")</option>
                                     }
                                     else
                                     {
-                                        <option value="@item.PersonId">@($"{item.FirstName} {item.LastName}")</option>
+                                                                                                                    <option value="@item.PersonId">@($"{item.FirstName} {item.LastName}")</option>
                                     }
                                 }
                             }
@@ -113,25 +113,32 @@
                             {
                                 for (var i = 0; i < Model.OrderDto.Products.Count; i++)
                                 {
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <label asp-for="@Model.OrderDto.Products[i].Product">Product</label>
-                                            <select asp-for="@Model.OrderDto.Products[i].Product" class="form-select" asp-items="Html.GetEnumSelectList<Product>()">
-                                                <option disabled selected class="text-muted">select</option>
-                                            </select>
-                                            <div style="min-height:15px">
-                                                <span asp-validation-for="@Model.OrderDto.Products[i].Product" class="text-danger small"></span>
-                                            </div>
-                                        </div>
+                                                                <div class="row" data-index="@i">
+                                                                    <div class="col-7">
+                                                                        <label asp-for="@Model.OrderDto.Products[i].Product">Product</label>
+                                                                        <select asp-for="@Model.OrderDto.Products[i].Product" class="form-select" asp-items="Html.GetEnumSelectList<Product>()">
+                                                                            <option disabled selected class="text-muted">select</option>
+                                                                        </select>
+                                                                        <div style="min-height:15px">
+                                                                            <span asp-validation-for="@Model.OrderDto.Products[i].Product" class="text-danger small"></span>
+                                                                        </div>
+                                                                    </div>
 
-                                        <div class="col-4">
-                                            <label asp-for="@Model.OrderDto.Products[i].Count">Count</label>
-                                            <input asp-for="@Model.OrderDto.Products[i].Count" class="form-control" />
-                                            <div style="min-height:15px">
-                                                <span asp-validation-for="@Model.OrderDto.Products[i].Count" class="text-danger small"></span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                                    <div class="col-3">
+                                                                        <label asp-for="@Model.OrderDto.Products[i].Count">Count</label>
+                                                                        <input asp-for="@Model.OrderDto.Products[i].Count" class="form-control" />
+                                                                        <div style="min-height:15px">
+                                                                            <span asp-validation-for="@Model.OrderDto.Products[i].Count" class="text-danger small"></span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    @if (i > 0)
+                                        {
+                                                                    <div class ="col-2 align-self-center">
+                                                                        <i class="btn fa-solid fa-xmark" style="color:red" onclick="toggleElement(this)"></i>
+                                                                    </div>
+                                        }
+                                                                </div>
                                 }
                             }
                         }    
@@ -152,10 +159,30 @@
 
 <script>
     function addProductFields(){
-        var nextIndex = $("#productsContainer .row").length;
-        var $field = $(`<div class="row"><div class="col-8"><label for="Products_${nextIndex}__Product">Product</label> <select class="form-select" data-val="true" data-val-required="The Product field is required." id="Products_${nextIndex}__Product" name="Products[${nextIndex}].Product"></select><div style="min-height:15px"><span> </span></div></div><div class="col-4"><label for="Products_${nextIndex}__Count">Count</label><input class="form-control" type="number" data-val="true" data-val-required="The Count field is required." id="Products_${nextIndex}__Count" name="Products[${nextIndex}].Count"><div style="min-height:15px"><span> </span></div></div></div>`);
+        var nextIndex = parseInt($("#productsContainer .row:last-child").attr("data-index")) + 1;
 
+        var $field = $(`<div class="row" data-index="${nextIndex}"><div class="col-7"><label for="OrderDto_Products_${nextIndex}__Product">Product</label> <select class="form-select" data-val="true" data-val-required="The Product field is required." id="OrderDto_Products_${nextIndex}__Product" name="OrderDto.Products[${nextIndex}].Product"></select><div style="min-height:15px"><span class="text-danger small field-validation-valid" data-valmsg-for="OrderDto.Products[${nextIndex}].Product" data-valmsg-replace="true"/></div></div><div class="col-3"><label for="OrderDto_Products_${nextIndex}__Count">Count</label><input class="form-control" type="number" data-val="true" data-val-required="The Count field is required." id="OrderDto_Products_${nextIndex}__Count" name="OrderDto.Products[${nextIndex}].Count" value=""><div style="min-height:15px"><span class="text-danger small field-validation-valid" data-valmsg-for="OrderDto.Products[${nextIndex}].Count" data-valmsg-replace="true"/></div></div><div class="col-2 align-self-center"><i class="btn fa-solid fa-xmark" style="color:red" onclick="toggleElement(this)"/></div></div>`);
         $("#productsContainer").append($field);
-        $("#Products_0__Product option").clone().appendTo(`#Products_${nextIndex}__Product`);
+        
+        $options = $("#OrderDto_Products_0__Product option").clone();
+        
+        for (i = 0; i < $options.length; i++)
+        {
+            if (i == 0) continue;
+
+            $($options[i]).removeAttr("selected")
+        }
+
+        $options.appendTo(`#OrderDto_Products_${nextIndex}__Product`);
+    }
+
+    function toggleElement(el){
+        var $temp = $(el).parent().parent();
+        
+        $temp.toggle();
+        
+        var index = parseInt($temp.attr("data-index"));
+
+        $(`#OrderDto_Products_${index}__Count`).val("-1");
     }
 </script>
