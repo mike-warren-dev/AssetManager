@@ -6,16 +6,6 @@ namespace AssetManager.DTOs;
 
 public class OrderAddEditDto
 {
-    //public OrderAddEditDto()
-    //{
-    //    Products = new List<ProductOrder>() {
-    //        new ProductOrder(),
-    //        new ProductOrder(),
-    //        new ProductOrder(),
-    //        new ProductOrder(),
-    //        new ProductOrder(),
-    //        new ProductOrder()};
-    //}
     public OrderAddEditDto()
     {
         Products = new List<ProductOrder>() { };

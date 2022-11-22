@@ -14,6 +14,7 @@ public class AssetAddEditDto
     public Product Model { get; set; }
     [Required]
     public Site Site { get; set; }
+    [DisplayName("Assigned To")]
     public int? PersonId { get; set; }
     public string PersonName { get; set; } = null!;
 

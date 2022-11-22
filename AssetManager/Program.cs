@@ -22,8 +22,7 @@ builder.Services.AddScoped<IAssetRepository, AssetRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 builder.Services.AddDbContext<AssetManagerContext>(options =>
-    options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
-//options.UseSqlServer(config.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")));
+options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
@@ -35,6 +34,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -44,6 +44,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=People}/{action=Index}/{id?}");
 
 app.Run();

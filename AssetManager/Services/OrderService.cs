@@ -1,4 +1,5 @@
 ﻿using AssetManager.DTOs;
+using AssetManager.Models;
 using AssetManager.Repos;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,14 +26,38 @@ public class OrderService : IOrderService
         return _orderRepository.GetOrderById(id);
     }
 
-    public void Create(OrderAddEditDto submission)
+    public void Create(OrderAddEditDto dto)
     {
-        _orderRepository.Create(submission);
+        List<ProductOrder> products = new ();
+        
+        foreach (var item in dto.Products)
+        {
+            if (item != null && item.Count != -1)
+            {
+                products.Add(item);
+            }
+        }
+
+        dto.Products = products;
+        
+        _orderRepository.Create(dto);
     }
 
-    public void Update(OrderAddEditDto submission)
+    public void Update(OrderAddEditDto dto)
     {
-        _orderRepository.Update(submission);
+        List<ProductOrder> products = new();
+
+        foreach (var item in dto.Products)
+        {
+            if (item != null && item.Count != -1)
+            {
+                products.Add(item);
+            }
+        }
+
+        dto.Products = products;
+
+        _orderRepository.Update(dto);
     }
 
     public void Delete(int id)

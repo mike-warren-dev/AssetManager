@@ -82,28 +82,25 @@
                                 {
                                     foreach (var a in Model.Assets)
                                     {
-                                            <tr>
-                                                <td>@a.AssetId</td>
-                                                <td>@a.AssetType.GetDisplayName()</td>
-                                                <td>@a.Model.GetDisplayName()</td>
-                                                <td class="text-center">
-                                                    <i  class="btn fa-solid fa-xmark" 
-                                                        style="color:red" 
-                                                        onclick="unmapAsset(this)"
-                                                        data-asset-id="@a.AssetId" 
-                                                        data-person-id="@Model.PersonId"></i>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>@a.AssetId</td>
+                                            <td>@a.AssetType.GetDisplayName()</td>
+                                            <td>@a.Model.GetDisplayName()</td>
+                                            <td class="text-center">
+                                                <i  class="btn fa-solid fa-xmark" 
+                                                    style="color:red" 
+                                                    onclick="unmapAsset(this)"
+                                                    data-asset-id="@a.AssetId" 
+                                                    data-person-id="@Model.PersonId"></i>
+                                            </td>
+                                        </tr>
                                     }
                                 }
                             }
                         </tbody>
                     </table>
-
                 </div>
-
             </div>
-
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
