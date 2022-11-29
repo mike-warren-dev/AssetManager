@@ -32,7 +32,7 @@ public class OrderService : IOrderService
         
         foreach (var item in dto.Products)
         {
-            if (item != null && item.Count != -1)
+            if (item?.Count != null && item.Count > 0 && item.Product != 0)
             {
                 products.Add(item);
             }
