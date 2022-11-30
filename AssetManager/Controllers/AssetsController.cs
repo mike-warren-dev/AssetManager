@@ -3,11 +3,13 @@ using AssetManager.Models;
 using AssetManager.Repos;
 using AssetManager.Services;
 using AssetManager.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace AssetManager.Controllers
 {
+    //[Authorize(Roles = "Admin")]
     public class AssetsController : Controller
     {
         private IAssetService _assetService;
@@ -24,6 +26,18 @@ namespace AssetManager.Controllers
             List<AssetDisplayDto> list = _assetService.GetAllAssets();
 
             return View(list);
+        }
+
+        [HttpGet]
+        public IActionResult MyAssets()
+        {
+            //tie current user to a Person
+            
+            //get list of assets for that Person
+
+
+
+            return View();
         }
 
         [HttpGet]
