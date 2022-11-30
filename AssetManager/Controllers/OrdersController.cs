@@ -4,9 +4,11 @@ using AssetManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using AssetManager.Services;
 using AssetManager.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AssetManager.Controllers
 {
+    //[Authorize(Roles = "User")]
     public class OrdersController : Controller
     {
         private IOrderService _orderService;
