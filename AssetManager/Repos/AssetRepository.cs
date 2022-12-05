@@ -20,6 +20,7 @@ public class AssetRepository : IAssetRepository
         List<AssetDisplayDto> list = _context.Assets.Include(a => a.Person).Select(a => new AssetDisplayDto()
                                     {
                                         AssetId = a.AssetId,
+                                        AssetTypeId = (int)a.AssetType,
                                         AssetType = a.AssetType.GetDisplayName(),
                                         Model = a.Model.GetDisplayName(),
                                         Site = a.Site.GetDisplayName(),
@@ -44,6 +45,18 @@ public class AssetRepository : IAssetRepository
         }
     }
 
+    public List<AssetDisplayDto> GetAssetsByPersonId(int personId)
+    {
+        return _context.Assets.Where(a => a.PersonId == personId).Select(asset => new AssetDisplayDto()
+        {
+            AssetId = asset.AssetId,
+            AssetTypeId = (int)asset.AssetType,
+            AssetType = asset.AssetType.GetDisplayName(),
+            Model = asset.Model.GetDisplayName(),
+            Site = asset.Site.GetDisplayName(),
+            PersonId = asset.PersonId
+        }).ToList();
+    }
     public AssetDisplayDto? GetAssetDisplayDtoById(int id)
     {
         if (id > 0)
@@ -53,6 +66,7 @@ public class AssetRepository : IAssetRepository
             return new AssetDisplayDto()
             {
                 AssetId = asset.AssetId,
+                AssetTypeId = (int)asset.AssetType,
                 AssetType = asset.AssetType.GetDisplayName(),
                 Model = asset.Model.GetDisplayName(),
                 Site = asset.Site.GetDisplayName(),

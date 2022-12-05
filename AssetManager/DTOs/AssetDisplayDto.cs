@@ -5,6 +5,7 @@ namespace AssetManager.DTOs;
 public class AssetDisplayDto
 {
     public int AssetId { get; set; }
+    public int AssetTypeId { get; set; }
     public string AssetType { get; set; } = null!;
     public string Model { get; set; } = null!;
     public string Site { get; set; } = null!;

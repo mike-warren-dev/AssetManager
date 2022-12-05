@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace AssetManager.Data;
 
-public class AssetManagerContext : IdentityDbContext
+public class AssetManagerContext : IdentityDbContext<ApplicationUser>
 {
     public AssetManagerContext(DbContextOptions<AssetManagerContext> options) : base(options)
     {    
@@ -17,18 +17,16 @@ public class AssetManagerContext : IdentityDbContext
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
+    {        
         modelBuilder.Entity<Person>(p =>
         {
             p.ToTable("Person");
-        }
-        );
+        });
 
         modelBuilder.Entity<Asset>(a =>
         {
             a.ToTable("Asset");
-        }
-        );
+        });
 
         modelBuilder.Entity<Order>(o =>
         {

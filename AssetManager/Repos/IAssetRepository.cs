@@ -12,5 +12,6 @@ namespace AssetManager.Repos
         void Update(AssetAddEditDto asset);
         AssetDisplayDto? GetAssetDisplayDtoById(int id);
         void CreateAssets(IEnumerable<AssetAddEditDto> assets);
+        List<AssetDisplayDto> GetAssetsByPersonId(int personId);
     }
 }

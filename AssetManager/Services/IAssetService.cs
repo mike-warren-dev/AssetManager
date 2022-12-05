@@ -11,5 +11,6 @@ namespace AssetManager.Services
         Asset? GetAssetById(int id);
         AssetDisplayDto? GetAssetDisplayDtoById(int id);
         void Update(AssetAddEditDto asset);
+        List<AssetDisplayDto> GetAssetsByPersonId(int personId);
     }
 }
