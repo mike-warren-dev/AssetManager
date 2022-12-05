@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AssetManager.Areas.Identity.Pages.Account;
 using Microsoft.AspNetCore.Identity;
+using AssetManager.Models;
 
 namespace AssetManager.Controllers;
 
 public class AccountsController : Controller
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ILogger<LoginModel> _logger;
 
-    public AccountsController(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+    public AccountsController(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
     {
         _signInManager = signInManager;
         _logger = logger;

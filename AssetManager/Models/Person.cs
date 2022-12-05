@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AssetManager.Models;
 
@@ -19,6 +21,15 @@ public class Person
     public string Email { get; set; } = null!;
     [Required]
     public int? RoleId { get; set; }
-  
+
+    public virtual ApplicationUser ApplicationUser { get; set; }
     public List<Asset> Assets { get; set; } 
+}
+
+public class ApplicationUser : IdentityUser
+{
+
+    public int PersonId { get; set; }
+    [ForeignKey("PersonId")]
+    public virtual Person Person { get; set; }
 }

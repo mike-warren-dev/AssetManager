@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
+using AssetManager.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -26,8 +27,11 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddDbContext<AssetManagerContext>(options =>
     options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-    options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+        
+    })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AssetManagerContext>();
 
@@ -52,7 +56,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=People}/{action=Index}/{id?}");
+    pattern: "{controller=Assets}/{action=MyAssets}/{id?}");
 
 app.MapRazorPages();
 

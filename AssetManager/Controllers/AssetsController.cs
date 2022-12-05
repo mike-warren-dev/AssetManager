@@ -5,7 +5,8 @@ using AssetManager.Services;
 using AssetManager.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace AssetManager.Controllers
 {
@@ -31,13 +32,17 @@ namespace AssetManager.Controllers
         [HttpGet]
         public IActionResult MyAssets()
         {
-            //tie current user to a Person
-            
-            //get list of assets for that Person
+            var personId = this.User.Claims.FirstOrDefault(c => c.Type == "PersonId")?.Value;
 
-
-
-            return View();
+            if (personId == null)
+            {
+                return View(new List<AssetDisplayDto>());
+            }
+            else
+            {
+                List<AssetDisplayDto> list = _assetService.GetAssetsByPersonId(int.Parse(personId));
+                return View(list);
+            }
         }
 
         [HttpGet]

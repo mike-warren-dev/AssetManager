@@ -18,6 +18,11 @@ public class AssetService : IAssetService
         return _assetRepository.GetAllAssets();
     }
     
+    public List<AssetDisplayDto> GetAssetsByPersonId(int personId)
+    {
+        return _assetRepository.GetAssetsByPersonId(personId);
+    }
+
     public Asset? GetAssetById(int id)
     {
         return _assetRepository.GetAssetById(id);

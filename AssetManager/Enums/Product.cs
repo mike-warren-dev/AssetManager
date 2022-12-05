@@ -38,9 +38,9 @@ public enum Product
     [Display(Name = "Thinkpad X1 - Gen 9")]
     ThinkpadX1Gen9 = 426,
 
-    [Display(Name = "Dell 22\" monitor - slim bezel")]
+    [Display(Name = "Dell 22\" - slim bezel")]
     Dell_22Inch_SE2222H = 450,
 
-    [Display(Name = "Dell 24\" monitor - slim bezel")]
+    [Display(Name = "Dell 24\" - slim bezel")]
     Dell_24Inch_SE2424H = 451
 }

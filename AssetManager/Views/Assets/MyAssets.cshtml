@@ -1,0 +1,60 @@
+﻿@using AssetManager.DTOs
+@model List<AssetDisplayDto>
+
+@{
+    ViewData["Title"] = "Assets Grid";
+}
+
+<div class="d-flex justify-content-between">
+    <h2>My Assets</h2>
+    <br />
+</div>
+
+<div class="container">
+    <div class="d-flex flex-wrap">
+        @{
+            foreach (var asset in Model)
+            {
+                <div class="card mb-3 ms-1 me-1 position-relative" style="width:22%;">
+                    <span class="badge bg-secondary position-absolute top-0 end-0" style="width:30%;">
+                        @($"ID: {asset.AssetId}")
+                    </span>
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="card-body">
+                                <h5 class="card-title">@asset.AssetType</h5>
+                                <h6 class="card-subtitle text-muted">@asset.Model</h6>
+                            </div>
+                        </div>
+                        <div class="col-3 d-flex align-items-center ps-0 pe-0">
+                            @{
+                                switch (asset.AssetTypeId)
+                                {
+                                    case 1:
+                                        <i class="fa-brands fa-usb fa-2xl"></i>
+                                        break;
+                                    case 2:
+                                        <i class="fa-solid fa-laptop fa-2xl"></i>
+                                        break;
+                                    case 3:
+                                        <i class="fa-solid fa-server fa-2xl"></i>
+                                        break;
+                                    case 4:
+                                        <i class="fa-solid fa-display fa-2xl"></i>
+                                        break;
+                                    case 5:
+                                        <i class="fa-solid fa-phone fa-2xl"></i>
+                                        break;
+                                    case 6:
+                                        <i class="fa-solid fa-mobile-screen fa-2xl"></i>
+                                        break;
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
