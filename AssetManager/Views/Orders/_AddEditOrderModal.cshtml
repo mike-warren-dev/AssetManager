@@ -6,10 +6,8 @@
 @model OrderAddEditViewModel
 
 <div>
-    @using (Html.BeginForm("AddEdit", "Orders"))
-    {
+    <form id="orderForm" novalidate="novalidate">
         @Html.AntiForgeryToken()
-
         <div class="modal-header" style="background-color:#F2F2F2">
             <h5 class="modal-title text-black">@(Model.OrderDto.OrderId == null ? "Add" : "Edit") Order</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -50,18 +48,18 @@
                             {
                                 if (Model.OrderDto.OrderId == null)
                                 {
-                                                                                                                <option disabled selected class="text-muted"></option>
+                                    <option disabled selected class="text-muted"></option>
                                 }
 
                                 foreach (var item in Model.People)
                                 {
                                     if (item.PersonId == Model.OrderDto?.ApproverId)
                                     {
-                                                                                                                    <option value="@item.PersonId" selected>@($"{item.FirstName} {item.LastName}")</option>
+                                        <option value="@item.PersonId" selected>@($"{item.FirstName} {item.LastName}")</option>
                                     }
                                     else
                                     {
-                                                                                                                    <option value="@item.PersonId">@($"{item.FirstName} {item.LastName}")</option>
+                                        <option value="@item.PersonId">@($"{item.FirstName} {item.LastName}")</option>
                                     }
                                 }
                             }
@@ -78,18 +76,18 @@
                             {
                                 if (Model.OrderDto.OrderId == null)
                                 {
-                                                                                                                <option disabled selected class="text-muted"></option>
+                                    <option disabled selected class="text-muted"></option>
                                 }
 
                                 foreach (var item in Model.People)
                                 {
                                     if (item.PersonId == Model.OrderDto?.ApproverId)
                                     {
-                                                                                                                    <option value="@item.PersonId" selected>@($"{item.FirstName} {item.LastName}")</option>
+                                        <option value="@item.PersonId" selected>@($"{item.FirstName} {item.LastName}")</option>
                                     }
                                     else
                                     {
-                                                                                                                    <option value="@item.PersonId">@($"{item.FirstName} {item.LastName}")</option>
+                                        <option value="@item.PersonId">@($"{item.FirstName} {item.LastName}")</option>
                                     }
                                 }
                             }
@@ -113,35 +111,35 @@
                             {
                                 for (var i = 0; i < Model.OrderDto.Products.Count; i++)
                                 {
-                                                                <div class="row" data-index="@i">
-                                                                    <div class="col-7">
-                                                                        <label asp-for="@Model.OrderDto.Products[i].Product">Product</label>
-                                                                        <select asp-for="@Model.OrderDto.Products[i].Product" class="form-select" asp-items="Html.GetEnumSelectList<Product>()">
-                                                                            <option disabled selected class="text-muted">select</option>
-                                                                        </select>
-                                                                        <div style="min-height:15px">
-                                                                            <span asp-validation-for="@Model.OrderDto.Products[i].Product" class="text-danger small"></span>
-                                                                        </div>
-                                                                    </div>
+                                    <div class="order-product row" data-index="@i">
+                                        <div class="col-7">
+                                            <label asp-for="@Model.OrderDto.Products[i].Product">Product</label>
+                                            <select asp-for="@Model.OrderDto.Products[i].Product" class="form-select" asp-items="Html.GetEnumSelectList<Product>()">
+                                                <option disabled selected class="text-muted">select</option>
+                                            </select>
+                                            <div style="min-height:15px">
+                                                <span asp-validation-for="@Model.OrderDto.Products[i].Product" class="text-danger small"></span>
+                                            </div>
+                                        </div>
 
-                                                                    <div class="col-3">
-                                                                        <label asp-for="@Model.OrderDto.Products[i].Count">Count</label>
-                                                                        <input asp-for="@Model.OrderDto.Products[i].Count" class="form-control" />
-                                                                        <div style="min-height:15px">
-                                                                            <span asp-validation-for="@Model.OrderDto.Products[i].Count" class="text-danger small"></span>
-                                                                        </div>
-                                                                    </div>
+                                        <div class="col-3">
+                                            <label asp-for="@Model.OrderDto.Products[i].Count">Count</label>
+                                            <input asp-for="@Model.OrderDto.Products[i].Count" class="form-control" />
+                                            <div style="min-height:15px">
+                                                <span asp-validation-for="@Model.OrderDto.Products[i].Count" class="text-danger small"></span>
+                                            </div>
+                                        </div>
 
-                                                                    @if (i > 0)
+                                        @if (i > 0)
                                         {
-                                                                    <div class ="col-2 align-self-center">
-                                                                        <i class="btn fa-solid fa-xmark" style="color:red" onclick="toggleElement(this)"></i>
-                                                                    </div>
+                                            <div class="col-2 align-self-center">
+                                                <i class="btn fa-solid fa-xmark" style="color:red" onclick="toggleElement(this)"></i>
+                                            </div>
                                         }
-                                                                </div>
+                                    </div>
                                 }
                             }
-                        }    
+                        }
                     </container>
                     <button id="addFieldsButton" type="button" class="btn btn-sm btn-primary" style="width:100%;" onclick="addProductFields()">+</button>
                 </div>
@@ -151,23 +149,22 @@
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button id="saveNewOrder" type="submit" class="btn btn-primary">Save</button>
         </div>
-    }
+    </form>
 </div>
 
 <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 
 <script>
-    function addProductFields(){
+    function addProductFields() {
         var nextIndex = parseInt($("#productsContainer .row:last-child").attr("data-index")) + 1;
 
         var $field = $(`<div class="row" data-index="${nextIndex}"><div class="col-7"><label for="OrderDto_Products_${nextIndex}__Product">Product</label> <select class="form-select" data-val="true" data-val-required="The Product field is required." id="OrderDto_Products_${nextIndex}__Product" name="OrderDto.Products[${nextIndex}].Product"></select><div style="min-height:15px"><span class="text-danger small field-validation-valid" data-valmsg-for="OrderDto.Products[${nextIndex}].Product" data-valmsg-replace="true"/></div></div><div class="col-3"><label for="OrderDto_Products_${nextIndex}__Count">Count</label><input class="form-control" type="number" data-val="true" data-val-required="The Count field is required." id="OrderDto_Products_${nextIndex}__Count" name="OrderDto.Products[${nextIndex}].Count" value=""><div style="min-height:15px"><span class="text-danger small field-validation-valid" data-valmsg-for="OrderDto.Products[${nextIndex}].Count" data-valmsg-replace="true"/></div></div><div class="col-2 align-self-center"><i class="btn fa-solid fa-xmark" style="color:red" onclick="toggleElement(this)"/></div></div>`);
         $("#productsContainer").append($field);
-        
+
         $options = $("#OrderDto_Products_0__Product option").clone();
-        
-        for (i = 0; i < $options.length; i++)
-        {
+
+        for (i = 0; i < $options.length; i++) {
             if (i == 0) continue;
 
             $($options[i]).removeAttr("selected")
@@ -176,13 +173,66 @@
         $options.appendTo(`#OrderDto_Products_${nextIndex}__Product`);
     }
 
-    function toggleElement(el){
+    function toggleElement(el) {
         var $temp = $(el).parent().parent();
-        
+
         $temp.toggle();
-        
+
         var index = parseInt($temp.attr("data-index"));
 
         $(`#OrderDto_Products_${index}__Count`).val("-1");
     }
+
+    $(function () {
+        $("#orderForm").submit(function (e) {
+            e.preventDefault();
+
+            var fdata = new FormData();
+
+            var orderId = $("#OrderDto_OrderId").val();
+
+            fdata.append("OrderDto.OrderId", orderId);
+            fdata.append("OrderDto.ReceivedDttm", $("#OrderDto_ReceivedDttm").val());
+            fdata.append("OrderDto.ExternalOrderId", $("#OrderDto_ExternalOrderId").val());
+            fdata.append("OrderDto.VendorId", $("#OrderDto_VendorId").val());
+            fdata.append("OrderDto.Cost", $("#OrderDto_Cost").val());
+            fdata.append("OrderDto.PurchaserId", $("#OrderDto_PurchaserId").val());
+            fdata.append("OrderDto.ApproverId", $("#OrderDto_ApproverId").val());
+            
+
+            var products = $("#productsContainer").children().length;
+
+            for (var i = 0; i < products; i++)
+            {
+                fdata.append(`OrderDto.Products[${i}].Product`, $(`#OrderDto_Products_${i}__Product`).val());
+                fdata.append(`OrderDto.Products[${i}].Count`, $(`#OrderDto_Products_${i}__Count`).val());
+            }
+
+            $.ajax({
+                type: 'post',
+                url: '/Orders/AddEdit/',
+                data: fdata,
+                headers: {
+                    RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                processData: false,
+                contentType: false,
+                success:  function (data, textStatus) {
+
+                    $("#newOrderModal").modal("hide");
+                    
+                    if (orderId === '') 
+                    {
+                        $("tbody").append(data);
+                    }
+                    else
+                    {
+                        var resId = $(data).attr("data-id");
+                        $("tbody").children(`[data-id='${resId}']`).replaceWith(data);
+                    }
+                }
+            });
+
+        });
+    })
 </script>

@@ -1,0 +1,22 @@
+﻿@using AssetManager.DTOs
+
+@model AssetDisplayDto
+
+<tr data-id="@Model.AssetId.ToString()">
+    <td class="align-middle">@Model.AssetId</td>
+    <td class="align-middle">@Model.AssetType</td>
+    <td class="align-middle">@Model.Model</td>
+    <td class="align-middle">@Model.Site</td>
+    <td class="align-middle">@Model.PersonName</td>
+    <td class="align-middle">
+        <div class="dropdown">
+            <button class="btn btn-secondary" type="button" id="assetDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="assetDropdown">
+                <li><button class="dropdown-item" type="button" onclick="addEditAsset(@Model.AssetId)">Edit</button></li>
+                <li><button class="dropdown-item" type="button" onclick="confirmDelete(@Model.AssetId)">Delete</button></li>
+            </ul>
+        </div>
+    </td>
+</tr>

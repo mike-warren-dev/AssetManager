@@ -6,8 +6,7 @@
 @model AssetAddEditViewModel
 
 <div>
-    @using (Html.BeginForm("AddEdit", "Assets"))
-    {
+    <form id="assetForm" novalidate="novalidate">
         <div class="modal-header" style="background-color:#F2F2F2">
             <h5 class="modal-title text-black">@(Model == null ? "Add" : "Edit") Asset</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -67,12 +66,7 @@
                             }
                         }
                     }
-                    
-                    //if (Model?.AssetDto.PersonId != null)
-                    //{
-                    //    <option value="@Model.AssetDto.PersonId">@Model.AssetDto.PersonName</option>
-                    //}
-                }                
+                }
             </select>
             <div style="min-height:15px">
                 <span asp-validation-for="AssetDto.PersonId" class="text-danger small"></span>
@@ -83,22 +77,57 @@
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button id="saveNewAsset" type="submit" class="btn btn-primary">Save</button>
         </div>
-    }
+    </form>
 </div>
 
 <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 
-<script> 
-    //$(function () {
-    //    var active = $("#PersonId").attr("data-active-id");
-    //    var url = '/People/GetPersonOptions/';
+<script>
 
-    //    $("#PersonId").load(url);
+    $(function () {
+        $(assetForm).submit(function(e) {
+            e.preventDefault();
 
-    //    if (active > 0)
-    //    {
-    //        foreach(var el in $)
-    //    }
-    //});
+            var fdata = new FormData();
+
+            var assetId = $("#AssetDto_AssetId").val();
+
+            fdata.append("AssetDto.AssetId", assetId);
+            fdata.append("AssetDto.AssetType", $("#AssetDto_AssetType").val());
+            fdata.append("AssetDto.Model", $("#AssetDto_Model").val());
+            fdata.append("AssetDto.Site", $("#AssetDto_Site").val());
+            fdata.append("AssetDto.PersonId", $("#AssetDto_PersonId").val());
+            
+            $.ajax({
+                type:'post',
+                url:'/assets/addedit',
+                data: fdata,
+                headers: {
+                    RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                processData: false,
+                contentType: false,
+                success: function (data, textStatus) {
+
+                    $("#newAssetModal").modal("hide");
+
+                    if (assetId == '')
+                    {
+                        console.log('in the if');
+                        $("tbody").append(data);
+                    }
+                    else
+                    {
+                        console.log('in the else');
+
+                        $("tbody").children(`[data-id='${assetId}']`).replaceWith(data);
+                        //$("tbody").children(`[data-id='${assetId}']`).remove();
+                        //$("tbody").append(data);
+                    }
+                }
+            });
+        })
+    })
+
 </script>

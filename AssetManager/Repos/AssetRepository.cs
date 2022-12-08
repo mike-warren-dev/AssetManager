@@ -61,17 +61,18 @@ public class AssetRepository : IAssetRepository
     {
         if (id > 0)
         {
-            var asset = _context.Assets.Find(id);
-
-            return new AssetDisplayDto()
+            var dto = _context.Assets.Include(a => a.Person).Select(a => new AssetDisplayDto()
             {
-                AssetId = asset.AssetId,
-                AssetTypeId = (int)asset.AssetType,
-                AssetType = asset.AssetType.GetDisplayName(),
-                Model = asset.Model.GetDisplayName(),
-                Site = asset.Site.GetDisplayName(),
-                PersonId = asset.PersonId
-            };
+                AssetId = a.AssetId,
+                AssetTypeId = (int)a.AssetType,
+                AssetType = a.AssetType.GetDisplayName(),
+                Model = a.Model.GetDisplayName(),
+                Site = a.Site.GetDisplayName(),
+                PersonId = a.PersonId,
+                PersonName = a.Person != null ? $"{a.Person.FirstName} {a.Person.LastName}" : ""
+            }).FirstOrDefault(a => a.AssetId == id);
+
+            return dto;
         }
         else
         {
@@ -80,7 +81,7 @@ public class AssetRepository : IAssetRepository
 
     }    
 
-    public void Create(AssetAddEditDto dto)
+    public int Create(AssetAddEditDto dto)
     {
         Asset asset = new() { 
             AssetType = dto.AssetType,
@@ -91,6 +92,8 @@ public class AssetRepository : IAssetRepository
 
         _context.Assets.Add(asset);
         Save();
+
+        return asset.AssetId;
     }
 
     public void CreateAssets(IEnumerable<AssetAddEditDto> dtos)

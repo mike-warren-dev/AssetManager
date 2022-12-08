@@ -78,16 +78,20 @@ namespace AssetManager.Controllers
         [HttpPost]
         public IActionResult AddEdit(AssetAddEditViewModel vm)
         {
-            if(vm.AssetDto.AssetId > 0)
+            int assetId;
+
+            if(vm.AssetDto.AssetId == 0)
             {
-                _assetService.Update(vm.AssetDto);
-                return RedirectToAction(nameof(Index));
+                assetId = _assetService.Create(vm.AssetDto);
             }
             else
             {
-                _assetService.Create(vm.AssetDto);
-                return RedirectToAction(nameof(Index));
+                _assetService.Update(vm.AssetDto);
+                assetId = vm.AssetDto.AssetId;
             }
+
+            var dto = _assetService.GetAssetDisplayDtoById(assetId);
+            return PartialView("_RowPartial", dto);
         }
 
         [HttpDelete]

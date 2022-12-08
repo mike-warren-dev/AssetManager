@@ -1,0 +1,21 @@
+﻿@using AssetManager.DTOs
+
+@model PersonCreateDto
+
+<tr data-id="@Model.PersonId.ToString()">
+    <td class="align-middle">@Model.PersonId</td>
+    <td class="align-middle">@Model.FirstName</td>
+    <td class="align-middle">@Model.LastName</td>
+    <td class="align-middle">@Model.Email</td>
+    <td class="align-middle">
+        <div class="dropdown">
+            <button class="btn btn-secondary" type="button" id="personDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="personDropdown">
+                <li><button class="dropdown-item" type="button" onclick="addEditPerson(@Model.PersonId)">Edit</button></li>
+                <li><button class="dropdown-item" type="button" onclick="confirmDelete(@Model.PersonId)">Delete</button></li>
+            </ul>
+        </div>
+    </td>
+</tr>

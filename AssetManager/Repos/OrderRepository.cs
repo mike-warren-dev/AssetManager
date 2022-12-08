@@ -56,7 +56,27 @@ public class OrderRepository : IOrderRepository
         return dto;
     }
 
-    public void Create(OrderAddEditDto submission)
+    public OrderDisplayDto? GetOrderDisplayDtoById(int id)
+    { 
+        OrderDisplayDto? dto = _context.Orders.Include(o => o.Products).Include(o => o.Purchaser).Include(o => o.Approver).Select(o => new OrderDisplayDto()
+        {
+            OrderId = o.OrderId,
+            ExternalOrderId = o.ExternalOrderId,
+            Vendor = o.VendorId.GetDisplayName(),
+            Products = o.Products,
+            Cost = o.Cost,
+            PurchaserId = o.PurchaserId,
+            PurchaserName = o.Purchaser != null ? $"{o.Purchaser.FirstName} {o.Purchaser.LastName}" : "",
+            ApproverId = o.ApproverId,
+            ApproverName = o.Approver != null ? $"{o.Approver.FirstName} {o.Approver.LastName}" : "",
+            ApprovedDttm = o.ApprovedDttm,
+            ReceivedDttm = o.ReceivedDttm
+        }).AsNoTracking().FirstOrDefault(o => o.OrderId == id);
+
+        return dto;
+    }
+
+    public int Create(OrderAddEditDto submission)
     {
         Order order = new()
         {
@@ -72,6 +92,8 @@ public class OrderRepository : IOrderRepository
         
         _context.Orders.Add(order);
         Save();
+
+        return order.OrderId;
     }
 
     public void Update(OrderAddEditDto submission)

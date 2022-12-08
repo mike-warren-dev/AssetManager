@@ -26,7 +26,12 @@ public class OrderService : IOrderService
         return _orderRepository.GetOrderById(id);
     }
 
-    public void Create(OrderAddEditDto dto)
+    public OrderDisplayDto? GetOrderDisplayDtoById(int id)
+    {
+        return _orderRepository.GetOrderDisplayDtoById(id);
+    }
+
+    public int Create(OrderAddEditDto dto)
     {
         List<ProductOrder> products = new ();
         
@@ -40,7 +45,7 @@ public class OrderService : IOrderService
 
         dto.Products = products;
         
-        _orderRepository.Create(dto);
+        return _orderRepository.Create(dto);
     }
 
     public void Update(OrderAddEditDto dto)
