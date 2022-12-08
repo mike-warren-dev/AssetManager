@@ -156,6 +156,8 @@
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 
 <script>
+    $("#OrderDto_ExternalOrderId").focus();
+
     function addProductFields() {
         var nextIndex = parseInt($("#productsContainer .row:last-child").attr("data-index")) + 1;
 
