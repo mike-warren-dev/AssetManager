@@ -1,0 +1,52 @@
+﻿@using AssetManager.DTOs
+@using AssetManager.Enums;
+
+@model OrderDisplayDto
+
+<tr data-id="@Model.OrderId.ToString()">
+    <td class="align-middle">@Model.OrderId</td>
+    <td class="align-middle">@Model.ExternalOrderId</td>
+    <td class="align-middle">@Model.Vendor</td>
+    <td class="align-middle">
+        @{
+            if (Model.Products != null && Model.Products.Any())
+            {
+                <ul style="margin-bottom: 0px;">
+                    @{
+                        foreach (var p in Model.Products)
+                        {
+                            <li>@($"{p.Count.ToString()}X - {p.Product.GetDisplayName()}")</li>
+                        }
+                    }
+                </ul>
+            }
+        }
+    </td>
+    <td class="align-middle">@Model.Cost.ToString("C2")</td>
+    <td class="align-middle">@Model.PurchaserName</td>
+    <td class="align-middle">@Model.ApproverName</td>
+    <td class="align-middle">@Model.ApprovedDttm?.ToString("g")</td>
+    <td class="align-middle">@Model.ReceivedDttm?.ToString("g")</td>
+    <td class="align-middle">
+        <div class="dropdown">
+            <button class="btn btn-secondary" type="button" id="orderDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="orderDropdown">
+                @{
+                    if (Model.ReceivedDttm == null)
+                    {
+                        <li><button class="dropdown-item" type="button" onclick="addEditOrder(@Model.OrderId)">Edit</button></li>
+                        <li><button class="dropdown-item" type="button" onclick="confirmReceive(@Model.OrderId)">Mark Received</button></li>
+                    }
+                    else
+                    {
+                        <li><button class="dropdown-item" type="button" onclick="addEditOrder(@Model.OrderId)" disabled>Edit</button></li>
+                        <li><button class="dropdown-item" type="button" onclick="confirmReceive(@Model.OrderId)" disabled>Mark Received</button></li>
+                    }
+                }
+                <li><button class="dropdown-item" type="button" onclick="confirmDelete(@Model.OrderId)">Delete</button></li>
+            </ul>
+        </div>
+    </td>
+</tr>

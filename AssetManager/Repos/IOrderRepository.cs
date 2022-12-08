@@ -6,9 +6,10 @@ namespace AssetManager.Repos
     {
         List<OrderDisplayDto> GetAllOrders();
         OrderAddEditDto? GetOrderById(int id);
-        void Create(OrderAddEditDto submission);
+        int Create(OrderAddEditDto submission);
         void Update(OrderAddEditDto submission);
         void Delete(int id);
         void ReceiveOrder(int id);
+        OrderDisplayDto? GetOrderDisplayDtoById(int id);
     }
 }

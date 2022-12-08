@@ -58,17 +58,29 @@ namespace AssetManager.Controllers
         public ActionResult AddEdit(OrderAddEditViewModel vm)
         {
             if (vm.OrderDto == null) return RedirectToAction(nameof(Index));
-            
-            if (vm.OrderDto.OrderId == null)
-            {
-                _orderService.Create(vm.OrderDto);
-            }
-            else
-            {
-                _orderService.Update(vm.OrderDto);
-            }
 
-            return RedirectToAction(nameof(Index));
+            int orderId;
+
+            try
+            {
+                if (vm.OrderDto.OrderId == null)
+                {
+                    orderId = _orderService.Create(vm.OrderDto);
+                }
+                else
+                {
+                    _orderService.Update(vm.OrderDto);
+
+                    orderId = (int)vm.OrderDto.OrderId;
+                }
+
+                var dto = _orderService.GetOrderDisplayDtoById(orderId);
+                return PartialView("_RowPartial", dto);
+            }
+            catch
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         public ActionResult Edit(int id)

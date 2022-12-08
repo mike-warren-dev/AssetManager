@@ -25,7 +25,7 @@
             @{
                 foreach (var p in Model)
                 {
-                    <tr>
+                    <tr data-id="@p.PersonId.ToString()">
                         <td class="align-middle">@p.PersonId</td>
                         <td class="align-middle">@p.FirstName</td>
                         <td class="align-middle">@p.LastName</td>
@@ -91,7 +91,7 @@
             url: url,
             success: function (data, textStatus) {
                 if (textStatus == 'success') {
-                    location.href = "/People";
+                    $("tbody").children(`[data-id='${personId}']`).remove();
                 }
             }
         })
@@ -101,4 +101,5 @@
         $("#deleteConfirmation").modal("show");
         $("#deletePersonButton").attr('data-id', `${personId}`);
     }
+
 </script>

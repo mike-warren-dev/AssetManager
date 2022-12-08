@@ -41,9 +41,9 @@ public class PeopleService : IPeopleService
 
     }
 
-    public void Create(PersonCreateDto dto)
+    public int Create(PersonCreateDto dto)
     {
-        _personRepository.Create(dto);
+        return _personRepository.Create(dto);
     }
 
     public void Update(PersonCreateDto dto)

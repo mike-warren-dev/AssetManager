@@ -31,7 +31,7 @@ public class PersonRepository : IPersonRepository
         return _context.People.Include(p => p.Assets).FirstOrDefault(p => p.PersonId == id);
     }
 
-    public void Create(PersonCreateDto submission)
+    public int Create(PersonCreateDto submission)
     {
         Person person = new()
         {
@@ -43,6 +43,8 @@ public class PersonRepository : IPersonRepository
 
         _context.People.Add(person);
         Save();
+
+        return person.PersonId;
     }
 
     public void Update(PersonCreateDto submission)

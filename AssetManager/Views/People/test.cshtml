@@ -1,0 +1,103 @@
+﻿
+<div class="d-flex justify-content-between">
+    <h2>People</h2>
+    <button type="button" id="addNewPerson" class="btn btn-primary h-25" onclick="addEditPerson(0)">Add Person</button>
+</div>
+
+<div id="newPersonModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div id="newPersonModalContents" class="modal-content">
+            <form id="personForm" novalidate="novalidate">
+                <div class="modal-header" style="background-color:#F2F2F2">
+                    <h5 class="modal-title text-black">Add Person</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="PersonId" name="PersonId" value="">
+
+                    <label for="FirstName">First Name</label><span style="color:red">*</span>
+                    <input class="form-control" type="text" data-val="true" data-val-length="First Name is limited to 50 characters" data-val-length-max="50" data-val-required="First Name is required" id="FirstName" maxlength="50" name="FirstName" value="">
+                    <div style="height:18px">
+                        <span class="text-danger small field-validation-valid" data-valmsg-for="FirstName" data-valmsg-replace="true"></span>
+                    </div>
+
+                    <label for="LastName">Last Name</label><span style="color:red">*</span>
+                    <input class="form-control" type="text" data-val="true" data-val-length="Last Name is limited to 50 characters" data-val-length-max="50" data-val-required="Last Name is required" id="LastName" maxlength="50" name="LastName" value="">
+                    <div style="height:18px">
+                        <span class="text-danger small field-validation-valid" data-valmsg-for="LastName" data-valmsg-replace="true"></span>
+                    </div>
+
+                    <label for="Email">Email</label><span style="color:red">*</span>
+                    <input class="form-control" type="email" data-val="true" data-val-email="The Email field is not a valid e-mail address." data-val-length="Email is limited to 254 characters" data-val-length-max="254" data-val-required="Email is required" id="Email" maxlength="254" name="Email" value="t@t.com">
+                    <div style="height:18px">
+                        <span class="text-danger small field-validation-valid" data-valmsg-for="Email" data-valmsg-replace="true"></span>
+                    </div>
+
+                    <label for="RoleId">Role</label><span style="color:red">*</span>
+                    <select class="form-select" data-val="true" data-val-range="Please select a valid Role" data-val-range-max="299" data-val-range-min="200" data-val-required="Role is required" id="RoleId" name="RoleId">
+                        <option disabled="" selected="" class="text-muted">select</option>
+                        <option value="200">None</option>
+                        <option value="201">Admin</option>
+                        <option value="202">User</option>
+                    </select>
+                    <div style="height:18px">
+                        <span class="text-danger small field-validation-valid" data-valmsg-for="RoleId" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8FVX1jZiMH9JuMEoqdd6Kg5jaUMrBMhzdifE7bSKjmqUxdpL_Fze0ibywpXau1iU_q8IdcWEi96B4cKPLJI8okjMIUYeLgdcaKRX5HvAm46DdRROEWuYFF8WE0KsZgotxz7m8oxCnr9Ci9UyqxroH0o">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+
+
+<script>
+    function addEditPerson(personId) {
+        var url = `/People/AddEdit/${personId}`;
+
+        $("#newPersonModal").modal("show");
+        //$("#newPersonModalContents").load(url);
+    };
+
+    $(function () {
+        $("#personForm").submit(function (e) {
+            e.preventDefault();
+
+            var fdata = new FormData();
+
+            var pid = $("#personId").val();
+
+            fdata.append('PersonId', pid === undefined ? 0 : pid);
+            fdata.append('FirstName', $("#FirstName").val());
+            fdata.append('LastName', $("#LastName").val());
+            fdata.append('Email', $("#Email").val());
+            fdata.append('RoleId', $("#RoleId").val());
+
+            $.ajax({
+                type: 'post',
+                url: '/People/AddEdit/0',
+                data: fdata,
+                processData: false,
+                contentType: false,
+                success: function (data, textStatus) {
+                    if (textStatus == 'success') {
+                        console.log("success!");
+                    }
+                },
+                error: function () {
+                    alert('shit!');
+                }
+            });
+        });
+    })
+
+</script>

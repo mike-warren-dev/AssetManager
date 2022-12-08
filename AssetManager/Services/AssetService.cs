@@ -28,9 +28,9 @@ public class AssetService : IAssetService
         return _assetRepository.GetAssetById(id);
     }
 
-    public void Create(AssetAddEditDto asset)
+    public int Create(AssetAddEditDto asset)
     {
-        _assetRepository.Create(asset);
+        return _assetRepository.Create(asset);
     }
     
     public void Delete(int id)
@@ -45,6 +45,6 @@ public class AssetService : IAssetService
     
     public AssetDisplayDto? GetAssetDisplayDtoById(int id)
     {
-        return null;
+        return _assetRepository.GetAssetDisplayDtoById(id);
     }
 }

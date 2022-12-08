@@ -8,7 +8,7 @@ namespace AssetManager.Services
         IEnumerable<PersonDisplayDto> GetAllPeople();
         Person GetPersonById(int id);
         PersonCreateDto GetPersonCreateDtoById(int id);
-        void Create(PersonCreateDto dto);
+        int Create(PersonCreateDto dto);
         void Update(PersonCreateDto dto);
         void Delete(int id);
         void RemoveAssetMap(int personId, int assetId);

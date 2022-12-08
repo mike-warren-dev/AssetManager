@@ -31,7 +31,7 @@
             @{
                 foreach (var o in Model)
                 {
-                    <tr>
+                    <tr data-id="@o.OrderId.ToString()">
                         <td class="align-middle">@o.OrderId</td>
                         <td class="align-middle">@o.ExternalOrderId</td>
                         <td class="align-middle">@o.Vendor</td>
@@ -148,7 +148,7 @@
             url: url,
             success: function (data, textStatus) {
                 if (textStatus == 'success') {
-                    location.href = "/Orders";
+                    $("tbody").children(`[data-id='${orderId}']`).remove();
                 }
             }
         });
@@ -170,6 +170,7 @@
             success: function (data, textStatus) {
                 if (textStatus == 'success') {
                     location.href = "/Orders";
+                    //display success banner instead.
                 }
             }
         });

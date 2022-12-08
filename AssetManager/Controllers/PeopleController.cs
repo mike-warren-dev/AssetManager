@@ -18,7 +18,13 @@ public class PeopleController : Controller
         _peopleService = peopleService;
         _assetService = assetService;
     }
-    
+
+    [HttpGet]    
+    public ActionResult test()
+    {
+        return View(); 
+    }
+
     public ActionResult Index()
     {
         IEnumerable<PersonDisplayDto> list = _peopleService.GetAllPeople();
@@ -67,25 +73,29 @@ public class PeopleController : Controller
             {
                 if (dto.PersonId == null)
                 {
-                    _peopleService.Create(dto);
+                    dto.PersonId = _peopleService.Create(dto);
 
-                    return RedirectToAction(nameof(Index));
+                    return PartialView("_RowPartial", dto);
                 }
                 else
                 {
                     _peopleService.Update(dto);
 
-                    return RedirectToAction(nameof(Index));
+                    return PartialView("_RowPartial", dto);
                 }
             }
             catch
             {
-                return View();
+                //return View();
+                //return new JsonResult(new object());
+                return Ok();
             }
         }
         else
         {
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            //return new JsonResult(new object());
+            return Ok();
         }
     }
 

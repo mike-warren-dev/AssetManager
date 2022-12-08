@@ -27,7 +27,7 @@
             @{
                 foreach (var a in Model)
                 {
-                    <tr>
+                    <tr data-id="@a.AssetId.ToString()">
                         <td class="align-middle">@a.AssetId</td>
                         <td class="align-middle">@a.AssetType</td>
                         <td class="align-middle">@a.Model</td>
@@ -94,7 +94,7 @@
             url: url,
             success: function (data, textStatus) {
                 if (textStatus == 'success') {
-                    location.href = "/Assets";
+                    $("tbody").children(`[data-id='${assetId}']`).remove();
                 }
             }
         })

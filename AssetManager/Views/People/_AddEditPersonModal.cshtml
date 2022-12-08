@@ -4,13 +4,12 @@
 @model PersonCreateDto
 
 <div>
-    @using (Html.BeginForm("AddEdit", "People"))
-    {
+    <form id="personForm" novalidate="novalidate">
         <div class="modal-header" style="background-color:#F2F2F2">
             <h5 class="modal-title text-black">@(Model == null ? "Add" : "Edit") Person</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-            if (Model != null)
+            @if (Model != null)
             {
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -106,44 +105,91 @@
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Save</button>
         </div>
-    }
+    </form>
 </div>
 
 <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 
-<script>
-    function unmapAsset(el){
+<script type="text/javascript">
+
+    function unmapAsset(el) {
         var assetId = $(el).attr('data-asset-id');
         var personId = $(el).attr('data-person-id');
 
-        var removeAssetUrl = `/People/RemoveAsset`;
+        var removeAssetUrl = "/People/RemoveAsset";
 
         $.ajax({
             method: "POST",
             url: removeAssetUrl,
-            data: { assetId:assetId, personId:personId },
-            success: function (data, textStatus){
+            data: { assetId: assetId, personId: personId },
+            success: function (data, textStatus) {
                 $(el).parent().parent().toggle();
             }
         });
     }
 
-    function addAsset(){
-        $("#assetIdSearchFieldValidation").html("");
+    $("#assetIdSearchField").on("keypress", function (event) {
+        if (event.keyCode == 13) {
+            addAsset();
+            event.preventDefault();
+        }
+    })
+
+    $(function () {
+        $("#personForm").submit(function (e) {
+            e.preventDefault();
+
+            var fdata = new FormData();
+
+            var personId = $("#PersonId").val();
+
+            fdata.append('PersonId', personId);
+            fdata.append('FirstName', $("#FirstName").val());
+            fdata.append('LastName', $("#LastName").val());
+            fdata.append('Email', $("#Email").val());
+            fdata.append('RoleId', $("#RoleId").val());
+
+            $.ajax({
+                type: 'post',
+                url: '/People/AddEdit',
+                data: fdata,
+                processData: false,
+                contentType: false,
+                success: function (data, textStatus) {
+                    if (textStatus == 'success') {
+                        $("#newPersonModal").modal("hide");
+
+                        if (personId == 0) {
+                            $("tbody").append(data);
+                        }
+                        else {
+                            $("tbody").children(`[data-id='${personId}']`).replaceWith(data);
+                        }
+                    }
+                }
+            });
+        });
+    })
+
+    function addAsset() {
+
+        $("#assetIdSearchFieldValidation").html(""); //not this
 
         var assetId = $("#assetIdSearchField").val();
-        var getAssetUrl = `/People/MapAsset`;
-        var personId = @(Model == null ? null : Model.PersonId);
-        
+        var getAssetUrl = "/People/MapAsset";
+        var personId = @(Model == null ? null : Model.PersonId)
+
+        console.log('personid = ');
+        console.log(personId);
+
         $.ajax({
-            method:"POST",
+            method: "POST",
             url: getAssetUrl,
-            data: { personId: @(Model == null ? null : Model.PersonId), assetId: assetId },
-            success: function (data, textStatus)
-            {
+            data: { personId: personId, assetId: assetId },
+            success: function (data, textStatus) {
                 $("#assetIdSearchField").val("");
-                
+
                 var asset = JSON.parse(data);
 
                 $("#assetTable").append(`<tr><td>${asset.AssetId}</td><td>${asset.AssetType}</td><td>${asset.Model}</td><td class="text-center"><i  class="btn fa-solid fa-xmark" style="color:red" onclick="unmapAsset(this)" data-asset-id="${asset.AssetId}" data-person-id="${personId}"></i></td></tr>`);
@@ -153,11 +199,4 @@
             }
         });
     }
-
-    $("#assetIdSearchField").on("keypress", function(event) {
-        if(event.keyCode == 13){
-            addAsset();
-            event.preventDefault();
-        }
-    });
 </script>

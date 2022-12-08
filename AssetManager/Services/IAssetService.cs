@@ -6,7 +6,7 @@ namespace AssetManager.Services
     public interface IAssetService
     {
         List<AssetDisplayDto> GetAllAssets();
-        void Create(AssetAddEditDto asset);
+        int Create(AssetAddEditDto asset);
         void Delete(int id);
         Asset? GetAssetById(int id);
         AssetDisplayDto? GetAssetDisplayDtoById(int id);

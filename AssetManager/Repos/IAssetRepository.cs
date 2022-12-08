@@ -7,7 +7,7 @@ namespace AssetManager.Repos
     {
         List<AssetDisplayDto> GetAllAssets();
         Asset? GetAssetById(int id);
-        void Create(AssetAddEditDto asset);
+        int Create(AssetAddEditDto asset);
         void Delete(int id);
         void Update(AssetAddEditDto asset);
         AssetDisplayDto? GetAssetDisplayDtoById(int id);
