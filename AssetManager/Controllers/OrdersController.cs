@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AssetManager.Controllers
 {
-    //[Authorize(Roles = "User")]
+    [Authorize(Roles = "Admin")]
     public class OrdersController : Controller
     {
         private IOrderService _orderService;
