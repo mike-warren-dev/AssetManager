@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace AssetManager.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Basic")]
     public class AssetsController : Controller
     {
         private IAssetService _assetService;
@@ -22,6 +22,7 @@ namespace AssetManager.Controllers
             _peopleService = peopleService;
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             List<AssetDisplayDto> list = _assetService.GetAllAssets();
@@ -29,6 +30,7 @@ namespace AssetManager.Controllers
             return View(list);
         }
 
+        [Authorize(Roles = "Admin, Basic")]
         [HttpGet]
         public IActionResult MyAssets()
         {
@@ -44,7 +46,8 @@ namespace AssetManager.Controllers
                 return View(list);
             }
         }
-
+        
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult AddEdit(int id)
         {
@@ -75,6 +78,7 @@ namespace AssetManager.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult AddEdit(AssetAddEditViewModel vm)
         {
@@ -94,6 +98,7 @@ namespace AssetManager.Controllers
             return PartialView("_RowPartial", dto);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public IActionResult Delete(int id)
         {

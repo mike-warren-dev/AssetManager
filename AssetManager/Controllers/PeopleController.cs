@@ -3,11 +3,13 @@ using AssetManager.DTOs;
 using AssetManager.Models;
 using AssetManager.Repos;
 using AssetManager.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace AssetManager.Controllers;
 
+[Authorize(Roles = "Admin")]
 public class PeopleController : Controller
 {
     private IPeopleService _peopleService;

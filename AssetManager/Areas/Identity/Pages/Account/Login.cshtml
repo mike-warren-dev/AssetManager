@@ -4,35 +4,88 @@
 @{
     ViewData["Title"] = "Log in";
 }
-   
-<div class="d-flex align-items-center justify-content-center">
+
+<div class="d-flex align-items-start justify-content-around" style="margin-top:10%;">
     <section class="col-4">
-            <form id="account" method="post">
-                <h2>Log in</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p class="text-end">
+        <form id="account" method="post">
+            <h2>Log in</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Input.Email" class="form-label">Email</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                <label asp-for="Input.Password" class="form-label">Password</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div>
+                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+            </div>
+            <div>
+                <p class="text-end">
                     <a id="forgot-password" asp-page="./ForgotPassword" class="text-right">Forgot your password?</a>
-                    </p>
-                </div>
-            </form>
-        </section>
+                </p>
+            </div>
+        </form>
+    </section>
+    <div class="vr" style="height=100%;"></div>
+    <section class="col-4">
+        <h2>...or pick a Persona</h2>
+        <hr />
+        <div class="card text-center mb-3" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">Bob Jones</h5>
+                <p class="card-text">Administrator</p>
+                <a href="#" class="btn btn-primary" onclick="adminLogin()">Log in as Bob</a>
+            </div>
+        </div>
+@*        <div class="card text-center mb-3" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">Tim Perth</h5>
+                <p class="card-text">IT User</p>
+                <a href="#" class="btn btn-primary" onclick="itLogin()">Log in as Tim</a>
+            </div>
+        </div>*@
+        <div class="card text-center" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">Rose O'Reilly</h5>
+                <p class="card-text">Basic User</p>
+                <a href="#" class="btn btn-primary" onclick="basicLogin()">Log in as Rose</a>
+            </div>
+        </div>
+    </section>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+<script>
+
+    //I solumnly swear never to do this in production.... 
+    
+
+    function adminLogin()
+    {
+        $("#Input_Email").val('melvin@SnyderCorp.com');
+        $("#Input_Password").val('Melvin1!');
+        $("#account").submit()
+    }
+
+    function itLogin()
+    {
+        $("#Input_Email").val('melvin@SnyderCorp.com');
+        $("#Input_Password").val('Melvin1!');
+        $("#account").submit()
+    }
+
+    function basicLogin() {
+        $("#Input_Email").val('Kevin.Wells@SnyderCorp.com');
+        $("#Input_Password").val('Kevin1!');
+        $("#account").submit()
+    }
+
+</script>
