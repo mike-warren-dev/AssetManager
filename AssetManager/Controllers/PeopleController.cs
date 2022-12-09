@@ -3,6 +3,7 @@ using AssetManager.DTOs;
 using AssetManager.Models;
 using AssetManager.Repos;
 using AssetManager.Services;
+using AssetManager.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -21,17 +22,19 @@ public class PeopleController : Controller
         _assetService = assetService;
     }
 
-    [HttpGet]    
-    public ActionResult test()
-    {
-        return View(); 
-    }
-
     public ActionResult Index()
     {
-        IEnumerable<PersonDisplayDto> list = _peopleService.GetAllPeople();
+        PersonGridViewModel vm = _peopleService.GetPageOfPeople(1);
 
-        return View(list);
+        return View(vm);
+    }
+
+    [HttpGet("People/GetPageOfPeople/{pageNumber}")]
+    public ActionResult GetPageOfPeople(int pageNumber)
+    {
+        PersonGridViewModel vm = _peopleService.GetPageOfPeople(pageNumber);
+
+        return PartialView("_GridPartial",vm);
     }
 
     [HttpGet]

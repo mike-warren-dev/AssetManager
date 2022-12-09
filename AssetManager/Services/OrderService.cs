@@ -1,6 +1,7 @@
 ﻿using AssetManager.DTOs;
 using AssetManager.Models;
 using AssetManager.Repos;
+using AssetManager.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssetManager.Services;
@@ -10,7 +11,7 @@ public class OrderService : IOrderService
     private IOrderRepository _orderRepository;
     private IAssetRepository _assetRepository;
 
-    public OrderService (IOrderRepository orderRepository, IAssetRepository assetRepository)
+    public OrderService(IOrderRepository orderRepository, IAssetRepository assetRepository)
     {
         _orderRepository = orderRepository;
         _assetRepository = assetRepository;
@@ -19,6 +20,13 @@ public class OrderService : IOrderService
     public List<OrderDisplayDto> GetAllOrders()
     {
         return _orderRepository.GetAllOrders();
+    }
+
+    public OrderGridViewModel GetPageOfOrders(int pageNumber)
+    {
+        int pageSize = 10;
+
+        return _orderRepository.GetPageOfOrders(pageSize,pageNumber);
     }
 
     public OrderAddEditDto? GetOrderById(int id)

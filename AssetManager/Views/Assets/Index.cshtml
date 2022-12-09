@@ -1,7 +1,8 @@
-﻿@using AssetManager.DTOs
+﻿@using AssetManager.ViewModels
+@using AssetManager.DTOs
 @using AssetManager.Enums
 
-@model List<AssetDisplayDto>
+@model AssetGridViewModel
 
 @{
     ViewData["Title"] = "Assets Grid";
@@ -11,70 +12,32 @@
     <h2>Assets</h2>
     <button type="button" id="addNewAsset" class="btn btn-primary h-25" onclick="addEditAsset(0)">Add Asset</button>
 </div>
-<div class="table-responsive">
-    <table class="table table-striped table-sm">
-        <thead>
-            <tr>
-                <th scope="col">Asset ID</th>
-                <th scope="col">Asset Type</th>
-                <th scope="col">Model</th>
-                <th scope="col">Site</th>
-                <th scope="col">Assigned To</th>
-                <th scope="col">Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                foreach (var a in Model)
-                {
-                    <tr data-id="@a.AssetId.ToString()">
-                        <td class="align-middle">@a.AssetId</td>
-                        <td class="align-middle">@a.AssetType</td>
-                        <td class="align-middle">@a.Model</td>
-                        <td class="align-middle">@a.Site</td>
-                        <td class="align-middle">@a.PersonName</td>
-                        <td class="align-middle">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary" type="button" id="assetDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa-solid fa-bars"></i>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="assetDropdown">
-                                    <li><button class="dropdown-item" type="button" onclick="addEditAsset(@a.AssetId)">Edit</button></li>
-                                    <li><button class="dropdown-item" type="button" onclick="confirmDelete(@a.AssetId)">Delete</button></li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
 
-    <div id="newAssetModal" class="modal" tabindex="-1">
-        <div class="modal-dialog">
-            <div id="newAssetModalContents" class="modal-content">
+<partial name="_GridPartial" />
+
+<div id="newAssetModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div id="newAssetModalContents" class="modal-content">
+        </div>
+    </div>
+</div>
+
+<div id="deleteConfirmation" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:lightpink">
+                <h5 class="modal-title text-white">Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-center align-items-center" style="height: 100px; font-size:1.25rem">
+                <div>Are you sure you want to delete this asset?</div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button id="deleteAssetButton" type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteAsset(this)">Delete</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-
-    <div id="deleteConfirmation" class="modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color:lightpink">
-                    <h5 class="modal-title text-white">Delete</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body d-flex justify-content-center align-items-center" style="height: 100px; font-size:1.25rem">
-                    <div>Are you sure you want to delete this asset?</div>
-                </div>
-                <div class="modal-footer d-flex justify-content-between">
-                    <button id="deleteAssetButton" type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteAsset(this)">Delete</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 
 <script>
@@ -103,5 +66,36 @@
     function confirmDelete(assetId) {
         $("#deleteConfirmation").modal("show");
         $("#deleteAssetButton").attr('data-asset-id', `${assetId}`);
+    }
+
+    function getGridPageRelative(el) 
+    {
+        var pageNumber = $(el).attr('data-page');
+        var isDisabled = $(el).hasClass("disabled");
+
+        if (isDisabled == false)
+        {
+            getGridPageAjax(pageNumber);
+        }
+    }
+
+    function getGridPageAbsolute(el) {
+        var pageNumber = $(el).attr('data-page');
+        var isActive = $(el).hasClass("active");
+
+        if (isActive == false) {
+            getGridPageAjax(pageNumber);
+        }
+    }
+
+    function getGridPageAjax(pageNumber) 
+    {
+        $.ajax({
+                type: 'get',
+                url: `/Assets/GetPageOfAssets/${pageNumber}`,
+                success: function (data, textStatus) {
+                    $("#gridWrapper").replaceWith(data);
+                }
+            })
     }
 </script>

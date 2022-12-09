@@ -1,6 +1,7 @@
 ﻿using AssetManager.Data;
 using AssetManager.DTOs;
 using AssetManager.Models;
+using AssetManager.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -24,6 +25,29 @@ public class PersonRepository : IPersonRepository
                                     RoleId = p.RoleId}).ToList();
 
         return list;
+    }
+
+    public PersonGridViewModel GetPageofPeople(int pageSize, int pageNumber)
+    {
+        PersonGridViewModel vm = new();
+
+        vm.CurrentPage = pageNumber;
+
+        var personCount = _context.People.Count();
+        vm.PageCount = (personCount + pageSize - 1) / pageSize;
+
+        var query = _context.People.Select(p => new PersonDisplayDto
+        {
+            PersonId = p.PersonId,
+            FirstName = p.FirstName,
+            LastName = p.LastName,
+            Email = p.Email,
+            RoleId = p.RoleId
+        });
+
+        vm.People = query.Skip((pageNumber-1) * pageSize).Take(pageSize).ToList();   
+
+        return vm;
     }
 
     public Person? GetPersonById(int id)

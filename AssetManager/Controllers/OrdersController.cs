@@ -22,9 +22,17 @@ namespace AssetManager.Controllers
 
         public ActionResult Index()
         {
-            var list = _orderService.GetAllOrders();
+            OrderGridViewModel vm = _orderService.GetPageOfOrders(1);
             
-            return View(list);
+            return View(vm);
+        }
+
+        [HttpGet("Orders/GetPageOfOrders/{pageNumber}")]
+        public ActionResult GetPageOfOrders(int pageNumber)
+        {
+            OrderGridViewModel vm = _orderService.GetPageOfOrders(pageNumber);
+
+            return PartialView("_GridPartial", vm);
         }
 
         public ActionResult AddEdit(int id)

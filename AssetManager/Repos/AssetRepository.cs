@@ -2,6 +2,7 @@
 using AssetManager.DTOs;
 using AssetManager.Enums;
 using AssetManager.Models;
+using AssetManager.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssetManager.Repos;
@@ -29,6 +30,31 @@ public class AssetRepository : IAssetRepository
                                     }).ToList();
 
         return list;
+    }
+
+    public AssetGridViewModel GetPageOfAssets(int pageSize, int pageNumber)
+    {        
+        AssetGridViewModel vm = new();
+
+        vm.CurrentPage = pageNumber;
+
+        int assetCount = _context.Assets.Count();
+        vm.PageCount = (assetCount + pageSize -1) / pageSize;
+
+        var assetQuery = _context.Assets.Include(a => a.Person).Select(a => new AssetDisplayDto()
+        {
+            AssetId = a.AssetId,
+            AssetTypeId = (int)a.AssetType,
+            AssetType = a.AssetType.GetDisplayName(),
+            Model = a.Model.GetDisplayName(),
+            Site = a.Site.GetDisplayName(),
+            PersonId = a.PersonId,
+            PersonName = a.Person != null ? $"{a.Person.FirstName} {a.Person.LastName}" : ""
+        });//.ToList()
+
+        vm.Assets = assetQuery.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+        return vm;
     }
 
     public Asset? GetAssetById(int id)

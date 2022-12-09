@@ -1,0 +1,63 @@
+﻿@using AssetManager.ViewModels
+
+@model AssetGridViewModel
+
+<div id="gridWrapper" class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Asset ID</th>
+                <th scope="col">Asset Type</th>
+                <th scope="col">Model</th>
+                <th scope="col">Site</th>
+                <th scope="col">Assigned To</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                foreach (var a in Model.Assets)
+                {
+                    <tr data-id="@a.AssetId.ToString()">
+                        <td class="align-middle">@a.AssetId</td>
+                        <td class="align-middle">@a.AssetType</td>
+                        <td class="align-middle">@a.Model</td>
+                        <td class="align-middle">@a.Site</td>
+                        <td class="align-middle">@a.PersonName</td>
+                        <td class="align-middle">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary" type="button" id="assetDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-bars"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="assetDropdown">
+                                    <li><button class="dropdown-item" type="button" onclick="addEditAsset(@a.AssetId)">Edit</button></li>
+                                    <li><button class="dropdown-item" type="button" onclick="confirmDelete(@a.AssetId)">Delete</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+
+    </table>
+
+    <nav aria-label="Asset Navigation">
+        <ul class="pagination justify-content-end">
+
+            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : String.Empty)" data-page="@(Model.CurrentPage-1)" onclick="getGridPageRelative(this)">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            @{
+                for (var i = 0; i < Model.PageCount; i++)
+                {
+                    <li class="page-item @((i + 1) == Model.CurrentPage ? "active" : String.Empty)" data-page="@(i + 1)" onclick="getGridPageAbsolute(this)"><a class="page-link" href="#">@(i + 1)</a></li>
+                }
+            }
+            <li class="page-item @(Model.CurrentPage == Model.PageCount ? "disabled" : String.Empty)" data-page="@(Model.CurrentPage+1)" onclick="getGridPageRelative(this)">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
