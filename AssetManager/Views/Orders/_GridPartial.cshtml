@@ -1,0 +1,94 @@
+﻿@using AssetManager.ViewModels
+@using AssetManager.Enums
+
+@model OrderGridViewModel
+
+<div id="gridWrapper" class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Order ID</th>
+                <th scope="col">External Order ID</th>
+                <th scope="col">Vendor</th>
+                <th scope="col">Products</th>
+                <th scope="col">Cost</th>
+                <th scope="col">Purchaser</th>
+                <th scope="col">Approver</th>
+                <th scope="col">Approved</th>
+                <th scope="col">Received</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var o in Model.Orders)
+                {
+                    <tr data-id="@o.OrderId.ToString()">
+                        <td class="align-middle">@o.OrderId</td>
+                        <td class="align-middle">@o.ExternalOrderId</td>
+                        <td class="align-middle">@o.Vendor</td>
+                        <td class="align-middle">
+                            @{
+                                if (o.Products != null && o.Products.Any())
+                                {
+                                    <ul style="margin-bottom: 0px;">
+                                        @{
+                                            foreach (var p in o.Products)
+                                            {
+                                                <li>@($"{p.Count.ToString()}X - {p.Product.GetDisplayName()}")</li>
+                                            }
+                                        }
+                                    </ul>
+                                }
+                            }
+                        </td>
+                        <td class="align-middle">@o.Cost.ToString("C2")</td>
+                        <td class="align-middle">@o.PurchaserName</td>
+                        <td class="align-middle">@o.ApproverName</td>
+                        <td class="align-middle">@o.ApprovedDttm?.ToString("g")</td>
+                        <td class="align-middle">@o.ReceivedDttm?.ToString("g")</td>
+                        <td class="align-middle">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary" type="button" id="orderDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-bars"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="orderDropdown">
+                                    @{
+                                        if (o.ReceivedDttm == null)
+                                        {
+                                            <li><button class="dropdown-item" type="button" onclick="addEditOrder(@o.OrderId)">Edit</button></li>
+                                            <li><button class="dropdown-item" type="button" onclick="confirmReceive(@o.OrderId)">Mark Received</button></li>
+                                        }
+                                        else
+                                        {
+                                            <li><button class="dropdown-item" type="button" onclick="addEditOrder(@o.OrderId)" disabled>Edit</button></li>
+                                            <li><button class="dropdown-item" type="button" onclick="confirmReceive(@o.OrderId)" disabled>Mark Received</button></li>
+                                        }
+                                    }
+                                    <li><button class="dropdown-item" type="button" onclick="confirmDelete(@o.OrderId)">Delete</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+        <nav aria-label="Person Navigation">
+        <ul class="pagination justify-content-end">
+
+            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : String.Empty)" data-page="@(Model.CurrentPage-1)" onclick="getGridPageRelative(this)">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            @{
+                for (var i = 0; i < Model.PageCount; i++)
+                {
+                    <li class="page-item @((i + 1) == Model.CurrentPage ? "active" : String.Empty)" data-page="@(i + 1)" onclick="getGridPageAbsolute(this)"><a class="page-link" href="#">@(i + 1)</a></li>
+                }
+            }
+            <li class="page-item @(Model.CurrentPage == Model.PageCount ? "disabled" : String.Empty)" data-page="@(Model.CurrentPage+1)" onclick="getGridPageRelative(this)">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>

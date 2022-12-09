@@ -1,6 +1,7 @@
 ﻿using AssetManager.DTOs;
 using AssetManager.Models;
 using AssetManager.Repos;
+using AssetManager.ViewModels;
 using NuGet.Protocol.Core.Types;
 
 namespace AssetManager.Services;
@@ -17,6 +18,13 @@ public class PeopleService : IPeopleService
     public IEnumerable<PersonDisplayDto> GetAllPeople()
     {
         return _personRepository.GetAll();
+    }
+
+    public PersonGridViewModel GetPageOfPeople(int pageNumber)
+    {
+        int pageSize = 15;
+
+        return _personRepository.GetPageofPeople(pageSize, pageNumber);
     }
 
     public Person GetPersonById(int id)

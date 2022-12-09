@@ -2,6 +2,7 @@
 using AssetManager.DTOs;
 using AssetManager.Enums;
 using AssetManager.Models;
+using AssetManager.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
@@ -37,6 +38,37 @@ public class OrderRepository : IOrderRepository
                                 ApprovedDttm = o.ApprovedDttm,
                                 ReceivedDttm = o.ReceivedDttm
                               }).AsNoTracking().ToList();
+    }
+
+    public OrderGridViewModel GetPageOfOrders(int pageSize, int pageNumber)
+    {
+        OrderGridViewModel vm = new();
+
+        vm.CurrentPage = pageNumber;
+
+        int orderCount = _context.Orders.Count();
+        vm.PageCount = (orderCount + pageSize - 1 )/ pageSize;
+
+        var query = _context.Orders.Include(o => o.Approver)
+                      .Include(o => o.Purchaser)
+                      .Select(o => new OrderDisplayDto()
+                      {
+                          OrderId = o.OrderId,
+                          ExternalOrderId = o.ExternalOrderId,
+                          Vendor = o.VendorId.GetDisplayName(),
+                          Products = o.Products,
+                          Cost = o.Cost,
+                          PurchaserId = o.PurchaserId,
+                          PurchaserName = o.Purchaser != null ? $"{o.Purchaser.FirstName} {o.Purchaser.LastName}" : "",
+                          ApproverId = o.ApproverId,
+                          ApproverName = o.Approver != null ? $"{o.Approver.FirstName} {o.Approver.LastName}" : "",
+                          ApprovedDttm = o.ApprovedDttm,
+                          ReceivedDttm = o.ReceivedDttm
+                      }).AsNoTracking();
+
+        vm.Orders = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+        return vm;
     }
 
     public OrderAddEditDto? GetOrderById(int id)

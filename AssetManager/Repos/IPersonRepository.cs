@@ -1,5 +1,6 @@
 ﻿using AssetManager.DTOs;
 using AssetManager.Models;
+using AssetManager.ViewModels;
 
 namespace AssetManager.Repos
 {
@@ -12,5 +13,6 @@ namespace AssetManager.Repos
         void Delete(int id);
         void RemoveAssetMap(int personId, int assetId);
         void AddAssetMap(int personId, int assetId);
+        PersonGridViewModel GetPageofPeople(int pageSize, int pageNumber);
     }
 }

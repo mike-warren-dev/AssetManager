@@ -1,4 +1,5 @@
 ﻿using AssetManager.DTOs;
+using AssetManager.ViewModels;
 
 namespace AssetManager.Repos
 {
@@ -11,5 +12,6 @@ namespace AssetManager.Repos
         void Delete(int id);
         void ReceiveOrder(int id);
         OrderDisplayDto? GetOrderDisplayDtoById(int id);
+        OrderGridViewModel GetPageOfOrders(int pageSize, int pageNumber);
     }
 }

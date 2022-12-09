@@ -1,4 +1,5 @@
 ﻿using AssetManager.DTOs;
+using AssetManager.ViewModels;
 
 namespace AssetManager.Services
 {
@@ -11,5 +12,6 @@ namespace AssetManager.Services
         void ReceiveOrder(int id);
         void Update(OrderAddEditDto dto);
         OrderDisplayDto? GetOrderDisplayDtoById(int id);
+        OrderGridViewModel GetPageOfOrders(int pageNumber);
     }
 }

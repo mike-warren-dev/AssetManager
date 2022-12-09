@@ -1,6 +1,7 @@
 ﻿using AssetManager.DTOs;
 using AssetManager.Models;
 using AssetManager.Repos;
+using AssetManager.ViewModels;
 
 namespace AssetManager.Services;
 
@@ -17,7 +18,14 @@ public class AssetService : IAssetService
     {
         return _assetRepository.GetAllAssets();
     }
-    
+
+    public AssetGridViewModel GetPageOfAssets(int pageNumber)
+    {
+        int pageSize = 15;
+
+        return _assetRepository.GetPageOfAssets(pageSize, pageNumber);
+    }
+
     public List<AssetDisplayDto> GetAssetsByPersonId(int personId)
     {
         return _assetRepository.GetAssetsByPersonId(personId);

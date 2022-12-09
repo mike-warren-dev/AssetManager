@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace AssetManager.Controllers
 {
@@ -25,9 +26,22 @@ namespace AssetManager.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            List<AssetDisplayDto> list = _assetService.GetAllAssets();
+            //List<AssetDisplayDto> list = _assetService.GetAllAssets();
+            AssetGridViewModel vm = _assetService.GetPageOfAssets(1);
 
-            return View(list);
+            //return View(list);
+            return View(vm);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("Assets/GetPageOfAssets/{pageNumber}")]
+        public IActionResult GetPageOfAssets(int pageNumber)
+        {
+            //List<AssetDisplayDto> list = _assetService.GetAllAssets();
+            AssetGridViewModel vm = _assetService.GetPageOfAssets(pageNumber);
+
+            //return View(list);
+            return PartialView("_GridPartial", vm);
         }
 
         [Authorize(Roles = "Admin, Basic")]
