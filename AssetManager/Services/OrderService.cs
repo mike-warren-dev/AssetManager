@@ -24,7 +24,7 @@ public class OrderService : IOrderService
 
     public OrderGridViewModel GetPageOfOrders(int pageNumber)
     {
-        int pageSize = 10;
+        int pageSize = 15;
 
         return _orderRepository.GetPageOfOrders(pageSize,pageNumber);
     }

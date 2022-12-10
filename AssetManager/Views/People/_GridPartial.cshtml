@@ -2,44 +2,43 @@
 
 @model PersonGridViewModel
 
-<div id="gridWrapper" class="table-responsive">
-    <table class="table table-striped table-sm">
-        <thead>
-            <tr>
-                <th scope="col">People ID</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Email Address</th>
-                <th scope="col">Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                foreach (var p in Model.People)
-                {
-                    <tr data-id="@p.PersonId.ToString()">
-                        <td class="align-middle">@p.PersonId</td>
-                        <td class="align-middle">@p.FirstName</td>
-                        <td class="align-middle">@p.LastName</td>
-                        <td class="align-middle">@p.Email</td>
-                        <td class="align-middle">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary" type="button" id="personDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa-solid fa-bars"></i>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="personDropdown">
-                                    <li><button class="dropdown-item" type="button" onclick="addEditPerson(@p.PersonId)">Edit</button></li>
-                                    <li><button class="dropdown-item" type="button" onclick="confirmDelete(@p.PersonId)">Delete</button></li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+<div id="gridWrapper" class="h-100 mt-1 d-flex flex-column">
+    <div class="table-responsive border rounded ps-1 pe-1 flex-grow-1">
+        <table class="table table-striped table-sm mb-1">
+            <thead>
+                <tr>
+                    <th scope="col" style="width:15%">People ID</th>
+                    <th scope="col" style="width:20%">First Name</th>
+                    <th scope="col" style="width:20%">Last Name</th>
+                    <th scope="col" style="width:35%">Email Address</th>
+                    <th scope="col" style="width:10%">Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var p in Model.People)
+                    {
+                        <tr data-id="@p.PersonId.ToString()">
+                            <td class="align-middle">@p.PersonId</td>
+                            <td class="align-middle">@p.FirstName</td>
+                            <td class="align-middle">@p.LastName</td>
+                            <td class="align-middle">@p.Email</td>
+                            <td class="align-middle">
+                                <div class="dropdown">
+                                    <i class="fa-solid fa-ellipsis" type="button" id="personDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 20px;"></i>
+                                    <ul class="dropdown-menu" aria-labelledby="personDropdown">
+                                        <li><button class="dropdown-item" type="button" onclick="addEditPerson(@p.PersonId)">Edit</button></li>
+                                        <li><button class="dropdown-item" type="button" onclick="confirmDelete(@p.PersonId)">Delete</button></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
                 }
-            }
-        </tbody>
-    </table>
-
-    <nav aria-label="Person Navigation">
+            </tbody>
+        </table>
+    </div>
+    <nav aria-label="Person Navigation" class="mt-1">
         <ul class="pagination justify-content-end">
 
             <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : String.Empty)" data-page="@(Model.CurrentPage-1)" onclick="getGridPageRelative(this)">

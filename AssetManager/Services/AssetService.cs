@@ -21,7 +21,7 @@ public class AssetService : IAssetService
 
     public AssetGridViewModel GetPageOfAssets(int pageNumber)
     {
-        int pageSize = 15;
+        int pageSize = 20;
 
         return _assetRepository.GetPageOfAssets(pageSize, pageNumber);
     }

@@ -3,78 +3,78 @@
 
 @model OrderGridViewModel
 
-<div id="gridWrapper" class="table-responsive">
-    <table class="table table-striped table-sm">
-        <thead>
-            <tr>
-                <th scope="col">Order ID</th>
-                <th scope="col">External Order ID</th>
-                <th scope="col">Vendor</th>
-                <th scope="col">Products</th>
-                <th scope="col">Cost</th>
-                <th scope="col">Purchaser</th>
-                <th scope="col">Approver</th>
-                <th scope="col">Approved</th>
-                <th scope="col">Received</th>
-                <th scope="col">Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                foreach (var o in Model.Orders)
-                {
-                    <tr data-id="@o.OrderId.ToString()">
-                        <td class="align-middle">@o.OrderId</td>
-                        <td class="align-middle">@o.ExternalOrderId</td>
-                        <td class="align-middle">@o.Vendor</td>
-                        <td class="align-middle">
-                            @{
-                                if (o.Products != null && o.Products.Any())
-                                {
-                                    <ul style="margin-bottom: 0px;">
+<div id="gridWrapper" class="h-100 mt-1 d-flex flex-column">
+    <div class="table-responsive border rounded ps-1 pe-1 flex-grow-1">
+        <table class="table table-striped table-sm mb-1">
+            <thead>
+                <tr>
+                    <th scope="col" style="height:8%">Order ID</th>
+                    <th scope="col" style="height:10%">External Order ID</th>
+                    <th scope="col" style="height:10%">Vendor</th>
+                    <th scope="col" style="height:10%">Products</th>
+                    <th scope="col" style="height:10%">Cost</th>
+                    <th scope="col" style="height:10%">Purchaser</th>
+                    <th scope="col" style="height:10%">Approver</th>
+                    <th scope="col" style="height:12%">Approved</th>
+                    <th scope="col" style="height:12%">Received</th>
+                    <th scope="col" style="height:8%">Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var o in Model.Orders)
+                    {
+                        <tr data-id="@o.OrderId.ToString()">
+                            <td class="align-middle">@o.OrderId</td>
+                            <td class="align-middle">@o.ExternalOrderId</td>
+                            <td class="align-middle">@o.Vendor</td>
+                            <td class="align-middle">
+                                @{
+                                    if (o.Products != null && o.Products.Any())
+                                    {
+                                        <ul style="margin-bottom: 0px;">
+                                            @{
+                                                foreach (var p in o.Products)
+                                                {
+                                                    <li>@($"{p.Count.ToString()}X - {p.Product.GetDisplayName()}")</li>
+                                                }
+                                            }
+                                        </ul>
+                                    }
+                                }
+                            </td>
+                            <td class="align-middle">@o.Cost.ToString("C2")</td>
+                            <td class="align-middle">@o.PurchaserName</td>
+                            <td class="align-middle">@o.ApproverName</td>
+                            <td class="align-middle">@o.ApprovedDttm?.ToString("g")</td>
+                            <td class="align-middle">@o.ReceivedDttm?.ToString("g")</td>
+                            <td class="align-middle">
+                                <div class="dropdown">
+                                    <i class="fa-solid fa-ellipsis" type="button" id="orderDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 20px;"></i>
+                                    <ul class="dropdown-menu" aria-labelledby="orderDropdown">
                                         @{
-                                            foreach (var p in o.Products)
+                                            if (o.ReceivedDttm == null)
                                             {
-                                                <li>@($"{p.Count.ToString()}X - {p.Product.GetDisplayName()}")</li>
+                                                <li><button class="dropdown-item" type="button" onclick="addEditOrder(@o.OrderId)">Edit</button></li>
+                                                <li><button class="dropdown-item" type="button" onclick="confirmReceive(@o.OrderId)">Mark Received</button></li>
+                                            }
+                                            else
+                                            {
+                                                <li><button class="dropdown-item" type="button" onclick="addEditOrder(@o.OrderId)" disabled>Edit</button></li>
+                                                <li><button class="dropdown-item" type="button" onclick="confirmReceive(@o.OrderId)" disabled>Mark Received</button></li>
                                             }
                                         }
+                                        <li><button class="dropdown-item" type="button" onclick="confirmDelete(@o.OrderId)">Delete</button></li>
                                     </ul>
-                                }
-                            }
-                        </td>
-                        <td class="align-middle">@o.Cost.ToString("C2")</td>
-                        <td class="align-middle">@o.PurchaserName</td>
-                        <td class="align-middle">@o.ApproverName</td>
-                        <td class="align-middle">@o.ApprovedDttm?.ToString("g")</td>
-                        <td class="align-middle">@o.ReceivedDttm?.ToString("g")</td>
-                        <td class="align-middle">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary" type="button" id="orderDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa-solid fa-bars"></i>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="orderDropdown">
-                                    @{
-                                        if (o.ReceivedDttm == null)
-                                        {
-                                            <li><button class="dropdown-item" type="button" onclick="addEditOrder(@o.OrderId)">Edit</button></li>
-                                            <li><button class="dropdown-item" type="button" onclick="confirmReceive(@o.OrderId)">Mark Received</button></li>
-                                        }
-                                        else
-                                        {
-                                            <li><button class="dropdown-item" type="button" onclick="addEditOrder(@o.OrderId)" disabled>Edit</button></li>
-                                            <li><button class="dropdown-item" type="button" onclick="confirmReceive(@o.OrderId)" disabled>Mark Received</button></li>
-                                        }
-                                    }
-                                    <li><button class="dropdown-item" type="button" onclick="confirmDelete(@o.OrderId)">Delete</button></li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+                                </div>
+                            </td>
+                        </tr>
+                    }
                 }
-            }
-        </tbody>
-    </table>
-        <nav aria-label="Person Navigation">
+            </tbody>
+        </table>
+    </div>
+    <nav aria-label="Person Navigation" class="mt-1">
         <ul class="pagination justify-content-end">
 
             <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : String.Empty)" data-page="@(Model.CurrentPage-1)" onclick="getGridPageRelative(this)">
