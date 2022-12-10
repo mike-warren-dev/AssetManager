@@ -22,7 +22,7 @@ public class PeopleService : IPeopleService
 
     public PersonGridViewModel GetPageOfPeople(int pageNumber)
     {
-        int pageSize = 15;
+        int pageSize = 20;
 
         return _personRepository.GetPageofPeople(pageSize, pageNumber);
     }
