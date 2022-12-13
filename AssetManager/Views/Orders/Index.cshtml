@@ -8,7 +8,7 @@
 }
 
 <div class="d-flex justify-content-between">
-    <h2 class="mb-0">Orders</h2>
+    <h2 class="mb-0 align-self-end">Orders</h2>
     <button type="button" id="addNewOrder" class="d-flex btn btn-primary h-25 align-self-end" onclick="addEditOrder(0)">Add Order</button>
 </div>
 
@@ -78,6 +78,7 @@
             url: url,
             success: function (data, textStatus) {
                 if (textStatus == 'success') {
+                    doAnAlert("orderDeleteSuccess")
                     $("tbody").children(`[data-id='${orderId}']`).remove();
                 }
             }
@@ -99,8 +100,13 @@
             url: url,
             success: function (data, textStatus) {
                 if (textStatus == 'success') {
-                    location.href = "/Orders/Index";
+                    doAnAlert("orderReceiveSuccess");
+                    
+                    //update record if on same page
                 }
+            },
+            error: function () {
+                doAnAlert("failure");
             }
         });
     }

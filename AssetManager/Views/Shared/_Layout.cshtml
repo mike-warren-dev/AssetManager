@@ -42,10 +42,15 @@
                             </li>
                         </ul>
                     }
-                    <partial name="_LoginPartial" />
                 </div>
+
+                <partial name="_LoginPartial" />
+
             </div>
         </nav>
+
+        <div id="alertDivGreen" class="alert alert-success fixed-top pt-1 pb-1 mt-2" style="z-index:9999; width:33.3%; margin-left:33.3%; display: none;"></div>
+        <div id="alertDivRed" class="alert alert-danger fixed-top pt-1 pb-1 mt-2" style="z-index:9999; width:33.3%; margin-left:33.3%; display: none;"></div>
     </header>
     <div class="container" style="height:81vh;">
         @RenderBody()
