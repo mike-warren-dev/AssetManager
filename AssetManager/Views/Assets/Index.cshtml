@@ -58,7 +58,11 @@
             success: function (data, textStatus) {
                 if (textStatus == 'success') {
                     $("tbody").children(`[data-id='${assetId}']`).remove();
+                    doAnAlert("assetDeleteSuccess")
                 }
+            },
+            error: function () {
+                doAnAlert("failure");
             }
         })
     };

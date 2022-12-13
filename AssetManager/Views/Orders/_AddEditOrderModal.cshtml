@@ -221,17 +221,28 @@
                 contentType: false,
                 success:  function (data, textStatus) {
 
-                    $("#newOrderModal").modal("hide");
-                    
-                    if (orderId === '') 
+                    if (textStatus == 'success')
                     {
-                        $("tbody").append(data);
+                        $("#newOrderModal").modal("hide");
+
+                        if (orderId === '') {
+                            $("tbody").append(data);
+                            doAnAlert("orderCreateSuccess");
+                        }
+                        else {
+                            var resId = $(data).attr("data-id");
+                            $("tbody").children(`[data-id='${resId}']`).replaceWith(data);
+                            doAnAlert("orderEditSuccess");
+                        }
                     }
                     else
                     {
-                        var resId = $(data).attr("data-id");
-                        $("tbody").children(`[data-id='${resId}']`).replaceWith(data);
+                        doAnAlert("failure");
                     }
+                    
+                },
+                error: function () {
+                    doAnAlert("failure");
                 }
             });
 

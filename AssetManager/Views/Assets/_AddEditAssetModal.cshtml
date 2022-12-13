@@ -116,15 +116,18 @@
                     {
                         console.log('in the if');
                         $("tbody").append(data);
+                        doAnAlert("assetCreateSuccess");
                     }
                     else
                     {
                         console.log('in the else');
 
                         $("tbody").children(`[data-id='${assetId}']`).replaceWith(data);
-                        //$("tbody").children(`[data-id='${assetId}']`).remove();
-                        //$("tbody").append(data);
+                        doAnAlert("assetEditSuccess");
                     }
+                },
+                error: function () {
+                    doAnAlert("failure");
                 }
             });
         })

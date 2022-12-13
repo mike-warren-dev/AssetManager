@@ -164,11 +164,16 @@
 
                         if (personId == 0) {
                             $("tbody").append(data);
+                            doAnAlert("personCreateSuccess");
                         }
                         else {
                             $("tbody").children(`[data-id='${personId}']`).replaceWith(data);
+                            doAnAlert("personEditSuccess");
                         }
                     }
+                },
+                error: function () {
+                    doAnAlert("failure");
                 }
             });
         });
