@@ -8,8 +8,8 @@ namespace AssetManager.Repos
     {
         IEnumerable<PersonDisplayDto> GetAll();
         Person? GetPersonById(int id);
-        int Create(PersonCreateDto submission);
-        void Update(PersonCreateDto submission);
+        int Create(PersonAddEditDto submission);
+        void Update(PersonAddEditDto submission);
         void Delete(int id);
         void RemoveAssetMap(int personId, int assetId);
         void AddAssetMap(int personId, int assetId);

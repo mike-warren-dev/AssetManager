@@ -48,7 +48,7 @@ public class PeopleController : Controller
     [HttpGet]
     public ActionResult AddEdit(int id)
     {
-        PersonCreateDto dto = new();
+        PersonAddEditDto dto = new();
 
         if (id == 0)
         {
@@ -58,7 +58,7 @@ public class PeopleController : Controller
         {
             try
             {
-                dto = _peopleService.GetPersonCreateDtoById(id);
+                dto = _peopleService.GetPersonAddEditDtoById(id);
             }
             catch
             {
@@ -70,7 +70,7 @@ public class PeopleController : Controller
     }
 
     [HttpPost] //[ValidateAntiForgeryToken]
-    public ActionResult AddEdit([Bind("PersonId,FirstName,LastName,Email,RoleId")]PersonCreateDto dto)
+    public ActionResult AddEdit([Bind("PersonId,FirstName,LastName,Email,RoleId")]PersonAddEditDto dto)
     {
         if (ModelState.IsValid)
         {

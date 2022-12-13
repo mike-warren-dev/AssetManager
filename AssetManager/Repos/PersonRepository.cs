@@ -55,7 +55,7 @@ public class PersonRepository : IPersonRepository
         return _context.People.Include(p => p.Assets).FirstOrDefault(p => p.PersonId == id);
     }
 
-    public int Create(PersonCreateDto submission)
+    public int Create(PersonAddEditDto submission)
     {
         Person person = new()
         {
@@ -71,7 +71,7 @@ public class PersonRepository : IPersonRepository
         return person.PersonId;
     }
 
-    public void Update(PersonCreateDto submission)
+    public void Update(PersonAddEditDto submission)
     {
         Person? person = _context.People.FirstOrDefault(p => p.PersonId == submission.PersonId);
 
