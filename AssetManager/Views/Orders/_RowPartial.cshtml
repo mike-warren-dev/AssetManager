@@ -29,9 +29,7 @@
     <td class="align-middle">@Model.ReceivedDttm?.ToString("g")</td>
     <td class="align-middle">
         <div class="dropdown">
-            <button class="btn btn-secondary" type="button" id="orderDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa-solid fa-bars"></i>
-            </button>
+            <i class="fa-solid fa-ellipsis" type="button" id="orderDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 20px;"></i>
             <ul class="dropdown-menu" aria-labelledby="orderDropdown">
                 @{
                     if (Model.ReceivedDttm == null)
