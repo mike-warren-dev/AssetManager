@@ -1,7 +1,7 @@
 ﻿@using AssetManager.Enums;
 @using AssetManager.DTOs;
 
-@model PersonCreateDto
+@model PersonAddEditDto
 
 <div>
     <form id="personForm" novalidate="novalidate">
@@ -160,11 +160,17 @@
                 contentType: false,
                 success: function (data, textStatus) {
                     if (textStatus == 'success') {
-                        $("#newPersonModal").modal("hide");
+                        $('#newPersonModal').modal('hide');
 
                         if (personId == 0) {
-                            $("tbody").append(data);
-                            doAnAlert("personCreateSuccess");
+                            var isLastPage = $('#nextPageButton').hasClass('disabled');
+                            
+                            if (isLastPage)
+                            {
+                                $('tbody').append(data);
+                            }
+                            
+                            doAnAlert('personCreateSuccess');
                         }
                         else {
                             $("tbody").children(`[data-id='${personId}']`).replaceWith(data);

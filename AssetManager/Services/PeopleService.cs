@@ -32,9 +32,9 @@ public class PeopleService : IPeopleService
         return _personRepository.GetPersonById(id);
     }
 
-    public PersonCreateDto GetPersonCreateDtoById(int id)
+    public PersonAddEditDto GetPersonAddEditDtoById(int id)
     {
-        PersonCreateDto dto = new();
+        PersonAddEditDto dto = new();
 
         Person person = _personRepository.GetPersonById(id);
 
@@ -49,12 +49,12 @@ public class PeopleService : IPeopleService
 
     }
 
-    public int Create(PersonCreateDto dto)
+    public int Create(PersonAddEditDto dto)
     {
         return _personRepository.Create(dto);
     }
 
-    public void Update(PersonCreateDto dto)
+    public void Update(PersonAddEditDto dto)
     {
         _personRepository.Update(dto);
     }

@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AssetManager.DTOs;
 
-public class PersonCreateDto
+public class PersonAddEditDto
 {
-    public PersonCreateDto()
+    public PersonAddEditDto()
     {
         Assets = new List<Asset>();
     }
