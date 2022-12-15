@@ -114,14 +114,16 @@
 
                     if (assetId == '')
                     {
-                        console.log('in the if');
-                        $("tbody").append(data);
+                        var isLastPage = $('#nextPageButton').hasClass('disabled');
+
+                        if (isLastPage) {
+                            $('tbody').append(data);
+                        }
+                        
                         doAnAlert("assetCreateSuccess");
                     }
                     else
                     {
-                        console.log('in the else');
-
                         $("tbody").children(`[data-id='${assetId}']`).replaceWith(data);
                         doAnAlert("assetEditSuccess");
                     }

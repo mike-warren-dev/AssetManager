@@ -225,11 +225,19 @@
                     {
                         $("#newOrderModal").modal("hide");
 
-                        if (orderId === '') {
-                            $("tbody").append(data);
+                        if (orderId === '') 
+                        {
+                            var isLastPage = $('#nextPageButton').hasClass('disabled');
+
+                            if (isLastPage)
+                            {
+                                $('tbody').append(data);
+                            }
+
                             doAnAlert("orderCreateSuccess");
                         }
-                        else {
+                        else 
+                        {
                             var resId = $(data).attr("data-id");
                             $("tbody").children(`[data-id='${resId}']`).replaceWith(data);
                             doAnAlert("orderEditSuccess");

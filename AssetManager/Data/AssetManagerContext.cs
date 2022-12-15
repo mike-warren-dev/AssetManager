@@ -15,6 +15,10 @@ public class AssetManagerContext : IdentityDbContext<ApplicationUser>
     public DbSet<Asset> Assets { get; set; }
     public DbSet<Order> Orders { get; set; }
 
+    public DbSet<Dict> Dicts { get; set; }
+
+    public DbSet<DictOption> DictOptions { get; set; }  
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {        
@@ -34,6 +38,18 @@ public class AssetManagerContext : IdentityDbContext<ApplicationUser>
             o.HasOne(o => o.Purchaser).WithMany().HasForeignKey(o => o.PurchaserId).OnDelete(DeleteBehavior.NoAction);
             o.HasOne(o => o.Approver).WithMany().HasForeignKey(o => o.ApproverId).OnDelete(DeleteBehavior.NoAction);
             o.OwnsMany(o => o.Products);
+        });
+
+        modelBuilder.Entity<Dict>(d =>
+        {
+            d.ToTable("Dict");
+            //d.HasMany(d => d.DictOptions).WithOne().HasForeignKey(d => d.DictOptionId).OnDelete(DeleteBehavior.NoAction);
+        });
+
+        modelBuilder.Entity<DictOption>(d =>
+        {
+            d.ToTable("DictOption");
+            //d.HasOne(d => d.Dict).WithMany().HasForeignKey(d => d.DictId).OnDelete(DeleteBehavior.NoAction);
         });
 
         base.OnModelCreating(modelBuilder);

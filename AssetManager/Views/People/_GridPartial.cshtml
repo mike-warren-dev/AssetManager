@@ -50,9 +50,11 @@
                     <li class="page-item @((i + 1) == Model.CurrentPage ? "active" : String.Empty)" data-page="@(i + 1)" onclick="getGridPageAbsolute(this)"><a class="page-link" href="#">@(i + 1)</a></li>
                 }
             }
-            <li class="page-item @(Model.CurrentPage == Model.PageCount ? "disabled" : String.Empty)" data-page="@(Model.CurrentPage+1)" onclick="getGridPageRelative(this)">
+            <li id="nextPageButton" class="page-item @(Model.CurrentPage == Model.PageCount ? "disabled" : String.Empty)" data-page="@(Model.CurrentPage+1)" onclick="getGridPageRelative(this)">
                 <a class="page-link" href="#">Next</a>
             </li>
         </ul>
     </nav>
 </div>
+<div id="testDiv1" class="d-flex disabled"></div>
+<div id="testDiv2" class="d-flex"></div>
