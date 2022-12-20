@@ -1,13 +1,11 @@
 ﻿using AssetManager.DTOs;
-using AssetManager.Models;
 using AssetManager.Repos;
 using AssetManager.Services;
 using AssetManager.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.Design;
 
 namespace AssetManager.Controllers
 {
@@ -16,11 +14,13 @@ namespace AssetManager.Controllers
     {
         private IAssetService _assetService;
         private IPeopleService _peopleService;
+        private IDictService _dictService;
 
-        public AssetsController(IAssetRepository repository, IAssetService assetService, IPeopleService peopleService)
+        public AssetsController(IAssetRepository repository, IAssetService assetService, IPeopleService peopleService, IDictService dictService)
         {
             _assetService = assetService;
             _peopleService = peopleService;
+            _dictService = dictService;
         }
 
         [Authorize(Roles = "Admin")]
@@ -67,6 +67,9 @@ namespace AssetManager.Controllers
         {
             AssetAddEditViewModel vm = new();
             vm.People = _peopleService.GetAllPeople();
+            vm.AssetTypeOptions = _dictService.GetDictItems(101);
+            vm.ModelOptions = _dictService.GetDictItems(102);
+            vm.SiteOptions = _dictService.GetDictItems(103);
 
             if (id == 0)
             {
@@ -81,9 +84,10 @@ namespace AssetManager.Controllers
                 vm.AssetDto = new AssetAddEditDto()
                 {
                     AssetId = asset.AssetId,
-                    AssetType = asset.AssetType,
-                    Model = asset.Model,
-                    Site = asset.Site,
+                    AssetTypeId = asset.AssetTypeId,
+                    //AssetType = asset.AssetType.DisplayName,
+                    ModelId = asset.ModelId,
+                    SiteId = asset.SiteId,
                     PersonId = asset.PersonId,
                     PersonName = asset.Person != null ? $"{asset.Person.FirstName} {asset.Person.LastName}" : ""
                 };

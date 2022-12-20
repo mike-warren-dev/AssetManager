@@ -145,9 +145,10 @@ public class PeopleController : Controller
         var dto = new AssetDisplayDto()
         {
             AssetId = asset.AssetId,
-            AssetType = asset.AssetType.ToString(),
-            Model = asset.Model.ToString(),
-            Site = asset.Site.ToString(),
+            AssetTypeId = asset.AssetTypeId,
+            AssetType = asset.AssetType.DisplayName,
+            Model = asset.Model.DisplayName,
+            Site = asset.Site.DisplayName,
             PersonId = asset.PersonId
         };
 

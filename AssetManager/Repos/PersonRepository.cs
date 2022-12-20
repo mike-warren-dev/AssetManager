@@ -52,7 +52,12 @@ public class PersonRepository : IPersonRepository
 
     public Person? GetPersonById(int id)
     {
-        return _context.People.Include(p => p.Assets).FirstOrDefault(p => p.PersonId == id);
+        return _context.People.Include(p => p.Assets)
+                                .ThenInclude(a => a.AssetType)
+                              .Include(p => p.Assets)
+                                .ThenInclude(a => a.Model)
+                              .Include(p => p.Assets)
+                                .ThenInclude(a => a.Site).FirstOrDefault(p => p.PersonId == id);
     }
 
     public int Create(PersonAddEditDto submission)

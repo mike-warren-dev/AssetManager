@@ -15,7 +15,7 @@ public class OrderAddEditDto
     [Required]
     public string ExternalOrderId { get; set; } = null!;
     [Required]
-    public Vendor VendorId { get; set; }
+    public int VendorId { get; set; }
     public List<ProductOrder> Products { get; set; } = null!;
     [Required]
     public Decimal? Cost { get; set; }

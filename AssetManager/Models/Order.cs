@@ -15,7 +15,7 @@ public class Order
     [Required]
     public string ExternalOrderId { get; set; } = null!;
     [Required]
-    public Vendor VendorId { get; set; }
+    public int VendorId { get; set; }
     public List<ProductOrder> Products { get; set; }
     [Required]
     [Precision(18, 2)]
@@ -29,14 +29,17 @@ public class Order
 
     public Person Purchaser { get; set; }
     public Person Approver { get; set; }
+    public DictOption Vendor { get; set; }
 }
 
 [Owned]
 public class ProductOrder
 {
     [Required]
-    public Product Product { get; set; }
+    public int ProductId { get; set; }
     [Required]
     public int? Count { get; set; }
+
+    public DictOption Product { get; set; } = null!;
 }
 

@@ -21,10 +21,10 @@ public class AssetRepository : IAssetRepository
         List<AssetDisplayDto> list = _context.Assets.Include(a => a.Person).Select(a => new AssetDisplayDto()
                                     {
                                         AssetId = a.AssetId,
-                                        AssetTypeId = (int)a.AssetType,
-                                        AssetType = a.AssetType.GetDisplayName(),
-                                        Model = a.Model.GetDisplayName(),
-                                        Site = a.Site.GetDisplayName(),
+                                        AssetTypeId = a.AssetTypeId,
+                                        AssetType = a.AssetType.DisplayName,
+                                        Model = a.Model.DisplayName,
+                                        Site = a.Site.DisplayName,
                                         PersonId = a.PersonId,
                                         PersonName = a.Person != null ? $"{a.Person.FirstName} {a.Person.LastName}" : ""
                                     }).ToList();
@@ -44,10 +44,10 @@ public class AssetRepository : IAssetRepository
         var assetQuery = _context.Assets.Include(a => a.Person).Select(a => new AssetDisplayDto()
         {
             AssetId = a.AssetId,
-            AssetTypeId = (int)a.AssetType,
-            AssetType = a.AssetType.GetDisplayName(),
-            Model = a.Model.GetDisplayName(),
-            Site = a.Site.GetDisplayName(),
+            AssetTypeId = a.AssetTypeId,
+            AssetType = a.AssetType.DisplayName,
+            Model = a.Model.DisplayName,
+            Site = a.Site.DisplayName,
             PersonId = a.PersonId,
             PersonName = a.Person != null ? $"{a.Person.FirstName} {a.Person.LastName}" : ""
         });//.ToList()
@@ -61,7 +61,11 @@ public class AssetRepository : IAssetRepository
     {
         if (id > 0)
         {
-            var asset = _context.Assets.Include(a => a.Person).FirstOrDefault(a => a.AssetId == id);
+            var asset = _context.Assets.Include(a => a.Person)
+                                        .Include(a => a.AssetType)
+                                        .Include(a => a.Model)
+                                        .Include(a => a.Site)
+                                        .FirstOrDefault(a => a.AssetId == id);
 
             return asset;
         }
@@ -76,10 +80,10 @@ public class AssetRepository : IAssetRepository
         return _context.Assets.Where(a => a.PersonId == personId).Select(asset => new AssetDisplayDto()
         {
             AssetId = asset.AssetId,
-            AssetTypeId = (int)asset.AssetType,
-            AssetType = asset.AssetType.GetDisplayName(),
-            Model = asset.Model.GetDisplayName(),
-            Site = asset.Site.GetDisplayName(),
+            AssetTypeId = asset.AssetTypeId,
+            AssetType = asset.AssetType.DisplayName,
+            Model = asset.Model.DisplayName,
+            Site = asset.Site.DisplayName,
             PersonId = asset.PersonId
         }).ToList();
     }
@@ -90,10 +94,10 @@ public class AssetRepository : IAssetRepository
             var dto = _context.Assets.Include(a => a.Person).Select(a => new AssetDisplayDto()
             {
                 AssetId = a.AssetId,
-                AssetTypeId = (int)a.AssetType,
-                AssetType = a.AssetType.GetDisplayName(),
-                Model = a.Model.GetDisplayName(),
-                Site = a.Site.GetDisplayName(),
+                AssetTypeId = a.AssetTypeId,
+                AssetType = a.AssetType.DisplayName,
+                Model = a.Model.DisplayName,
+                Site = a.Site.DisplayName,
                 PersonId = a.PersonId,
                 PersonName = a.Person != null ? $"{a.Person.FirstName} {a.Person.LastName}" : ""
             }).FirstOrDefault(a => a.AssetId == id);
@@ -110,9 +114,9 @@ public class AssetRepository : IAssetRepository
     public int Create(AssetAddEditDto dto)
     {
         Asset asset = new() { 
-            AssetType = dto.AssetType,
-            Model = dto.Model,
-            Site = dto.Site,
+            AssetTypeId = dto.AssetTypeId,
+            ModelId = dto.ModelId,
+            SiteId = dto.SiteId,
             PersonId = dto.PersonId,
         };
 
@@ -127,12 +131,12 @@ public class AssetRepository : IAssetRepository
         if (dtos.Any())
         {
             _context.AddRange(dtos.Select(d => new Asset()
-                                        {
-                                            AssetType = d.AssetType,
-                                            Model = d.Model,
-                                            Site = d.Site,
-                                            PersonId = d.PersonId
-                                        })) ;
+                                    {
+                                        AssetTypeId = d.AssetTypeId,
+                                        ModelId = d.ModelId,
+                                        SiteId = d.SiteId,
+                                        PersonId = d.PersonId
+                                    })) ;
             Save();
         }
     }
@@ -143,9 +147,9 @@ public class AssetRepository : IAssetRepository
 
         if (asset != null)
         {
-            asset.AssetType = dto.AssetType;
-            asset.Model = dto.Model;
-            asset.Site = dto.Site;
+            asset.AssetTypeId = dto.AssetTypeId;
+            asset.ModelId = dto.ModelId;
+            asset.SiteId = dto.SiteId;
             asset.PersonId = dto.PersonId;
 
             Save();

@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
 using AssetManager.Models;
+using AssetManager.BackgroundServices;
+using System.ComponentModel.Design;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -19,10 +21,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPeopleService, PeopleService>();
 builder.Services.AddScoped<IAssetService, AssetService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IDictService, DictService>();
 
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IAssetRepository, AssetRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IDictRepository, DictRepository>();
 
 builder.Services.AddDbContext<AssetManagerContext>(options =>
     options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
@@ -34,6 +38,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AssetManagerContext>();
+
+builder.Services.AddMemoryCache();
+//builder.Services.AddHostedService<CacheService>();
 
 var app = builder.Build();
 

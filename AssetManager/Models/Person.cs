@@ -21,7 +21,6 @@ public class Person
     public string Email { get; set; } = null!;
     [Required]
     public int? RoleId { get; set; }
-
     public virtual ApplicationUser ApplicationUser { get; set; }
     public List<Asset> Assets { get; set; } 
 }

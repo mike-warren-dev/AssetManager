@@ -15,7 +15,7 @@
                     @{
                         foreach (var p in Model.Products)
                         {
-                            <li>@($"{p.Count.ToString()}X - {p.Product.GetDisplayName()}")</li>
+                            <li>@($"{p.Count.ToString()}X - {p.Product.DisplayName}")</li>
                         }
                     }
                 </ul>

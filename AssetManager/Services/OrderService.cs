@@ -10,11 +10,13 @@ public class OrderService : IOrderService
 {
     private IOrderRepository _orderRepository;
     private IAssetRepository _assetRepository;
+    private IDictRepository _dictRepository;
 
-    public OrderService(IOrderRepository orderRepository, IAssetRepository assetRepository)
+    public OrderService(IOrderRepository orderRepository, IAssetRepository assetRepository, IDictRepository dictRepository)
     {
         _orderRepository = orderRepository;
         _assetRepository = assetRepository;
+        _dictRepository = dictRepository;
     }
 
     public List<OrderDisplayDto> GetAllOrders()
@@ -45,7 +47,7 @@ public class OrderService : IOrderService
         
         foreach (var item in dto.Products)
         {
-            if (item?.Count != null && item.Count > 0 && item.Product != 0)
+            if (item?.Count != null && item.Count > 0 && item.ProductId != 0)
             {
                 products.Add(item);
             }
@@ -84,7 +86,6 @@ public class OrderService : IOrderService
 
         if (order != null)
         {
-
             foreach (var p in order.Products)
             {
                 List<AssetAddEditDto> assets = new();
@@ -93,19 +94,36 @@ public class OrderService : IOrderService
                 {
                     assets.Add(new AssetAddEditDto()
                     {
-                        AssetType = p.Product switch
+                        // disgusting--will fix after implementing dict cacheing. 
+                        AssetTypeId = p.ProductId switch
                         {
-                            Enums.Product.MacbookPro13Inch => Enums.AssetType.Laptop,
-                            Enums.Product.MacbookPro15Inch => Enums.AssetType.Laptop,
-                            Enums.Product.DellInspiron14 => Enums.AssetType.Laptop,
-                            Enums.Product.ThinkpadE14Gen3 => Enums.AssetType.Laptop,
-                            Enums.Product.ThinkpadE14Gen4 => Enums.AssetType.Laptop,
-                            Enums.Product.ThinkpadX1Gen8 => Enums.AssetType.Laptop,
-                            Enums.Product.ThinkpadX1Gen9 => Enums.AssetType.Laptop,
-                            _ => Enums.AssetType.Laptop
+                            201 => 201,
+                            202 => 201,
+                            203 => 201,
+                            204 => 201,
+                            205 => 201,
+                            301 => 201,
+                            302 => 201,
+                            303 => 201,
+                            304 => 201,
+                            305 => 201,
+                            306 => 201,
+                            307 => 201,
+                            308 => 201,
+                            309 => 201,
+                            401 => 201,
+                            402 => 201,
+                            403 => 201,
+                            404 => 201,
+                            501 => 201,
+                            502 => 201,
+                            503 => 201,
+                            504 => 201,
+                            505 => 201,
+                            _ => 201
                         },
-                        Model = p.Product,
-                        Site = Enums.Site.TheWoodlands,
+                        ModelId = p.ProductId,
+                        SiteId = 401,
                         PersonId = null
                     });
                 }
