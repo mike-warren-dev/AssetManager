@@ -28,7 +28,7 @@
 
                     <label asp-for="OrderDto.VendorId">Vendor</label><span style="color:red">*</span>
                     <select asp-for="OrderDto.VendorId" class="form-select"
-                        asp-items="Html.GetEnumSelectList<Vendor>()">
+                            asp-items="@(new SelectList(Model.VendorOptions,"Value","Text"))">
                         <option disabled selected class="text-muted">select</option>
                     </select>
                     <div style="min-height:15px">
@@ -113,12 +113,12 @@
                                 {
                                     <div class="order-product row" data-index="@i">
                                         <div class="col-7">
-                                            <label asp-for="@Model.OrderDto.Products[i].Product">Product</label>
-                                            <select asp-for="@Model.OrderDto.Products[i].Product" class="form-select" asp-items="Html.GetEnumSelectList<Product>()">
+                                            <label asp-for="@Model.OrderDto.Products[i].ProductId">Product</label>
+                                            <select asp-for="@Model.OrderDto.Products[i].ProductId" class="form-select" asp-items="@(new SelectList(Model.ProductOptions,"Value","Text"))">
                                                 <option disabled selected class="text-muted">select</option>
                                             </select>
                                             <div style="min-height:15px">
-                                                <span asp-validation-for="@Model.OrderDto.Products[i].Product" class="text-danger small"></span>
+                                                <span asp-validation-for="@Model.OrderDto.Products[i].ProductId" class="text-danger small"></span>
                                             </div>
                                         </div>
 
@@ -161,10 +161,10 @@
     function addProductFields() {
         var nextIndex = parseInt($("#productsContainer .row:last-child").attr("data-index")) + 1;
 
-        var $field = $(`<div class="row" data-index="${nextIndex}"><div class="col-7"><label for="OrderDto_Products_${nextIndex}__Product">Product</label> <select class="form-select" data-val="true" data-val-required="The Product field is required." id="OrderDto_Products_${nextIndex}__Product" name="OrderDto.Products[${nextIndex}].Product"></select><div style="min-height:15px"><span class="text-danger small field-validation-valid" data-valmsg-for="OrderDto.Products[${nextIndex}].Product" data-valmsg-replace="true"/></div></div><div class="col-3"><label for="OrderDto_Products_${nextIndex}__Count">Count</label><input class="form-control" type="number" data-val="true" data-val-required="The Count field is required." id="OrderDto_Products_${nextIndex}__Count" name="OrderDto.Products[${nextIndex}].Count" value=""><div style="min-height:15px"><span class="text-danger small field-validation-valid" data-valmsg-for="OrderDto.Products[${nextIndex}].Count" data-valmsg-replace="true"/></div></div><div class="col-2 align-self-center"><i class="btn fa-solid fa-xmark" style="color:red" onclick="toggleElement(this)"/></div></div>`);
+        var $field = $(`<div class="row" data-index="${nextIndex}"><div class="col-7"><label for="OrderDto_Products_${nextIndex}__ProductId">Product</label> <select class="form-select" data-val="true" data-val-required="The Product field is required." id="OrderDto_Products_${nextIndex}__ProductId" name="OrderDto.Products[${nextIndex}].ProductId"></select><div style="min-height:15px"><span class="text-danger small field-validation-valid" data-valmsg-for="OrderDto.Products[${nextIndex}].ProductId" data-valmsg-replace="true"/></div></div><div class="col-3"><label for="OrderDto_Products_${nextIndex}__Count">Count</label><input class="form-control" type="number" data-val="true" data-val-required="The Count field is required." id="OrderDto_Products_${nextIndex}__Count" name="OrderDto.Products[${nextIndex}].Count" value=""><div style="min-height:15px"><span class="text-danger small field-validation-valid" data-valmsg-for="OrderDto.Products[${nextIndex}].Count" data-valmsg-replace="true"/></div></div><div class="col-2 align-self-center"><i class="btn fa-solid fa-xmark" style="color:red" onclick="toggleElement(this)"/></div></div>`);
         $("#productsContainer").append($field);
 
-        $options = $("#OrderDto_Products_0__Product option").clone();
+        $options = $("#OrderDto_Products_0__ProductId option").clone();
 
         for (i = 0; i < $options.length; i++) {
             if (i == 0) continue;
@@ -172,7 +172,7 @@
             $($options[i]).removeAttr("selected")
         }
 
-        $options.appendTo(`#OrderDto_Products_${nextIndex}__Product`);
+        $options.appendTo(`#OrderDto_Products_${nextIndex}__ProductId`);
     }
 
     function toggleElement(el) {
@@ -206,7 +206,7 @@
 
             for (var i = 0; i < products; i++)
             {
-                fdata.append(`OrderDto.Products[${i}].Product`, $(`#OrderDto_Products_${i}__Product`).val());
+                fdata.append(`OrderDto.Products[${i}].ProductId`, $(`#OrderDto_Products_${i}__ProductId`).val());
                 fdata.append(`OrderDto.Products[${i}].Count`, $(`#OrderDto_Products_${i}__Count`).val());
             }
 

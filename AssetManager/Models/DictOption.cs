@@ -12,4 +12,5 @@ public class DictOption
     public string DisplayName { get; set; } = null!;
     [ForeignKey("DictId")]
     public Dict Dict { get; set; } = null!;
+
 }

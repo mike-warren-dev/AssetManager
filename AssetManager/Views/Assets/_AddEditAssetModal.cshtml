@@ -17,31 +17,31 @@
 
             <input asp-for="AssetDto.AssetId" type="hidden">
 
-            <label asp-for="AssetDto.AssetType">Asset Type</label><span style="color:red">*</span>
-            <select asp-for="AssetDto.AssetType" class="form-select"
-                    asp-items="Html.GetEnumSelectList<AssetType>()">
+            <label asp-for="AssetDto.AssetTypeId">Asset Type</label><span style="color:red">*</span>
+            <select asp-for="AssetDto.AssetTypeId" class="form-select"
+                    asp-items="@(new SelectList(Model?.AssetTypeOptions,"Value","Text"))">
                 <option disabled selected class="text-muted">select</option>
             </select>
             <div style="min-height:15px">
-                <span asp-validation-for="AssetDto.AssetType" class="text-danger small"></span>
+                <span asp-validation-for="AssetDto.AssetTypeId" class="text-danger small"></span>
             </div>
 
-            <label asp-for="AssetDto.Model">Model</label><span style="color:red">*</span>
-            <select asp-for="AssetDto.Model" class="form-select"
-                    asp-items="Html.GetEnumSelectList<Product>()">
+            <label asp-for="AssetDto.ModelId">Model</label><span style="color:red">*</span>
+            <select asp-for="AssetDto.ModelId" class="form-select"
+                    asp-items="@(new SelectList(Model?.ModelOptions,"Value","Text"))">
                 <option disabled selected class="text-muted">select</option>
             </select>
             <div style="min-height:15px">
-                <span asp-validation-for="AssetDto.Model" class="text-danger small"></span>
+                <span asp-validation-for="AssetDto.ModelId" class="text-danger small"></span>
             </div>
 
-            <label asp-for="AssetDto.Site">Site</label><span style="color:red">*</span>
-            <select asp-for="AssetDto.Site" class="form-select"
-                    asp-items="Html.GetEnumSelectList<Site>()">
+            <label asp-for="AssetDto.SiteId">Site</label><span style="color:red">*</span>
+            <select asp-for="AssetDto.SiteId" class="form-select"
+                    asp-items="@(new SelectList(Model?.SiteOptions,"Value","Text"))">
                 <option disabled selected class="text-muted">select</option>
             </select>
             <div style="min-height:15px">
-                <span asp-validation-for="AssetDto.Site" class="text-danger small"></span>
+                <span asp-validation-for="AssetDto.SiteId" class="text-danger small"></span>
             </div>
 
             <label asp-for="AssetDto.PersonId">Assigned To</label>
@@ -94,9 +94,9 @@
             var assetId = $("#AssetDto_AssetId").val();
 
             fdata.append("AssetDto.AssetId", assetId);
-            fdata.append("AssetDto.AssetType", $("#AssetDto_AssetType").val());
-            fdata.append("AssetDto.Model", $("#AssetDto_Model").val());
-            fdata.append("AssetDto.Site", $("#AssetDto_Site").val());
+            fdata.append("AssetDto.AssetTypeId", $("#AssetDto_AssetTypeId").val());
+            fdata.append("AssetDto.ModelId", $("#AssetDto_ModelId").val());
+            fdata.append("AssetDto.SiteId", $("#AssetDto_SiteId").val());
             fdata.append("AssetDto.PersonId", $("#AssetDto_PersonId").val());
             
             $.ajax({

@@ -8,7 +8,7 @@ public class PersonAddEditDto
 {
     public PersonAddEditDto()
     {
-        Assets = new List<Asset>();
+        Assets = new List<AssetDisplayDto>();
     }
 
     public int? PersonId { get; set; } = 0;
@@ -34,5 +34,5 @@ public class PersonAddEditDto
     [DisplayName("Role")]
     public int? RoleId { get; set; }
 
-    public List<Asset> Assets { get; set; } = null!;
+    public List<AssetDisplayDto> Assets { get; set; } = null!;
 }

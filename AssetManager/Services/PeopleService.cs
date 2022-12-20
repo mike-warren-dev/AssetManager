@@ -2,6 +2,7 @@
 using AssetManager.Models;
 using AssetManager.Repos;
 using AssetManager.ViewModels;
+using NuGet.ContentModel;
 using NuGet.Protocol.Core.Types;
 
 namespace AssetManager.Services;
@@ -29,21 +30,45 @@ public class PeopleService : IPeopleService
 
     public Person GetPersonById(int id)
     {
-        return _personRepository.GetPersonById(id);
+        Person? person = _personRepository.GetPersonById(id);
+
+        if (person == null)
+        {
+            return new Person();
+        }
+        else
+        {
+            return person;
+        }
     }
 
     public PersonAddEditDto GetPersonAddEditDtoById(int id)
     {
         PersonAddEditDto dto = new();
 
-        Person person = _personRepository.GetPersonById(id);
+        Person? person = _personRepository.GetPersonById(id);
+
+        if (person == null) 
+        { 
+            return new PersonAddEditDto();
+        }
 
         dto.PersonId = person.PersonId;
         dto.FirstName = person.FirstName;
         dto.LastName = person.LastName;
         dto.Email = person.Email;
         dto.RoleId = person.RoleId;
-        dto.Assets = person.Assets;
+        dto.Assets = person.Assets.Select(a => new AssetDisplayDto()
+        {
+            AssetId = a.AssetId,
+            AssetTypeId = a.AssetTypeId,
+            AssetType = a.AssetType.DisplayName,
+            ModelId= a.ModelId,
+            Model = a.Model.DisplayName,
+            SiteId = a.SiteId,
+            Site = a.Site.DisplayName,
+            PersonId = a.PersonId
+        }).ToList();
 
         return dto;
 

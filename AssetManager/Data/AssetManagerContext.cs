@@ -30,6 +30,9 @@ public class AssetManagerContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<Asset>(a =>
         {
             a.ToTable("Asset");
+            a.HasOne(a => a.AssetType).WithMany().HasForeignKey(o => o.AssetTypeId).OnDelete(DeleteBehavior.NoAction);
+            a.HasOne(a => a.Model).WithMany().HasForeignKey(o => o.ModelId).OnDelete(DeleteBehavior.NoAction);
+            a.HasOne(a => a.Site).WithMany().HasForeignKey(o => o.SiteId).OnDelete(DeleteBehavior.NoAction);
         });
 
         modelBuilder.Entity<Order>(o =>
@@ -37,6 +40,7 @@ public class AssetManagerContext : IdentityDbContext<ApplicationUser>
             o.ToTable("Order");
             o.HasOne(o => o.Purchaser).WithMany().HasForeignKey(o => o.PurchaserId).OnDelete(DeleteBehavior.NoAction);
             o.HasOne(o => o.Approver).WithMany().HasForeignKey(o => o.ApproverId).OnDelete(DeleteBehavior.NoAction);
+            o.HasOne(o => o.Vendor).WithMany().HasForeignKey(o => o.VendorId).OnDelete(DeleteBehavior.NoAction);
             o.OwnsMany(o => o.Products);
         });
 

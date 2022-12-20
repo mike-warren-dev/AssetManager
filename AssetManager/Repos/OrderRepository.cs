@@ -28,7 +28,7 @@ public class OrderRepository : IOrderRepository
                               {
                                 OrderId = o.OrderId,
                                 ExternalOrderId = o.ExternalOrderId,
-                                Vendor = o.VendorId.GetDisplayName(),
+                                Vendor = o.Vendor.DisplayName,
                                 Products = o.Products,
                                 Cost = o.Cost,
                                 PurchaserId = o.PurchaserId,
@@ -51,11 +51,13 @@ public class OrderRepository : IOrderRepository
 
         var query = _context.Orders.Include(o => o.Approver)
                       .Include(o => o.Purchaser)
+                      .Include(o => o.Products)
+                        .ThenInclude(p => p.Product)
                       .Select(o => new OrderDisplayDto()
                       {
                           OrderId = o.OrderId,
                           ExternalOrderId = o.ExternalOrderId,
-                          Vendor = o.VendorId.GetDisplayName(),
+                          Vendor = o.Vendor.DisplayName,
                           Products = o.Products,
                           Cost = o.Cost,
                           PurchaserId = o.PurchaserId,
@@ -90,11 +92,11 @@ public class OrderRepository : IOrderRepository
 
     public OrderDisplayDto? GetOrderDisplayDtoById(int id)
     { 
-        OrderDisplayDto? dto = _context.Orders.Include(o => o.Products).Include(o => o.Purchaser).Include(o => o.Approver).Select(o => new OrderDisplayDto()
+        OrderDisplayDto? dto = _context.Orders.Include(o => o.Products).ThenInclude(p => p.Product).Include(o => o.Purchaser).Include(o => o.Approver).Select(o => new OrderDisplayDto()
         {
             OrderId = o.OrderId,
             ExternalOrderId = o.ExternalOrderId,
-            Vendor = o.VendorId.GetDisplayName(),
+            Vendor = o.Vendor.DisplayName,
             Products = o.Products,
             Cost = o.Cost,
             PurchaserId = o.PurchaserId,

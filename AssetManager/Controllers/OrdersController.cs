@@ -13,11 +13,13 @@ namespace AssetManager.Controllers
     {
         private IOrderService _orderService;
         private IPeopleService _peopleService;
+        private IDictService _dictService;
 
-        public OrdersController(IOrderRepository repository, IOrderService orderService, IPeopleService peopleService)
+        public OrdersController(IOrderRepository repository, IOrderService orderService, IPeopleService peopleService, IDictService dictService)
         {
             _orderService = orderService;
             _peopleService = peopleService;
+            _dictService = dictService;
         }
 
         public ActionResult Index()
@@ -40,7 +42,9 @@ namespace AssetManager.Controllers
             OrderAddEditViewModel vm = new();
             vm.OrderDto.Products.Add(new ProductOrder());
             vm.People = _peopleService.GetAllPeople();
-            
+            vm.VendorOptions = _dictService.GetDictItems(104);
+            vm.ProductOptions = _dictService.GetDictItems(102);
+
             if (id == 0)
             {
                 return PartialView("_AddEditOrderModal", vm);
