@@ -21,8 +21,7 @@ public class PersonRepository : IPersonRepository
                                     PersonId = p.PersonId,
                                     FirstName = p.FirstName,
                                     LastName = p.LastName,
-                                    Email = p.Email,
-                                    RoleId = p.RoleId}).ToList();
+                                    Email = p.Email}).ToList();
 
         return list;
     }
@@ -41,8 +40,7 @@ public class PersonRepository : IPersonRepository
             PersonId = p.PersonId,
             FirstName = p.FirstName,
             LastName = p.LastName,
-            Email = p.Email,
-            RoleId = p.RoleId
+            Email = p.Email
         });
 
         vm.People = query.Skip((pageNumber-1) * pageSize).Take(pageSize).ToList();   
@@ -66,8 +64,7 @@ public class PersonRepository : IPersonRepository
         {
             FirstName = submission.FirstName,
             LastName = submission.LastName,
-            Email = submission.Email,
-            RoleId = submission.RoleId
+            Email = submission.Email
         };
 
         _context.People.Add(person);
@@ -85,7 +82,6 @@ public class PersonRepository : IPersonRepository
             person.FirstName = submission.FirstName;
             person.LastName = submission.LastName;
             person.Email = submission.Email;
-            person.RoleId = submission.RoleId;
 
             Save();
         }

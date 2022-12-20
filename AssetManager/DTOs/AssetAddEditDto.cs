@@ -1,5 +1,4 @@
-﻿using AssetManager.Enums;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace AssetManager.DTOs;

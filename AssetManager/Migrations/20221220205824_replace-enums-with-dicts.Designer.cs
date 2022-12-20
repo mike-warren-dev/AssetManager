@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AssetManager.Migrations
 {
     [DbContext(typeof(AssetManagerContext))]
-    [Migration("20221220200825_replace-enums-with-dicts")]
+    [Migration("20221220205824_replace-enums-with-dicts")]
     partial class replaceenumswithdicts
     {
         /// <inheritdoc />
@@ -229,10 +229,6 @@ namespace AssetManager.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("int");
 
                     b.HasKey("PersonId");
 

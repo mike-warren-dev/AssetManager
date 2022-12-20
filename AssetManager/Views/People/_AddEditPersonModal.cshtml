@@ -1,5 +1,4 @@
-﻿@using AssetManager.Enums;
-@using AssetManager.DTOs;
+﻿@using AssetManager.DTOs;
 
 @model PersonAddEditDto
 
@@ -43,15 +42,6 @@
                     <input asp-for="Email" class="form-control" />
                     <div style="height:18px">
                         <span asp-validation-for="Email" class="text-danger small"></span>
-                    </div>
-
-                    <label asp-for="RoleId">Role</label><span style="color:red">*</span>
-                    <select asp-for="RoleId" class="form-select"
-                        asp-items="Html.GetEnumSelectList<Role>()">
-                        <option disabled selected class="text-muted">select</option>
-                    </select>
-                    <div style="height:18px">
-                        <span asp-validation-for="RoleId" class="text-danger small"></span>
                     </div>
                 </div>
 

@@ -57,7 +57,6 @@ public class PeopleService : IPeopleService
         dto.FirstName = person.FirstName;
         dto.LastName = person.LastName;
         dto.Email = person.Email;
-        dto.RoleId = person.RoleId;
         dto.Assets = person.Assets.Select(a => new AssetDisplayDto()
         {
             AssetId = a.AssetId,

@@ -227,10 +227,6 @@ namespace AssetManager.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
                     b.HasKey("PersonId");
 
                     b.ToTable("Person", (string)null);

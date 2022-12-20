@@ -70,7 +70,7 @@ public class PeopleController : Controller
     }
 
     [HttpPost] //[ValidateAntiForgeryToken]
-    public ActionResult AddEdit([Bind("PersonId,FirstName,LastName,Email,RoleId")]PersonAddEditDto dto)
+    public ActionResult AddEdit([Bind("PersonId,FirstName,LastName,Email")]PersonAddEditDto dto)
     {
         if (ModelState.IsValid)
         {
@@ -91,15 +91,11 @@ public class PeopleController : Controller
             }
             catch
             {
-                //return View();
-                //return new JsonResult(new object());
                 return Ok();
             }
         }
         else
         {
-            //return RedirectToAction(nameof(Index));
-            //return new JsonResult(new object());
             return Ok();
         }
     }

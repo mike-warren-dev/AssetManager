@@ -1,13 +1,8 @@
 ﻿using AssetManager.Data;
 using AssetManager.DTOs;
-using AssetManager.Enums;
 using AssetManager.Models;
 using AssetManager.ViewModels;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using NuGet.ContentModel;
-using Asset = AssetManager.Models.Asset;
 
 namespace AssetManager.Repos;
 

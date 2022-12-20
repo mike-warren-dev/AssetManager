@@ -1,6 +1,5 @@
 ﻿using AssetManager.Data;
 using AssetManager.DTOs;
-using AssetManager.Enums;
 using AssetManager.Models;
 using AssetManager.ViewModels;
 using Microsoft.EntityFrameworkCore;
