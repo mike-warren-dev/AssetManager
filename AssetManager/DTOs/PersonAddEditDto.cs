@@ -29,10 +29,5 @@ public class PersonAddEditDto
     [DisplayName("Email")]
     public string Email { get; set; } = null!;
 
-    [Required(ErrorMessage = "Role is required")]
-    [Range(200, 299, ErrorMessage = "Please select a valid Role")]
-    [DisplayName("Role")]
-    public int? RoleId { get; set; }
-
     public List<AssetDisplayDto> Assets { get; set; } = null!;
 }

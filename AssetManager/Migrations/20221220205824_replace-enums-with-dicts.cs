@@ -10,6 +10,10 @@ namespace AssetManager.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "RoleId",
+                table: "Person");
+
             migrationBuilder.RenameColumn(
                 name: "Product",
                 table: "ProductOrder",
@@ -154,6 +158,13 @@ namespace AssetManager.Migrations
                 name: "AssetTypeId",
                 table: "Asset",
                 newName: "AssetType");
+
+            migrationBuilder.AddColumn<int>(
+                name: "RoleId",
+                table: "Person",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
         }
     }
 }

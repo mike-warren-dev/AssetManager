@@ -1,6 +1,4 @@
-﻿using AssetManager.Enums;
-
-namespace AssetManager.DTOs;
+﻿namespace AssetManager.DTOs;
 
 public class AssetDisplayDto
 {

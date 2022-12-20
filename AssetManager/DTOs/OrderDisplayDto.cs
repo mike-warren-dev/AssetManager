@@ -1,5 +1,4 @@
-﻿using AssetManager.Enums;
-using AssetManager.Models;
+﻿using AssetManager.Models;
 
 namespace AssetManager.DTOs;
 
