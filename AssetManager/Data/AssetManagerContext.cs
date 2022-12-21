@@ -11,12 +11,11 @@ public class AssetManagerContext : IdentityDbContext<ApplicationUser>
     public AssetManagerContext(DbContextOptions<AssetManagerContext> options) : base(options)
     {    
     }
+
     public DbSet<Person> People { get; set; }
     public DbSet<Asset> Assets { get; set; }
     public DbSet<Order> Orders { get; set; }
-
     public DbSet<Dict> Dicts { get; set; }
-
     public DbSet<DictOption> DictOptions { get; set; }  
 
 

@@ -2,41 +2,73 @@
 using AssetManager.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace AssetManager.Repos;
 
 public class DictRepository : IDictRepository
 {
     private AssetManagerContext _context;
+    private IMemoryCache _cache;
 
-    public DictRepository(AssetManagerContext context)
+    public DictRepository(AssetManagerContext context, IMemoryCache cache)
     {
         _context = context;
+        _cache = cache;
     }
 
     public List<SelectListItem> GetDictItems(int dictId)
     {
-        Dict? dict = _context.Dicts.Include(d => d.DictOptions).FirstOrDefault(d => d.DictId == dictId);
-        List<SelectListItem> result = new();
-
-        if (dict != null)
+        if (!_cache.TryGetValue(dictId, out List<SelectListItem>? cacheValue))
         {
-            var group = new SelectListGroup() { Disabled = false, Name = dict.DisplayName };
+            Dict? dict = _context.Dicts.Include(d => d.DictOptions).FirstOrDefault(d => d.DictId == dictId);
+            List<SelectListItem> resultFromDatabase = new();
 
-            foreach (var item in dict.DictOptions)
+            if (dict != null)
             {
-                result.Add(new SelectListItem()
+                var group = new SelectListGroup() { Disabled = false, Name = dict.DisplayName };
+
+                foreach (var item in dict.DictOptions)
                 {
-                    Disabled = false,
-                    Group = group,
-                    Selected = false,
-                    Text = item.DisplayName,
-                    Value = item.DictOptionId.ToString()
-                });
+                    resultFromDatabase.Add(new SelectListItem()
+                    {
+                        Disabled = false,
+                        Group = group,
+                        Selected = false,
+                        Text = item.DisplayName,
+                        Value = item.DictOptionId.ToString()
+                    });
+                }
             }
+
+            return resultFromDatabase;
+        }
+        else
+        {
+            return cacheValue ?? new List<SelectListItem>();
         }
 
-        return result;
+        //Dict? dict = _context.Dicts.Include(d => d.DictOptions).FirstOrDefault(d => d.DictId == dictId);
+        //List<SelectListItem> result = new();
+
+        //if (dict != null)
+        //{
+        //    var group = new SelectListGroup() { Disabled = false, Name = dict.DisplayName };
+
+        //    foreach (var item in dict.DictOptions)
+        //    {
+        //        result.Add(new SelectListItem()
+        //        {
+        //            Disabled = false,
+        //            Group = group,
+        //            Selected = false,
+        //            Text = item.DisplayName,
+        //            Value = item.DictOptionId.ToString()
+        //        });
+        //    }
+        //}
+
+        //return result;
     }
 
     public int? GetDictIdFromDictOptionId(int dictOptionId)

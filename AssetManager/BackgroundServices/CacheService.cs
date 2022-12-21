@@ -1,74 +1,68 @@
 ﻿using AssetManager.Data;
 using AssetManager.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using System.Threading;
 
 namespace AssetManager.BackgroundServices;
 
-//public class CacheService : BackgroundService
-//{
-//    private Task? _executeTask;
-//    private CancellationTokenSource? _stoppingCts;
-//    private AssetManagerContext _context;
+public class CacheService : BackgroundService
+{
+    private readonly IMemoryCache _cache;
 
-//    private readonly ILogger<CacheService> _logger;
-//    private readonly IMemoryCache _cache;
+    private readonly int _refreshIntervalMinutes;
+    private List<Dict> _dicts;
 
-//    private readonly int _minutesToCache;
-//    private readonly int _refreshIntervalInSeconds;
-//    private List<Dict> _dicts;
+    public IServiceProvider Services { get; }
 
+    public CacheService(IMemoryCache cache, IServiceProvider services)
+    {
+        Services = services;
+        _cache = cache;
+        _refreshIntervalMinutes = 5;
+        _dicts = new List<Dict>();
+    }
 
-//    public CacheService(ILogger<CacheService> logger, IMemoryCache cache, AssetManagerContext context)
-//    {
-//        _context = context;
-//        _logger = logger;
-//        _cache = cache;
-//        _minutesToCache = 5;
-//        _refreshIntervalInSeconds = (_minutesToCache * 60) - 10;
-//        _dicts = new List<Dict>();
-//    }
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        var _getCacheDataTimer = new Timer(UpdateCache, null, TimeSpan.Zero, TimeSpan.FromMinutes(_refreshIntervalMinutes));        
+    }
 
-//    //public Task StartAsync(CancellationToken cancellationToken)
-//    //{
-//    //    // Create linked token to allow cancelling executing task from provided token
-//    //    _stoppingCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+    private void UpdateCache(object? state)
+    {
+        using (var scope = Services.CreateScope())
+        {
+            var _context = scope.ServiceProvider.GetService<AssetManagerContext>();
 
-//    //    // get cache data from db
-//    //    var _getCacheDataTimer = new Timer(GetDataToCache, null, TimeSpan.Zero, TimeSpan.FromSeconds(300));
+            if (_context == null) return;
 
-//    //    // set cache variables
-//    //    var _updateCacheTimer = new Timer(CacheData, null, new TimeSpan(0,0,5), TimeSpan.FromSeconds(300));
+            var dicts = _context.Dicts.Include(d => d.DictOptions).ToList();
 
+            foreach (var dict in dicts)
+            {
+                List<SelectListItem> dictOptionList = new();
 
-//    //    // Otherwise it's running
-//    //    return Task.CompletedTask;
-//    //}
+                if (dict == null) return;
 
-//    //protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-//    //{
-//    //    // get cache data from db
-//    //    var _getCacheDataTimer = new Timer(GetDataToCache, null, TimeSpan.Zero, TimeSpan.FromSeconds(300));
+                var group = new SelectListGroup() { Disabled = false, Name = dict.DisplayName };
 
-//    //    // set cache variables
-//    //    var _updateCacheTimer = new Timer(CacheData, null, new TimeSpan(0, 0, 5), TimeSpan.FromSeconds(300));
+                foreach (var item in dict.DictOptions)
+                {
+                    dictOptionList.Add(new SelectListItem()
+                    {
+                        Disabled = false,
+                        Group = group,
+                        Selected = false,
+                        Text = item.DisplayName,
+                        Value = item.DictOptionId.ToString()
+                    });
+                }
 
-//    //    _dicts = _context.Dicts.Include(d => d.DictOptions).ToList();
-
-//    //    await _cache.Set("dicts", _dicts, _minutesToCache);
-
-//    //}
-
-
-//    //private void GetDataToCache(object? state)
-//    //{
-//    //    _dicts = _context.Dicts.Include(d => d.DictOptions).ToList();
-//    //}
-
-//    //private void CacheData(object? state)
-//    //{
-//    //    await _cache.SetAsync("dicts",_dicts, _minutesToCache);
-//    //}
-//}
+                _cache.Set(dict.DictId, dictOptionList);
+            }
+        }
+    }
+}

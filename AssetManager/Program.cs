@@ -40,7 +40,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     .AddEntityFrameworkStores<AssetManagerContext>();
 
 builder.Services.AddMemoryCache();
-//builder.Services.AddHostedService<CacheService>();
+builder.Services.AddHostedService<CacheService>();
 
 var app = builder.Build();
 
