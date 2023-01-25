@@ -27,8 +27,8 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
-[Bb]in/
-[Oo]bj/
+AssetManager/[Bb]in/
+AssetManager/[Oo]bj/
 [Ll]og/
 [Ll]ogs/
 
