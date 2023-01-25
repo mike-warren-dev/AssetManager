@@ -8,51 +8,51 @@
     <form id="orderForm" novalidate="novalidate">
         @Html.AntiForgeryToken()
         <div class="modal-header" style="background-color:#F2F2F2">
-            <h5 class="modal-title text-black">@(Model.OrderDto.OrderId == null ? "Add" : "Edit") Order</h5>
+            <h5 class="modal-title text-black">@(Model.Order.OrderId == null ? "Add" : "Edit") Order</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <div class="row">
                 <div class="col-6">
 
-                    <input asp-for="OrderDto.OrderId" type="hidden">
+                    <input asp-for="Order.OrderId" type="hidden">
 
-                    <input asp-for="OrderDto.ReceivedDttm" type="hidden">
+                    <input asp-for="Order.ReceivedDttm" type="hidden">
 
-                    <label asp-for="OrderDto.ExternalOrderId">External Order ID</label><span style="color:red">*</span>
-                    <input asp-for="OrderDto.ExternalOrderId" class="form-control" />
+                    <label asp-for="Order.ExternalOrderId">External Order ID</label><span style="color:red">*</span>
+                    <input asp-for="Order.ExternalOrderId" class="form-control" />
                     <div style="min-height:15px">
-                        <span asp-validation-for="OrderDto.ExternalOrderId" class="text-danger small"></span>
+                        <span asp-validation-for="Order.ExternalOrderId" class="text-danger small"></span>
                     </div>
 
-                    <label asp-for="OrderDto.VendorId">Vendor</label><span style="color:red">*</span>
-                    <select asp-for="OrderDto.VendorId" class="form-select"
+                    <label asp-for="Order.VendorId">Vendor</label><span style="color:red">*</span>
+                    <select asp-for="Order.VendorId" class="form-select"
                             asp-items="@(new SelectList(Model.VendorOptions,"Value","Text"))">
                         <option disabled selected class="text-muted">select</option>
                     </select>
                     <div style="min-height:15px">
-                        <span asp-validation-for="OrderDto.VendorId" class="text-danger small"></span>
+                        <span asp-validation-for="Order.VendorId" class="text-danger small"></span>
                     </div>
 
-                    <label asp-for="OrderDto.Cost">Cost</label><span style="color:red">*</span>
-                    <input asp-for="OrderDto.Cost" class="form-control" />
+                    <label asp-for="Order.Cost">Cost</label><span style="color:red">*</span>
+                    <input asp-for="Order.Cost" class="form-control" />
                     <div style="min-height:15px">
-                        <span asp-validation-for="OrderDto.Cost" class="text-danger small"></span>
+                        <span asp-validation-for="Order.Cost" class="text-danger small"></span>
                     </div>
 
-                    <label asp-for="OrderDto.PurchaserId">Purchaser</label><span style="color:red">*</span>
-                    <select asp-for="OrderDto.PurchaserId" class="form-select" data-active-id="@(Model?.OrderDto?.PurchaserId != null ? Model.OrderDto.PurchaserId : 0)">
+                    <label asp-for="Order.PurchaserId">Purchaser</label><span style="color:red">*</span>
+                    <select asp-for="Order.PurchaserId" class="form-select" data-active-id="@(Model?.Order?.PurchaserId != null ? Model.Order.PurchaserId : 0)">
                         @{
                             if (Model?.People != null)
                             {
-                                if (Model.OrderDto.OrderId == null)
+                                if (Model.Order.OrderId == null)
                                 {
                                     <option disabled selected class="text-muted"></option>
                                 }
 
                                 foreach (var item in Model.People)
                                 {
-                                    if (item.PersonId == Model.OrderDto?.ApproverId)
+                                    if (item.PersonId == Model.Order?.ApproverId)
                                     {
                                         <option value="@item.PersonId" selected>@($"{item.FirstName} {item.LastName}")</option>
                                     }
@@ -65,22 +65,22 @@
                         }
                     </select>
                     <div style="min-height:15px">
-                        <span asp-validation-for="OrderDto.PurchaserId" class="text-danger small"></span>
+                        <span asp-validation-for="Order.PurchaserId" class="text-danger small"></span>
                     </div>
 
-                    <label asp-for="OrderDto.ApproverId">Approver</label><span style="color:red">*</span>
-                    <select asp-for="OrderDto.ApproverId" class="form-select" data-active-id="@(Model?.OrderDto?.ApproverId != null ? Model.OrderDto.ApproverId : 0)">
+                    <label asp-for="Order.ApproverId">Approver</label><span style="color:red">*</span>
+                    <select asp-for="Order.ApproverId" class="form-select" data-active-id="@(Model?.Order?.ApproverId != null ? Model.Order.ApproverId : 0)">
                         @{
                             if (Model?.People != null)
                             {
-                                if (Model.OrderDto.OrderId == null)
+                                if (Model.Order.OrderId == null)
                                 {
                                     <option disabled selected class="text-muted"></option>
                                 }
 
                                 foreach (var item in Model.People)
                                 {
-                                    if (item.PersonId == Model.OrderDto?.ApproverId)
+                                    if (item.PersonId == Model.Order?.ApproverId)
                                     {
                                         <option value="@item.PersonId" selected>@($"{item.FirstName} {item.LastName}")</option>
                                     }
@@ -93,39 +93,39 @@
                         }
                     </select>
                     <div style="min-height:15px">
-                        <span asp-validation-for="OrderDto.ApproverId" class="text-danger small"></span>
+                        <span asp-validation-for="Order.ApproverId" class="text-danger small"></span>
                     </div>
 
-                    <label asp-for="OrderDto.ApprovedDttm">Approved</label>
-                    <input asp-for="OrderDto.ApprovedDttm" class="form-control" type="datetime-local" />
+                    <label asp-for="Order.ApprovedDttm">Approved</label>
+                    <input asp-for="Order.ApprovedDttm" class="form-control" type="datetime-local" />
                     <div style="min-height:15px">
-                        <span asp-validation-for="OrderDto.ApprovedDttm" class="text-danger small"></span>
+                        <span asp-validation-for="Order.ApprovedDttm" class="text-danger small"></span>
                     </div>
 
                 </div>
                 <div class="col-6">
                     <container id="productsContainer">
                         @{
-                            if (Model?.OrderDto.Products != null)
+                            if (Model?.Order.Products != null)
                             {
-                                for (var i = 0; i < Model.OrderDto.Products.Count; i++)
+                                for (var i = 0; i < Model.Order.Products.Count; i++)
                                 {
                                     <div class="order-product row" data-index="@i">
                                         <div class="col-7">
-                                            <label asp-for="@Model.OrderDto.Products[i].ProductId">Product</label>
-                                            <select asp-for="@Model.OrderDto.Products[i].ProductId" class="form-select" asp-items="@(new SelectList(Model.ProductOptions,"Value","Text"))">
+                                            <label asp-for="@Model.Order.Products[i].ProductId">Product</label>
+                                            <select asp-for="@Model.Order.Products[i].ProductId" class="form-select" asp-items="@(new SelectList(Model.ProductOptions,"Value","Text"))">
                                                 <option disabled selected class="text-muted">select</option>
                                             </select>
                                             <div style="min-height:15px">
-                                                <span asp-validation-for="@Model.OrderDto.Products[i].ProductId" class="text-danger small"></span>
+                                                <span asp-validation-for="@Model.Order.Products[i].ProductId" class="text-danger small"></span>
                                             </div>
                                         </div>
 
                                         <div class="col-3">
-                                            <label asp-for="@Model.OrderDto.Products[i].Count">Count</label>
-                                            <input asp-for="@Model.OrderDto.Products[i].Count" class="form-control" />
+                                            <label asp-for="@Model.Order.Products[i].Count">Count</label>
+                                            <input asp-for="@Model.Order.Products[i].Count" class="form-control" />
                                             <div style="min-height:15px">
-                                                <span asp-validation-for="@Model.OrderDto.Products[i].Count" class="text-danger small"></span>
+                                                <span asp-validation-for="@Model.Order.Products[i].Count" class="text-danger small"></span>
                                             </div>
                                         </div>
 
@@ -155,15 +155,15 @@
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 
 <script>
-    $("#OrderDto_ExternalOrderId").focus();
+    $("#Order_ExternalOrderId").focus();
 
     function addProductFields() {
         var nextIndex = parseInt($("#productsContainer .row:last-child").attr("data-index")) + 1;
 
-        var $field = $(`<div class="row" data-index="${nextIndex}"><div class="col-7"><label for="OrderDto_Products_${nextIndex}__ProductId">Product</label> <select class="form-select" data-val="true" data-val-required="The Product field is required." id="OrderDto_Products_${nextIndex}__ProductId" name="OrderDto.Products[${nextIndex}].ProductId"></select><div style="min-height:15px"><span class="text-danger small field-validation-valid" data-valmsg-for="OrderDto.Products[${nextIndex}].ProductId" data-valmsg-replace="true"/></div></div><div class="col-3"><label for="OrderDto_Products_${nextIndex}__Count">Count</label><input class="form-control" type="number" data-val="true" data-val-required="The Count field is required." id="OrderDto_Products_${nextIndex}__Count" name="OrderDto.Products[${nextIndex}].Count" value=""><div style="min-height:15px"><span class="text-danger small field-validation-valid" data-valmsg-for="OrderDto.Products[${nextIndex}].Count" data-valmsg-replace="true"/></div></div><div class="col-2 align-self-center"><i class="btn fa-solid fa-xmark" style="color:red" onclick="toggleElement(this)"/></div></div>`);
+        var $field = $(`<div class="row" data-index="${nextIndex}"><div class="col-7"><label for="Order_Products_${nextIndex}__ProductId">Product</label> <select class="form-select" data-val="true" data-val-required="The Product field is required." id="Order_Products_${nextIndex}__ProductId" name="Order.Products[${nextIndex}].ProductId"></select><div style="min-height:15px"><span class="text-danger small field-validation-valid" data-valmsg-for="Order.Products[${nextIndex}].ProductId" data-valmsg-replace="true"/></div></div><div class="col-3"><label for="Order_Products_${nextIndex}__Count">Count</label><input class="form-control" type="number" data-val="true" data-val-required="The Count field is required." id="Order_Products_${nextIndex}__Count" name="Order.Products[${nextIndex}].Count" value=""><div style="min-height:15px"><span class="text-danger small field-validation-valid" data-valmsg-for="Order.Products[${nextIndex}].Count" data-valmsg-replace="true"/></div></div><div class="col-2 align-self-center"><i class="btn fa-solid fa-xmark" style="color:red" onclick="toggleElement(this)"/></div></div>`);
         $("#productsContainer").append($field);
 
-        $options = $("#OrderDto_Products_0__ProductId option").clone();
+        $options = $("#Order_Products_0__ProductId option").clone();
 
         for (i = 0; i < $options.length; i++) {
             if (i == 0) continue;
@@ -171,7 +171,7 @@
             $($options[i]).removeAttr("selected")
         }
 
-        $options.appendTo(`#OrderDto_Products_${nextIndex}__ProductId`);
+        $options.appendTo(`#Order_Products_${nextIndex}__ProductId`);
     }
 
     function toggleElement(el) {
@@ -181,7 +181,7 @@
 
         var index = parseInt($temp.attr("data-index"));
 
-        $(`#OrderDto_Products_${index}__Count`).val("-1");
+        $(`#Order_Products_${index}__Count`).val("-1");
     }
 
     $(function () {
@@ -190,23 +190,23 @@
 
             var fdata = new FormData();
 
-            var orderId = $("#OrderDto_OrderId").val();
+            var orderId = $("#Order_OrderId").val();
 
-            fdata.append("OrderDto.OrderId", orderId);
-            fdata.append("OrderDto.ReceivedDttm", $("#OrderDto_ReceivedDttm").val());
-            fdata.append("OrderDto.ExternalOrderId", $("#OrderDto_ExternalOrderId").val());
-            fdata.append("OrderDto.VendorId", $("#OrderDto_VendorId").val());
-            fdata.append("OrderDto.Cost", $("#OrderDto_Cost").val());
-            fdata.append("OrderDto.PurchaserId", $("#OrderDto_PurchaserId").val());
-            fdata.append("OrderDto.ApproverId", $("#OrderDto_ApproverId").val());
+            fdata.append("Order.OrderId", orderId);
+            fdata.append("Order.ReceivedDttm", $("#Order_ReceivedDttm").val());
+            fdata.append("Order.ExternalOrderId", $("#Order_ExternalOrderId").val());
+            fdata.append("Order.VendorId", $("#Order_VendorId").val());
+            fdata.append("Order.Cost", $("#Order_Cost").val());
+            fdata.append("Order.PurchaserId", $("#Order_PurchaserId").val());
+            fdata.append("Order.ApproverId", $("#Order_ApproverId").val());
             
 
             var products = $("#productsContainer").children().length;
 
             for (var i = 0; i < products; i++)
             {
-                fdata.append(`OrderDto.Products[${i}].ProductId`, $(`#OrderDto_Products_${i}__ProductId`).val());
-                fdata.append(`OrderDto.Products[${i}].Count`, $(`#OrderDto_Products_${i}__Count`).val());
+                fdata.append(`Order.Products[${i}].ProductId`, $(`#Order_Products_${i}__ProductId`).val());
+                fdata.append(`Order.Products[${i}].Count`, $(`#Order_Products_${i}__Count`).val());
             }
 
             $.ajax({

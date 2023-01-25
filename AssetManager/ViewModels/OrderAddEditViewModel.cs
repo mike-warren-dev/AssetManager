@@ -8,10 +8,10 @@ public class OrderAddEditViewModel
 {
     public OrderAddEditViewModel()
     {
-        OrderDto = new();
+        Order = new();
     }
 
-    public OrderAddEditDto OrderDto { get; set; }
+    public Order Order { get; set; }
 
     public IEnumerable<Person> People { get; set; } = null!;
     public IEnumerable<SelectListItem> VendorOptions { get; set; } = null!;

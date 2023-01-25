@@ -19,7 +19,7 @@ public class OrderService : IOrderService
         _dictRepository = dictRepository;
     }
 
-    public List<OrderDisplayDto> GetAllOrders()
+    public List<Order> GetAllOrders()
     {
         return _orderRepository.GetAllOrders();
     }
@@ -31,17 +31,40 @@ public class OrderService : IOrderService
         return _orderRepository.GetPageOfOrders(pageSize,pageNumber);
     }
 
-    public OrderAddEditDto? GetOrderById(int id)
+    public Order GetOrderById(int id)
     {
-        return _orderRepository.GetOrderById(id);
+        var order = _orderRepository.GetOrderById(id);
+
+        if (order == null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        return order;
     }
 
-    public OrderDisplayDto? GetOrderDisplayDtoById(int id)
+    public Order GetOrderDisplayDtoById(int id)
     {
-        return _orderRepository.GetOrderDisplayDtoById(id);
+        if (id == 0)
+        {
+            throw new InvalidOperationException();
+        }
+        else
+        {
+            var order = _orderRepository.GetOrderDisplayDtoById(id);
+
+            if (order == null)
+            {
+                throw new InvalidOperationException();
+            }
+            else
+            {
+                return order;
+            }
+        }
     }
 
-    public int Create(OrderAddEditDto dto)
+    public int Create(Order dto)
     {
         List<ProductOrder> products = new ();
         
@@ -58,7 +81,7 @@ public class OrderService : IOrderService
         return _orderRepository.Create(dto);
     }
 
-    public void Update(OrderAddEditDto dto)
+    public void Update(Order dto)
     {
         List<ProductOrder> products = new();
 

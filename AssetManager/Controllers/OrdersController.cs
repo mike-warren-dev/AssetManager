@@ -40,7 +40,7 @@ namespace AssetManager.Controllers
         public ActionResult AddEdit(int id)
         {
             OrderAddEditViewModel vm = new();
-            vm.OrderDto.Products.Add(new ProductOrder());
+            vm.Order.Products.Add(new ProductOrder());
             vm.People = _peopleService.GetAllPeople();
             vm.VendorOptions = _dictService.GetDictItems(104);
             vm.ProductOptions = _dictService.GetDictItems(102);
@@ -55,7 +55,7 @@ namespace AssetManager.Controllers
 
                 if (order != null)
                 {
-                    vm.OrderDto = order;
+                    vm.Order = order;
                     return PartialView("_AddEditOrderModal", vm);
                 }
                 else
@@ -69,21 +69,21 @@ namespace AssetManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddEdit(OrderAddEditViewModel vm)
         {
-            if (vm.OrderDto == null) return RedirectToAction(nameof(Index));
+            if (vm.Order == null) return RedirectToAction(nameof(Index));
 
             int orderId;
 
             try
             {
-                if (vm.OrderDto.OrderId == null)
+                if (vm.Order.OrderId == 0)
                 {
-                    orderId = _orderService.Create(vm.OrderDto);
+                    orderId = _orderService.Create(vm.Order);
                 }
                 else
                 {
-                    _orderService.Update(vm.OrderDto);
+                    _orderService.Update(vm.Order);
 
-                    orderId = (int)vm.OrderDto.OrderId;
+                    orderId = (int)vm.Order.OrderId;
                 }
 
                 var dto = _orderService.GetOrderDisplayDtoById(orderId);

@@ -15,24 +15,10 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
 
-    public List<OrderDisplayDto> GetAllOrders()
+    public List<Order> GetAllOrders()
     {
         return _context.Orders.Include(o => o.Approver)
-                              .Include(o => o.Purchaser)
-                              .Select(o => new OrderDisplayDto() 
-                              {
-                                OrderId = o.OrderId,
-                                ExternalOrderId = o.ExternalOrderId,
-                                Vendor = o.Vendor.DisplayName,
-                                Products = o.Products,
-                                Cost = o.Cost,
-                                PurchaserId = o.PurchaserId,
-                                PurchaserName = o.Purchaser != null ? $"{o.Purchaser.FirstName} {o.Purchaser.LastName}" : "",
-                                ApproverId = o.ApproverId,
-                                ApproverName = o.Approver  != null ? $"{o.Approver.FirstName} {o.Approver.LastName}" : "",
-                                ApprovedDttm = o.ApprovedDttm,
-                                ReceivedDttm = o.ReceivedDttm
-                              }).AsNoTracking().ToList();
+                              .Include(o => o.Purchaser).ToList();
     }
 
     public OrderGridViewModel GetPageOfOrders(int pageSize, int pageNumber)
@@ -45,100 +31,89 @@ public class OrderRepository : IOrderRepository
         vm.PageCount = (orderCount + pageSize - 1 )/ pageSize;
 
         var query = _context.Orders.Include(o => o.Approver)
-                      .Include(o => o.Purchaser)
-                      .Include(o => o.Products)
-                        .ThenInclude(p => p.Product)
-                      .Select(o => new OrderDisplayDto()
-                      {
-                          OrderId = o.OrderId,
-                          ExternalOrderId = o.ExternalOrderId,
-                          Vendor = o.Vendor.DisplayName,
-                          Products = o.Products,
-                          Cost = o.Cost,
-                          PurchaserId = o.PurchaserId,
-                          PurchaserName = o.Purchaser != null ? $"{o.Purchaser.FirstName} {o.Purchaser.LastName}" : "",
-                          ApproverId = o.ApproverId,
-                          ApproverName = o.Approver != null ? $"{o.Approver.FirstName} {o.Approver.LastName}" : "",
-                          ApprovedDttm = o.ApprovedDttm,
-                          ReceivedDttm = o.ReceivedDttm
-                      }).AsNoTracking();
+                                   .Include(o => o.Purchaser)
+                                   .Include(o => o.Vendor)
+                                   .Include(o => o.Products)
+                                    .ThenInclude(p => p.Product).AsNoTracking();
 
         vm.Orders = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
         return vm;
     }
 
-    public OrderAddEditDto? GetOrderById(int id)
+    public Order GetOrderById(int id)
     {
-        OrderAddEditDto? dto = _context.Orders.Include(o => o.Products).Include(o => o.Purchaser).Include(o => o.Approver).Select(o => new OrderAddEditDto()
-                                                    {OrderId = o.OrderId,
-                                                     ExternalOrderId = o.ExternalOrderId,
-                                                     VendorId = o.VendorId,
-                                                     Products = o.Products,                                           
-                                                     Cost = o.Cost,
-                                                     PurchaserId = o.PurchaserId,
-                                                     ApproverId = o.ApproverId,
-                                                     ApprovedDttm = o.ApprovedDttm,
-                                                     ReceivedDttm= o.ReceivedDttm
-                                                    }).AsNoTracking().FirstOrDefault(o => o.OrderId == id);
+        var order = _context.Orders.Include(o => o.Products).Include(o => o.Purchaser).Include(o => o.Approver).FirstOrDefault(o => o.OrderId == id);
 
-        return dto;
+        if (order == null)
+        {
+            return new Order();
+        }
+        else
+        {
+            return order;
+        }
     }
 
-    public OrderDisplayDto? GetOrderDisplayDtoById(int id)
+    public Order GetOrderDisplayDtoById(int id)
     { 
-        OrderDisplayDto? dto = _context.Orders.Include(o => o.Products).ThenInclude(p => p.Product).Include(o => o.Purchaser).Include(o => o.Approver).Select(o => new OrderDisplayDto()
-        {
-            OrderId = o.OrderId,
-            ExternalOrderId = o.ExternalOrderId,
-            Vendor = o.Vendor.DisplayName,
-            Products = o.Products,
-            Cost = o.Cost,
-            PurchaserId = o.PurchaserId,
-            PurchaserName = o.Purchaser != null ? $"{o.Purchaser.FirstName} {o.Purchaser.LastName}" : "",
-            ApproverId = o.ApproverId,
-            ApproverName = o.Approver != null ? $"{o.Approver.FirstName} {o.Approver.LastName}" : "",
-            ApprovedDttm = o.ApprovedDttm,
-            ReceivedDttm = o.ReceivedDttm
-        }).AsNoTracking().FirstOrDefault(o => o.OrderId == id);
+        var order = _context.Orders.Include(o => o.Products)
+                                    .ThenInclude(p => p.Product)
+                                   .Include(o => o.Purchaser)
+                                   .Include(o => o.Approver).FirstOrDefault(o => o.OrderId == id);
 
-        return dto;
+        if (order == null)
+        {
+            return new Order();
+        }
+        else
+        {
+            return order;
+        }
     }
 
-    public int Create(OrderAddEditDto submission)
+    public int Create(Order submission)
     {
-        Order order = new()
-        {
-            ExternalOrderId = submission.ExternalOrderId,
-            VendorId = submission.VendorId,
-            Products = submission.Products == null ? new List<ProductOrder>() : submission.Products,
-            Cost = submission.Cost == null ? 0 : (decimal)submission.Cost,
-            PurchaserId = submission.PurchaserId == null ? 0 : (int)submission.PurchaserId,
-            ApproverId = submission.ApproverId == null ? 0 : (int)submission.ApproverId,
-            ApprovedDttm = submission.ApprovedDttm,
-            ReceivedDttm = submission.ReceivedDttm
-        };
+        //Order order = new()
+        //{
+        //    ExternalOrderId = submission.ExternalOrderId,
+        //    VendorId = submission.VendorId,
+        //    Products = submission.Products == null ? new List<ProductOrder>() : submission.Products,
+        //    //Cost = submission.Cost == null ? 0 : (decimal)submission.Cost,
+        //    //PurchaserId = submission.PurchaserId == null ? 0 : (int)submission.PurchaserId,
+        //    //ApproverId = submission.ApproverId == null ? 0 : (int)submission.ApproverId,
+        //    Cost = (decimal)submission.Cost,
+        //    PurchaserId = (int)submission.PurchaserId,
+        //    ApproverId = (int)submission.ApproverId,
+        //    ApprovedDttm = submission.ApprovedDttm,
+        //    ReceivedDttm = submission.ReceivedDttm
+        //};
         
-        _context.Orders.Add(order);
+        //do some checking, dude!
+
+        _context.Orders.Add(submission);
         Save();
 
-        return order.OrderId;
+        return submission.OrderId;
     }
 
-    public void Update(OrderAddEditDto submission)
+    public void Update(Order submission)
     {
-        if (submission?.OrderId != null)
+        if (submission != null && submission.OrderId != 0)
         {
-            Order? order = _context.Orders.FirstOrDefault(o => o.OrderId == submission.OrderId);
+            var order = _context.Orders.FirstOrDefault(o => o.OrderId == submission.OrderId);
 
             if (order != null)
             {
                 order.ExternalOrderId = submission.ExternalOrderId;
                 order.VendorId = submission.VendorId;
                 order.Products = submission.Products == null ? new List<ProductOrder>() : submission.Products;
-                order.Cost = submission.Cost == null ? 0 : (decimal)submission.Cost;
-                order.PurchaserId = submission.PurchaserId == null ? 0 : (int)submission.PurchaserId;
-                order.ApproverId = submission.ApproverId == null   ? 0 : (int)submission.ApproverId;
+                //order.Cost = submission.Cost == null ? 0 : (decimal)submission.Cost;
+                //order.PurchaserId = submission.PurchaserId == null ? 0 : (int)submission.PurchaserId;
+                //order.ApproverId = submission.ApproverId == null   ? 0 : (int)submission.ApproverId;
+                order.Cost = (decimal)submission.Cost;
+                order.PurchaserId = (int)submission.PurchaserId;
+                order.ApproverId = (int)submission.ApproverId;
                 order.ApprovedDttm = submission.ApprovedDttm;
                 order.ReceivedDttm = submission.ReceivedDttm;
 
@@ -149,15 +124,14 @@ public class OrderRepository : IOrderRepository
 
     public void Delete(int id)
     {
-        if (id > 0)
-        {
-            Order? order = _context.Orders.Find(id);
+        if (id == 0) return;
+        
+        var order = _context.Orders.Find(id);
 
-            if (order != null)
-            {
-                _context.Orders.Remove(order);
-                Save();
-            }
+        if (order != null)
+        {
+            _context.Orders.Remove(order);
+            Save();
         }
     }
 

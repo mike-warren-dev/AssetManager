@@ -1,17 +1,17 @@
-﻿using AssetManager.DTOs;
+﻿using AssetManager.Models;
 using AssetManager.ViewModels;
 
 namespace AssetManager.Services
 {
     public interface IOrderService
     {
-        List<OrderDisplayDto> GetAllOrders();
-        int Create(OrderAddEditDto dto);
+        List<Order> GetAllOrders();
+        int Create(Order dto);
         void Delete(int id);
-        OrderAddEditDto? GetOrderById(int id);
+        Order? GetOrderById(int id);
         void ReceiveOrder(int id);
-        void Update(OrderAddEditDto dto);
-        OrderDisplayDto? GetOrderDisplayDtoById(int id);
+        void Update(Order dto);
+        Order? GetOrderDisplayDtoById(int id);
         OrderGridViewModel GetPageOfOrders(int pageNumber);
     }
 }
