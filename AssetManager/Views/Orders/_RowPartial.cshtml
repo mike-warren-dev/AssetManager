@@ -1,11 +1,11 @@
 ﻿@using AssetManager.DTOs
 
-@model OrderDisplayDto
+@model Order
 
 <tr data-id="@Model.OrderId.ToString()">
     <td class="align-middle">@Model.OrderId</td>
     <td class="align-middle">@Model.ExternalOrderId</td>
-    <td class="align-middle">@Model.Vendor</td>
+    <td class="align-middle">@Model.Vendor?.DisplayName</td>
     <td class="align-middle">
         @{
             if (Model.Products != null && Model.Products.Any())
@@ -22,8 +22,8 @@
         }
     </td>
     <td class="align-middle">@Model.Cost.ToString("C2")</td>
-    <td class="align-middle">@Model.PurchaserName</td>
-    <td class="align-middle">@Model.ApproverName</td>
+    <td class="align-middle">@($"{Model.Purchaser.FirstName} {Model.Purchaser.LastName}")</td>
+    <td class="align-middle">@($"{Model.Approver.FirstName} {Model.Approver.LastName}")</td>
     <td class="align-middle">@Model.ApprovedDttm?.ToString("g")</td>
     <td class="align-middle">@Model.ReceivedDttm?.ToString("g")</td>
     <td class="align-middle">

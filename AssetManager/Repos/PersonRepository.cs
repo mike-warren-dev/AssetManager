@@ -63,7 +63,7 @@ public class PersonRepository : IPersonRepository
 
     public void Update(Person submission)
     {
-        Person? person = _context.People.FirstOrDefault(p => p.PersonId == submission.PersonId);
+        var person = _context.People.FirstOrDefault(p => p.PersonId == submission.PersonId);
 
         if (person != null)
         {
@@ -77,7 +77,7 @@ public class PersonRepository : IPersonRepository
 
     public void Delete(int id)
     {
-        Person? person = _context.People.Include(p => p.Assets).FirstOrDefault(p => p.PersonId == id);
+        var person = _context.People.Include(p => p.Assets).FirstOrDefault(p => p.PersonId == id);
 
         if (person != null)
         {
@@ -94,7 +94,7 @@ public class PersonRepository : IPersonRepository
 
     public void RemoveAssetMap(int personId, int assetId)
     {
-        Person? person = _context.People.Include(p => p.Assets).FirstOrDefault(p => p.PersonId == personId);
+        var person = _context.People.Include(p => p.Assets).FirstOrDefault(p => p.PersonId == personId);
 
         if (person != null)
         {
@@ -110,19 +110,18 @@ public class PersonRepository : IPersonRepository
 
     public void AddAssetMap(int personId, int assetId)
     {
-        // IMPORTANT: This method assumes you've already done your null-checking upstream.
-
         var person = _context.People.Find(personId);
         var asset = _context.Assets.FirstOrDefault(a => a.AssetId == assetId);
         
-        if (asset != null)
+        if (asset != null && person != null)
         {
             person.Assets.Add(asset);
             Save();
         }
-
-        return;
-        
+        else
+        {
+            throw new InvalidOperationException();
+        }        
     }
 
     private void Save()
