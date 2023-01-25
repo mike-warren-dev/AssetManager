@@ -15,15 +15,9 @@ public class PersonRepository : IPersonRepository
         _context = context;
     }
 
-    public IEnumerable<PersonDisplayDto> GetAll()
+    public IEnumerable<Person> GetAll()
     {
-        var list = _context.People.Select(p => new PersonDisplayDto {
-                                    PersonId = p.PersonId,
-                                    FirstName = p.FirstName,
-                                    LastName = p.LastName,
-                                    Email = p.Email}).ToList();
-
-        return list;
+        return _context.People.ToList();
     }
 
     public PersonGridViewModel GetPageofPeople(int pageSize, int pageNumber)
@@ -35,13 +29,7 @@ public class PersonRepository : IPersonRepository
         var personCount = _context.People.Count();
         vm.PageCount = (personCount + pageSize - 1) / pageSize;
 
-        var query = _context.People.Select(p => new PersonDisplayDto
-        {
-            PersonId = p.PersonId,
-            FirstName = p.FirstName,
-            LastName = p.LastName,
-            Email = p.Email
-        });
+        var query = _context.People;
 
         vm.People = query.Skip((pageNumber-1) * pageSize).Take(pageSize).ToList();   
 
@@ -58,7 +46,7 @@ public class PersonRepository : IPersonRepository
                                 .ThenInclude(a => a.Site).FirstOrDefault(p => p.PersonId == id);
     }
 
-    public int Create(PersonAddEditDto submission)
+    public int Create(Person submission)
     {
         Person person = new()
         {
@@ -73,7 +61,7 @@ public class PersonRepository : IPersonRepository
         return person.PersonId;
     }
 
-    public void Update(PersonAddEditDto submission)
+    public void Update(Person submission)
     {
         Person? person = _context.People.FirstOrDefault(p => p.PersonId == submission.PersonId);
 
@@ -126,8 +114,15 @@ public class PersonRepository : IPersonRepository
 
         var person = _context.People.Find(personId);
         var asset = _context.Assets.FirstOrDefault(a => a.AssetId == assetId);
-        person.Assets.Add(asset);
-        Save();
+        
+        if (asset != null)
+        {
+            person.Assets.Add(asset);
+            Save();
+        }
+
+        return;
+        
     }
 
     private void Save()

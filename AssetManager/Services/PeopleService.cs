@@ -16,7 +16,7 @@ public class PeopleService : IPeopleService
         _personRepository = repository;
     }
 
-    public IEnumerable<PersonDisplayDto> GetAllPeople()
+    public IEnumerable<Person> GetAllPeople()
     {
         return _personRepository.GetAll();
     }
@@ -42,45 +42,46 @@ public class PeopleService : IPeopleService
         }
     }
 
-    public PersonAddEditDto GetPersonAddEditDtoById(int id)
+    public Person GetPersonAddEditDtoById(int id)
     {
-        PersonAddEditDto dto = new();
-
-        Person? person = _personRepository.GetPersonById(id);
+        Person person = _personRepository.GetPersonById(id);
 
         if (person == null) 
         { 
-            return new PersonAddEditDto();
+            return new Person();
         }
-
-        dto.PersonId = person.PersonId;
-        dto.FirstName = person.FirstName;
-        dto.LastName = person.LastName;
-        dto.Email = person.Email;
-        dto.Assets = person.Assets.Select(a => new AssetDisplayDto()
+        else
         {
-            AssetId = a.AssetId,
-            AssetTypeId = a.AssetTypeId,
-            AssetType = a.AssetType.DisplayName,
-            ModelId= a.ModelId,
-            Model = a.Model.DisplayName,
-            SiteId = a.SiteId,
-            Site = a.Site.DisplayName,
-            PersonId = a.PersonId
-        }).ToList();
+            return person;
+        }
+        //person.PersonId = person.PersonId;
+        //person.FirstName = person.FirstName;
+        //person.LastName = person.LastName;
+        //person.Email = person.Email;
+        //person.Assets = person.Assets.Select(a => new AssetDisplayDto()
+        //{
+        //    AssetId = a.AssetId,
+        //    AssetTypeId = a.AssetTypeId,
+        //    AssetType = a.AssetType.DisplayName,
+        //    ModelId= a.ModelId,
+        //    Model = a.Model.DisplayName,
+        //    SiteId = a.SiteId,
+        //    Site = a.Site.DisplayName,
+        //    PersonId = a.PersonId
+        //}).ToList();
 
-        return dto;
+        //return person;
 
     }
 
-    public int Create(PersonAddEditDto dto)
+    public int Create(Person person)
     {
-        return _personRepository.Create(dto);
+        return _personRepository.Create(person);
     }
 
-    public void Update(PersonAddEditDto dto)
+    public void Update(Person person)
     {
-        _personRepository.Update(dto);
+        _personRepository.Update(person);
     }
 
     public void Delete(int id)

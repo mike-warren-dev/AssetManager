@@ -19,7 +19,7 @@ public class Person
     [Required]
     [EmailAddress]
     public string Email { get; set; } = null!;
-    public virtual ApplicationUser ApplicationUser { get; set; }
+    public virtual ApplicationUser? ApplicationUser { get; set; }
     public List<Asset> Assets { get; set; } 
 }
 
