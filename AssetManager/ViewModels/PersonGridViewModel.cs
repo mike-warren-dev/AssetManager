@@ -1,4 +1,4 @@
-﻿using AssetManager.DTOs;
+﻿using AssetManager.Models;
 
 namespace AssetManager.ViewModels;
 
@@ -8,7 +8,7 @@ public class PersonGridViewModel
     {
         People = new();
     }
-    public List<PersonDisplayDto> People { get; set; }
+    public List<Person> People { get; set; }
     public int PageCount { get; set; }
     public int CurrentPage { get; set; }
 }

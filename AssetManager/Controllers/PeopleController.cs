@@ -40,7 +40,7 @@ public class PeopleController : Controller
     [HttpGet]
     public ActionResult GetPersonOptions()
     {
-        IEnumerable<PersonDisplayDto> list = _peopleService.GetAllPeople();
+        IEnumerable<Person> list = _peopleService.GetAllPeople();
 
         return PartialView("_PersonOptions",list);
     }
@@ -48,7 +48,7 @@ public class PeopleController : Controller
     [HttpGet]
     public ActionResult AddEdit(int id)
     {
-        PersonAddEditDto dto = new();
+        Person person = new();
 
         if (id == 0)
         {
@@ -58,45 +58,31 @@ public class PeopleController : Controller
         {
             try
             {
-                dto = _peopleService.GetPersonAddEditDtoById(id);
+                person = _peopleService.GetPersonAddEditDtoById(id);
             }
             catch
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            return PartialView("_AddEditPersonModal", dto);
+            return PartialView("_AddEditPersonModal", person);
         }
     }
 
     [HttpPost] //[ValidateAntiForgeryToken]
-    public ActionResult AddEdit([Bind("PersonId,FirstName,LastName,Email")]PersonAddEditDto dto)
+    public ActionResult AddEdit([Bind("PersonId,FirstName,LastName,Email")]Person person)
     {
-        if (ModelState.IsValid)
+        if (person.PersonId == 0)
         {
-            try
-            {
-                if (dto.PersonId == null)
-                {
-                    dto.PersonId = _peopleService.Create(dto);
+            person.PersonId = _peopleService.Create(person);
 
-                    return PartialView("_RowPartial", dto);
-                }
-                else
-                {
-                    _peopleService.Update(dto);
-
-                    return PartialView("_RowPartial", dto);
-                }
-            }
-            catch
-            {
-                return Ok();
-            }
+            return PartialView("_RowPartial", person);
         }
         else
         {
-            return Ok();
+            _peopleService.Update(person);
+
+            return PartialView("_RowPartial", person);
         }
     }
 

@@ -6,10 +6,10 @@ namespace AssetManager.Repos
 {
     public interface IPersonRepository
     {
-        IEnumerable<PersonDisplayDto> GetAll();
+        IEnumerable<Person> GetAll();
         Person? GetPersonById(int id);
-        int Create(PersonAddEditDto submission);
-        void Update(PersonAddEditDto submission);
+        int Create(Person submission);
+        void Update(Person submission);
         void Delete(int id);
         void RemoveAssetMap(int personId, int assetId);
         void AddAssetMap(int personId, int assetId);
