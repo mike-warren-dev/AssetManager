@@ -22,10 +22,10 @@
                     {
                         <tr data-id="@a.AssetId.ToString()">
                             <td class="align-middle">@a.AssetId</td>
-                            <td class="align-middle">@a.AssetType</td>
-                            <td class="align-middle">@a.Model</td>
-                            <td class="align-middle">@a.Site</td>
-                            <td class="align-middle">@a.PersonName</td>
+                            <td class="align-middle">@a.AssetType?.DisplayName</td>
+                            <td class="align-middle">@a.Model?.DisplayName</td>
+                            <td class="align-middle">@a.Site?.DisplayName</td>
+                            <td class="align-middle">@($"{a.Person?.FirstName} {a.Person?.LastName}")</td>
                             <td class="align-middle">
                                 <div class="dropdown">
                                     

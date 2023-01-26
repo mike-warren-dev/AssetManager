@@ -1,18 +1,17 @@
-﻿using AssetManager.DTOs;
-using AssetManager.Models;
+﻿using AssetManager.Models;
 using AssetManager.ViewModels;
 
 namespace AssetManager.Services
 {
     public interface IAssetService
     {
-        List<AssetDisplayDto> GetAllAssets();
+        List<Asset> GetAllAssets();
         AssetGridViewModel GetPageOfAssets(int pageNumber);
-        int Create(AssetAddEditDto asset);
+        int Create(Asset asset);
         void Delete(int id);
         Asset? GetAssetById(int id);
-        AssetDisplayDto? GetAssetDisplayDtoById(int id);
-        void Update(AssetAddEditDto asset);
-        List<AssetDisplayDto> GetAssetsByPersonId(int personId);
+        Asset? GetAssetDisplayDtoById(int id);
+        void Update(Asset updatedAsset);
+        List<Asset> GetAssetsByPersonId(int personId);
     }
 }

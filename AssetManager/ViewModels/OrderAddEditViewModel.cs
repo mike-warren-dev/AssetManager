@@ -1,5 +1,4 @@
-﻿using AssetManager.DTOs;
-using AssetManager.Models;
+﻿using AssetManager.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AssetManager.ViewModels;

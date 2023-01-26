@@ -1,5 +1,4 @@
-﻿using AssetManager.DTOs;
-using AssetManager.Models;
+﻿using AssetManager.Models;
 using AssetManager.Repos;
 using AssetManager.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -111,11 +110,11 @@ public class OrderService : IOrderService
         {
             foreach (var p in order.Products)
             {
-                List<AssetAddEditDto> assets = new();
+                List<Asset> assets = new();
 
                 for (var i = 0; i < p.Count; i++)
                 {
-                    assets.Add(new AssetAddEditDto()
+                    assets.Add(new Asset()
                     {
                         // disgusting--will fix after implementing dict cacheing. 
                         AssetTypeId = p.ProductId switch

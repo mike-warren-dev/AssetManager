@@ -1,6 +1,4 @@
-﻿using AssetManager.Data;
-using AssetManager.DTOs;
-using AssetManager.Models;
+﻿using AssetManager.Models;
 using AssetManager.Repos;
 using AssetManager.Services;
 using AssetManager.ViewModels;
@@ -106,34 +104,27 @@ public class PeopleController : Controller
     [HttpPost]
     public ActionResult MapAsset(int personId, int assetId)
     {
-        Person? person = _peopleService.GetPersonById(personId);
-        Asset? asset = _assetService.GetAssetById(assetId);
+        var person = _peopleService.GetPersonById(personId);
+        var asset = _assetService.GetAssetById(assetId);
 
-        if (person == null) return BadRequest("The Person is not valid.");
+        if (person == null) 
+            return BadRequest("The Person is not valid.");
 
-        if (asset == null) return BadRequest("Enter a valid Asset ID");
+        if (asset == null) 
+            return BadRequest("Enter a valid Asset ID");
 
         if (asset.PersonId != null)
         { 
-            Person? otherPerson = _peopleService.GetPersonById((int)asset.PersonId);
+            var otherPerson = _peopleService.GetPersonById((int)asset.PersonId);
 
             return BadRequest($"The Asset is already mapped to {otherPerson.FirstName} {otherPerson.LastName}");
         }
 
-        if (person.Assets.Contains(asset) == true) return BadRequest($"The Asset is already mapped.");
+        if (person.Assets.Contains(asset) == true) 
+            return BadRequest($"The Asset is already mapped.");
 
         _peopleService.AddAssetMap(personId, assetId);
 
-        var dto = new AssetDisplayDto()
-        {
-            AssetId = asset.AssetId,
-            AssetTypeId = asset.AssetTypeId,
-            AssetType = asset.AssetType.DisplayName,
-            Model = asset.Model.DisplayName,
-            Site = asset.Site.DisplayName,
-            PersonId = asset.PersonId
-        };
-
-        return Ok(JsonConvert.SerializeObject(dto));
+        return Ok(JsonConvert.SerializeObject(asset));
     }
 }

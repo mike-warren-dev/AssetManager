@@ -1,5 +1,4 @@
 ﻿@using AssetManager.Models
-@using AssetManager.DTOs
 @using AssetManager.ViewModels
 
 @model AssetAddEditViewModel
@@ -14,48 +13,48 @@
 
             @Html.AntiForgeryToken()
 
-            <input asp-for="AssetDto.AssetId" type="hidden">
+            <input asp-for="Asset.AssetId" type="hidden">
 
-            <label asp-for="AssetDto.AssetTypeId">Asset Type</label><span style="color:red">*</span>
-            <select asp-for="AssetDto.AssetTypeId" class="form-select"
+            <label asp-for="Asset.AssetTypeId">Asset Type</label><span style="color:red">*</span>
+            <select asp-for="Asset.AssetTypeId" class="form-select"
                     asp-items="@(new SelectList(Model?.AssetTypeOptions,"Value","Text"))">
                 <option disabled selected class="text-muted">select</option>
             </select>
             <div style="min-height:15px">
-                <span asp-validation-for="AssetDto.AssetTypeId" class="text-danger small"></span>
+                <span asp-validation-for="Asset.AssetTypeId" class="text-danger small"></span>
             </div>
 
-            <label asp-for="AssetDto.ModelId">Model</label><span style="color:red">*</span>
-            <select asp-for="AssetDto.ModelId" class="form-select"
+            <label asp-for="Asset.ModelId">Model</label><span style="color:red">*</span>
+            <select asp-for="Asset.ModelId" class="form-select"
                     asp-items="@(new SelectList(Model?.ModelOptions,"Value","Text"))">
                 <option disabled selected class="text-muted">select</option>
             </select>
             <div style="min-height:15px">
-                <span asp-validation-for="AssetDto.ModelId" class="text-danger small"></span>
+                <span asp-validation-for="Asset.ModelId" class="text-danger small"></span>
             </div>
 
-            <label asp-for="AssetDto.SiteId">Site</label><span style="color:red">*</span>
-            <select asp-for="AssetDto.SiteId" class="form-select"
+            <label asp-for="Asset.SiteId">Site</label><span style="color:red">*</span>
+            <select asp-for="Asset.SiteId" class="form-select"
                     asp-items="@(new SelectList(Model?.SiteOptions,"Value","Text"))">
                 <option disabled selected class="text-muted">select</option>
             </select>
             <div style="min-height:15px">
-                <span asp-validation-for="AssetDto.SiteId" class="text-danger small"></span>
+                <span asp-validation-for="Asset.SiteId" class="text-danger small"></span>
             </div>
 
-            <label asp-for="AssetDto.PersonId">Assigned To</label>
-            <select asp-for="AssetDto.PersonId" class="form-select" data-active-id="@(Model?.AssetDto?.PersonId != null ? Model.AssetDto.PersonId : 0)">
+            <label asp-for="Asset.PersonId">Assigned To</label>
+            <select asp-for="Asset.PersonId" class="form-select" data-active-id="@(Model?.Asset?.PersonId != null ? Model.Asset.PersonId : 0)">
                 @{
                     if (Model?.People != null)
                     {
-                        if (Model.AssetDto?.PersonId == null)
+                        if (Model.Asset?.PersonId == null)
                         {
                             <option disabled selected class="text-muted">select</option>
                         }
 
                         foreach (var item in Model.People)
                         {
-                            if (item.PersonId == Model.AssetDto?.PersonId)
+                            if (item.PersonId == Model.Asset?.PersonId)
                             {
                                 <option value="@item.PersonId" selected>@($"{item.FirstName} {item.LastName}")</option>
                             }
@@ -68,7 +67,7 @@
                 }
             </select>
             <div style="min-height:15px">
-                <span asp-validation-for="AssetDto.PersonId" class="text-danger small"></span>
+                <span asp-validation-for="Asset.PersonId" class="text-danger small"></span>
             </div>
 
         </div>
@@ -90,13 +89,13 @@
 
             var fdata = new FormData();
 
-            var assetId = $("#AssetDto_AssetId").val();
+            var assetId = $("#Asset_AssetId").val();
 
-            fdata.append("AssetDto.AssetId", assetId);
-            fdata.append("AssetDto.AssetTypeId", $("#AssetDto_AssetTypeId").val());
-            fdata.append("AssetDto.ModelId", $("#AssetDto_ModelId").val());
-            fdata.append("AssetDto.SiteId", $("#AssetDto_SiteId").val());
-            fdata.append("AssetDto.PersonId", $("#AssetDto_PersonId").val());
+            fdata.append("Asset.AssetId", assetId);
+            fdata.append("Asset.AssetTypeId", $("#Asset_AssetTypeId").val());
+            fdata.append("Asset.ModelId", $("#Asset_ModelId").val());
+            fdata.append("Asset.SiteId", $("#Asset_SiteId").val());
+            fdata.append("Asset.PersonId", $("#Asset_PersonId").val());
             
             $.ajax({
                 type:'post',

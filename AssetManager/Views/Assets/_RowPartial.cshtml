@@ -1,20 +1,19 @@
-﻿@using AssetManager.DTOs
-
-@model AssetDisplayDto
+﻿@using AssetManager.Models
+@model Asset
 
 <tr data-id="@Model.AssetId.ToString()">
     <td class="align-middle">@Model.AssetId</td>
     <td class="align-middle">@Model.AssetType</td>
     <td class="align-middle">@Model.Model</td>
     <td class="align-middle">@Model.Site</td>
-    <td class="align-middle">@Model.PersonName</td>
+    <td class="align-middle">@($"{Model?.Person?.FirstName} {Model?.Person?.LastName}")</td>
     <td class="align-middle">
         <div class="dropdown">
 
             <i class="fa-solid fa-ellipsis" type="button" id="assetDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 20px;"></i>
             <ul class="dropdown-menu" aria-labelledby="assetDropdown">
-                <li><button class="dropdown-item" type="button" onclick="addEditAsset(@Model.AssetId)">Edit</button></li>
-                <li><button class="dropdown-item" type="button" onclick="confirmDelete(@Model.AssetId)">Delete</button></li>
+                <li><button class="dropdown-item" type="button" onclick="addEditAsset(@Model?.AssetId)">Edit</button></li>
+                <li><button class="dropdown-item" type="button" onclick="confirmDelete(@Model?.AssetId)">Delete</button></li>
             </ul>
         </div>
     </td>

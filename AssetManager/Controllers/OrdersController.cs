@@ -1,5 +1,4 @@
-﻿using AssetManager.DTOs;
-using AssetManager.Repos;
+﻿using AssetManager.Repos;
 using AssetManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using AssetManager.Services;
