@@ -16,14 +16,12 @@ public class AssetRepository : IAssetRepository
 
     public List<Asset> GetAllAssets()
     {
-        List<Asset> list = _context.Assets.Include(a => a.Person).ToList();
-
-        return list;
+        return _context.Assets.Include(a => a.Person).ToList();
     }
 
     public AssetGridViewModel GetPageOfAssets(int pageSize, int pageNumber)
     {        
-        AssetGridViewModel vm = new();
+        var vm = new AssetGridViewModel();
 
         vm.CurrentPage = pageNumber;
 
@@ -66,17 +64,12 @@ public class AssetRepository : IAssetRepository
                               .Include(a => a.AssetType)
                               .Include(a => a.Model)
                               .Include(a => a.Site).Where(a => a.PersonId == personId).ToList();
-
-
-
     }   
 
     public int Create(Asset asset)
     {
         if (asset.AssetId != 0)
-        {
             throw new InvalidOperationException();
-        }
 
         _context.Assets.Add(asset);
         Save();

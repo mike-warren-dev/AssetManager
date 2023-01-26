@@ -103,6 +103,10 @@ namespace AssetManager.Controllers
             }
 
             var asset = _assetService.GetAssetById(assetId);
+
+            if (asset == null)
+                return BadRequest();
+
             return PartialView("_RowPartial", asset);
         }
 
@@ -111,6 +115,7 @@ namespace AssetManager.Controllers
         public IActionResult Delete(int id)
         {
             _assetService.Delete(id);
+
             return RedirectToAction(nameof(Index));
         }
 
