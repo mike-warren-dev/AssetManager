@@ -1,5 +1,4 @@
-﻿using AssetManager.DTOs;
-using AssetManager.Models;
+﻿using AssetManager.Models;
 using AssetManager.Repos;
 using AssetManager.ViewModels;
 
@@ -14,7 +13,7 @@ public class AssetService : IAssetService
         _assetRepository = assetRepository;
     }
     
-    public List<AssetDisplayDto> GetAllAssets()
+    public List<Asset> GetAllAssets()
     {
         return _assetRepository.GetAllAssets();
     }
@@ -26,7 +25,7 @@ public class AssetService : IAssetService
         return _assetRepository.GetPageOfAssets(pageSize, pageNumber);
     }
 
-    public List<AssetDisplayDto> GetAssetsByPersonId(int personId)
+    public List<Asset> GetAssetsByPersonId(int personId)
     {
         return _assetRepository.GetAssetsByPersonId(personId);
     }
@@ -36,7 +35,7 @@ public class AssetService : IAssetService
         return _assetRepository.GetAssetById(id);
     }
 
-    public int Create(AssetAddEditDto asset)
+    public int Create(Asset asset)
     {
         return _assetRepository.Create(asset);
     }
@@ -46,12 +45,12 @@ public class AssetService : IAssetService
         _assetRepository.Delete(id);
     }
 
-    public void Update(AssetAddEditDto asset)
+    public void Update(Asset updatedAsset)
     {
-        _assetRepository.Update(asset);
+        _assetRepository.Update(updatedAsset);
     }
     
-    public AssetDisplayDto? GetAssetDisplayDtoById(int id)
+    public Asset? GetAssetDisplayDtoById(int id)
     {
         return _assetRepository.GetAssetDisplayDtoById(id);
     }

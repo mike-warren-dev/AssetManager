@@ -1,4 +1,4 @@
-﻿using AssetManager.DTOs;
+﻿using AssetManager.Models;
 using AssetManager.Repos;
 using AssetManager.Services;
 using AssetManager.ViewModels;
@@ -52,11 +52,11 @@ namespace AssetManager.Controllers
 
             if (personId == null)
             {
-                return View(new List<AssetDisplayDto>());
+                return View(new List<Asset>());
             }
             else
             {
-                List<AssetDisplayDto> list = _assetService.GetAssetsByPersonId(int.Parse(personId));
+                List<Asset> list = _assetService.GetAssetsByPersonId(int.Parse(personId));
                 return View(list);
             }
         }
@@ -79,18 +79,12 @@ namespace AssetManager.Controllers
             {
                 var asset = _assetService.GetAssetById(id);
 
-                if (asset == null) return PartialView("_AddEditAssetModal", vm);                
-
-                vm.AssetDto = new AssetAddEditDto()
+                if (asset == null)
                 {
-                    AssetId = asset.AssetId,
-                    AssetTypeId = asset.AssetTypeId,
-                    //AssetType = asset.AssetType.DisplayName,
-                    ModelId = asset.ModelId,
-                    SiteId = asset.SiteId,
-                    PersonId = asset.PersonId,
-                    PersonName = asset.Person != null ? $"{asset.Person.FirstName} {asset.Person.LastName}" : ""
-                };
+                    return PartialView("_AddEditAssetModal", vm);
+                }
+
+                vm.Asset = asset;
 
                 return PartialView("_AddEditAssetModal", vm);
             }
@@ -102,14 +96,14 @@ namespace AssetManager.Controllers
         {
             int assetId;
 
-            if(vm.AssetDto.AssetId == 0)
+            if(vm.Asset.AssetId == 0)
             {
-                assetId = _assetService.Create(vm.AssetDto);
+                assetId = _assetService.Create(vm.Asset);
             }
             else
             {
-                _assetService.Update(vm.AssetDto);
-                assetId = vm.AssetDto.AssetId;
+                _assetService.Update(vm.Asset);
+                assetId = vm.Asset.AssetId;
             }
 
             var dto = _assetService.GetAssetDisplayDtoById(assetId);

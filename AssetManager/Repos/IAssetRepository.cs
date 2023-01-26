@@ -1,19 +1,18 @@
-﻿using AssetManager.DTOs;
-using AssetManager.Models;
+﻿using AssetManager.Models;
 using AssetManager.ViewModels;
 
 namespace AssetManager.Repos
 {
     public interface IAssetRepository
     {
-        List<AssetDisplayDto> GetAllAssets();
+        List<Asset> GetAllAssets();
         AssetGridViewModel GetPageOfAssets(int pageSize, int pageNumber);
         Asset? GetAssetById(int id);
-        int Create(AssetAddEditDto asset);
+        int Create(Asset asset);
         void Delete(int id);
-        void Update(AssetAddEditDto asset);
-        AssetDisplayDto? GetAssetDisplayDtoById(int id);
-        void CreateAssets(IEnumerable<AssetAddEditDto> assets);
-        List<AssetDisplayDto> GetAssetsByPersonId(int personId);
+        void Update(Asset updatedAsset);
+        Asset? GetAssetDisplayDtoById(int id);
+        void CreateAssets(IEnumerable<Asset> assets);
+        List<Asset> GetAssetsByPersonId(int personId);
     }
 }

@@ -1,5 +1,5 @@
-﻿@using AssetManager.DTOs
-@model List<AssetDisplayDto>
+﻿@using AssetManager.Models
+@model List<Asset>
 
 @{
     ViewData["Title"] = "Assets Grid";
@@ -22,8 +22,8 @@
                     <div class="row">
                         <div class="col-9">
                             <div class="card-body">
-                                <h5 class="card-title">@asset.AssetType</h5>
-                                <h6 class="card-subtitle text-muted">@asset.Model</h6>
+                                <h5 class="card-title">@asset?.AssetType?.DisplayName</h5>
+                                <h6 class="card-subtitle text-muted">@asset?.Model?.DisplayName</h6>
                             </div>
                         </div>
                         <div class="col-3 d-flex align-items-center ps-0 pe-0">

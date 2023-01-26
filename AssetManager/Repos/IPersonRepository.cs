@@ -1,5 +1,4 @@
-﻿using AssetManager.DTOs;
-using AssetManager.Models;
+﻿using AssetManager.Models;
 using AssetManager.ViewModels;
 
 namespace AssetManager.Repos
