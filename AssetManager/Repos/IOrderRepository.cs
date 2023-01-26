@@ -11,7 +11,6 @@ namespace AssetManager.Repos
         void Update(Order submission);
         void Delete(int id);
         void ReceiveOrder(int id);
-        Order? GetOrderDisplayDtoById(int id);
         OrderGridViewModel GetPageOfOrders(int pageSize, int pageNumber);
     }
 }

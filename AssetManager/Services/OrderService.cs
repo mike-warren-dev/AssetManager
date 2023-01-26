@@ -42,32 +42,11 @@ public class OrderService : IOrderService
         return order;
     }
 
-    public Order GetOrderDisplayDtoById(int id)
-    {
-        if (id == 0)
-        {
-            throw new InvalidOperationException();
-        }
-        else
-        {
-            var order = _orderRepository.GetOrderDisplayDtoById(id);
-
-            if (order == null)
-            {
-                throw new InvalidOperationException();
-            }
-            else
-            {
-                return order;
-            }
-        }
-    }
-
-    public int Create(Order dto)
+    public int Create(Order submission)
     {
         List<ProductOrder> products = new ();
         
-        foreach (var item in dto.Products)
+        foreach (var item in submission.Products)
         {
             if (item?.Count != null && item.Count > 0 && item.ProductId != 0)
             {
@@ -75,16 +54,16 @@ public class OrderService : IOrderService
             }
         }
 
-        dto.Products = products;
+        submission.Products = products;
         
-        return _orderRepository.Create(dto);
+        return _orderRepository.Create(submission);
     }
 
-    public void Update(Order dto)
+    public void Update(Order updatedOrder)
     {
         List<ProductOrder> products = new();
 
-        foreach (var item in dto.Products)
+        foreach (var item in updatedOrder.Products)
         {
             if (item != null && item.Count != -1)
             {
@@ -92,9 +71,9 @@ public class OrderService : IOrderService
             }
         }
 
-        dto.Products = products;
+        updatedOrder.Products = products;
 
-        _orderRepository.Update(dto);
+        _orderRepository.Update(updatedOrder);
     }
 
     public void Delete(int id)

@@ -69,22 +69,7 @@ public class AssetRepository : IAssetRepository
 
 
 
-    }
-
-    public Asset GetAssetDisplayDtoById(int id)
-    {
-        if (id > 0)
-        {
-            var asset = _context.Assets.Include(a => a.Person).FirstOrDefault(a => a.AssetId == id);
-
-            if (asset != null)
-            {
-                return asset;
-            }
-        }
-
-        throw new InvalidOperationException();
-    }    
+    }   
 
     public int Create(Asset asset)
     {

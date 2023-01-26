@@ -45,14 +45,8 @@ public class PersonRepository : IPersonRepository
                                 .ThenInclude(a => a.Site).FirstOrDefault(p => p.PersonId == id);
     }
 
-    public int Create(Person submission)
+    public int Create(Person person)
     {
-        Person person = new()
-        {
-            FirstName = submission.FirstName,
-            LastName = submission.LastName,
-            Email = submission.Email
-        };
 
         _context.People.Add(person);
         Save();
@@ -60,15 +54,15 @@ public class PersonRepository : IPersonRepository
         return person.PersonId;
     }
 
-    public void Update(Person submission)
+    public void Update(Person updatedPerson)
     {
-        var person = _context.People.FirstOrDefault(p => p.PersonId == submission.PersonId);
+        var person = _context.People.FirstOrDefault(p => p.PersonId == updatedPerson.PersonId);
 
         if (person != null)
         {
-            person.FirstName = submission.FirstName;
-            person.LastName = submission.LastName;
-            person.Email = submission.Email;
+            person.FirstName = updatedPerson.FirstName;
+            person.LastName = updatedPerson.LastName;
+            person.Email = updatedPerson.Email;
 
             Save();
         }
