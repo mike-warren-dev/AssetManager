@@ -27,18 +27,9 @@ public class PeopleService : IPeopleService
         return _personRepository.GetPageofPeople(pageSize, pageNumber);
     }
 
-    public Person GetPersonById(int id)
+    public Person? GetPersonById(int id)
     {
-        Person? person = _personRepository.GetPersonById(id);
-
-        if (person == null)
-        {
-            return new Person();
-        }
-        else
-        {
-            return person;
-        }
+        return _personRepository.GetPersonById(id);
     }
 
     public int Create(Person person)

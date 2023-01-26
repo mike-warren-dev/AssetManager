@@ -104,6 +104,9 @@ public class PeopleController : Controller
     [HttpPost]
     public ActionResult MapAsset(int personId, int assetId)
     {
+        if (assetId == 0)
+            return BadRequest("Enter a valid Asset ID");
+
         var person = _peopleService.GetPersonById(personId);
         var asset = _assetService.GetAssetById(assetId);
 
@@ -117,7 +120,10 @@ public class PeopleController : Controller
         { 
             var otherPerson = _peopleService.GetPersonById((int)asset.PersonId);
 
-            return BadRequest($"The Asset is already mapped to {otherPerson.FirstName} {otherPerson.LastName}");
+            if (otherPerson == null)
+                return BadRequest($"The Asset is already mapped.");
+            else
+                return BadRequest($"The Asset is already mapped to {otherPerson.FirstName} {otherPerson.LastName}");
         }
 
         if (person.Assets.Contains(asset) == true) 
