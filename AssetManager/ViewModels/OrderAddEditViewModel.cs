@@ -8,6 +8,7 @@ public class OrderAddEditViewModel
     public OrderAddEditViewModel()
     {
         Order = new();
+        
     }
 
     public Order Order { get; set; }

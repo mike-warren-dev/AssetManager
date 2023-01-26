@@ -35,16 +35,14 @@ public class OrderService : IOrderService
         var order = _orderRepository.GetOrderById(id);
 
         if (order == null)
-        {
             throw new InvalidOperationException();
-        }
 
         return order;
     }
 
     public int Create(Order submission)
     {
-        List<ProductOrder> products = new ();
+        var products = new List<ProductOrder>();
         
         foreach (var item in submission.Products)
         {

@@ -22,49 +22,43 @@ public class PeopleController : Controller
 
     public ActionResult Index()
     {
-        PersonGridViewModel vm = _peopleService.GetPageOfPeople(1);
-
-        return View(vm);
+        return View(_peopleService.GetPageOfPeople(1));
     }
 
     [HttpGet("People/GetPageOfPeople/{pageNumber}")]
     public ActionResult GetPageOfPeople(int pageNumber)
     {
-        PersonGridViewModel vm = _peopleService.GetPageOfPeople(pageNumber);
-
-        return PartialView("_GridPartial",vm);
+        return PartialView("_GridPartial", _peopleService.GetPageOfPeople(pageNumber));
     }
 
     [HttpGet]
     public ActionResult GetPersonOptions()
     {
-        IEnumerable<Person> list = _peopleService.GetAllPeople();
-
-        return PartialView("_PersonOptions",list);
+        return PartialView("_PersonOptions", _peopleService.GetAllPeople());
     }
 
     [HttpGet]
     public ActionResult AddEdit(int id)
     {
-        Person person = new();
 
         if (id == 0)
-        {
             return PartialView("_AddEditPersonModal");
-        }
-        else
-        {
-            try
-            {
-                person = _peopleService.GetPersonById(id);
-            }
-            catch
-            {
-                return RedirectToAction(nameof(Index));
-            }
+        
+        
+        Person person = new();
 
-            return PartialView("_AddEditPersonModal", person);
+        try
+        {
+                
+            person = _peopleService.GetPersonById(id);
         }
+        catch
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        return PartialView("_AddEditPersonModal", person);
+        
     }
 
     [HttpPost] //[ValidateAntiForgeryToken]
@@ -76,12 +70,10 @@ public class PeopleController : Controller
 
             return PartialView("_RowPartial", person);
         }
-        else
-        {
-            _peopleService.Update(person);
+        
+        _peopleService.Update(person);
 
-            return PartialView("_RowPartial", person);
-        }
+        return PartialView("_RowPartial", person);
     }
 
     [HttpDelete]

@@ -21,7 +21,7 @@ public class PersonRepository : IPersonRepository
 
     public PersonGridViewModel GetPageofPeople(int pageSize, int pageNumber)
     {
-        PersonGridViewModel vm = new();
+        var vm = new PersonGridViewModel();
 
         vm.CurrentPage = pageNumber;
 

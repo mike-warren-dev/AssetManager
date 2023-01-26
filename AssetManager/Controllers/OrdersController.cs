@@ -10,6 +10,7 @@ namespace AssetManager.Controllers
     [Authorize(Roles = "Admin")]
     public class OrdersController : Controller
     {
+
         private IOrderService _orderService;
         private IPeopleService _peopleService;
         private IDictService _dictService;
@@ -23,17 +24,13 @@ namespace AssetManager.Controllers
 
         public ActionResult Index()
         {
-            OrderGridViewModel vm = _orderService.GetPageOfOrders(1);
-            
-            return View(vm);
+            return View(_orderService.GetPageOfOrders(1));
         }
 
         [HttpGet("Orders/GetPageOfOrders/{pageNumber}")]
         public ActionResult GetPageOfOrders(int pageNumber)
         {
-            OrderGridViewModel vm = _orderService.GetPageOfOrders(pageNumber);
-
-            return PartialView("_GridPartial", vm);
+            return PartialView("_GridPartial", _orderService.GetPageOfOrders(pageNumber));
         }
 
         public ActionResult AddEdit(int id)
@@ -129,10 +126,9 @@ namespace AssetManager.Controllers
                 _orderService.ReceiveOrder(id);
                 return RedirectToAction(nameof(Index));
             }
-            else
-            {
-                return RedirectToAction(nameof(Index));
-            }
+            
+            return RedirectToAction(nameof(Index));
+            
         }
     }
 }
