@@ -26,10 +26,8 @@ namespace AssetManager.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            //List<AssetDisplayDto> list = _assetService.GetAllAssets();
             AssetGridViewModel vm = _assetService.GetPageOfAssets(1);
 
-            //return View(list);
             return View(vm);
         }
 
@@ -37,10 +35,8 @@ namespace AssetManager.Controllers
         [HttpGet("Assets/GetPageOfAssets/{pageNumber}")]
         public IActionResult GetPageOfAssets(int pageNumber)
         {
-            //List<AssetDisplayDto> list = _assetService.GetAllAssets();
             AssetGridViewModel vm = _assetService.GetPageOfAssets(pageNumber);
 
-            //return View(list);
             return PartialView("_GridPartial", vm);
         }
 
@@ -106,8 +102,8 @@ namespace AssetManager.Controllers
                 assetId = vm.Asset.AssetId;
             }
 
-            var dto = _assetService.GetAssetDisplayDtoById(assetId);
-            return PartialView("_RowPartial", dto);
+            var asset = _assetService.GetAssetById(assetId);
+            return PartialView("_RowPartial", asset);
         }
 
         [Authorize(Roles = "Admin")]

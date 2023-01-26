@@ -56,7 +56,7 @@ public class PeopleController : Controller
         {
             try
             {
-                person = _peopleService.GetPersonAddEditDtoById(id);
+                person = _peopleService.GetPersonById(id);
             }
             catch
             {

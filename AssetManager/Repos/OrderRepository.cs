@@ -54,23 +54,6 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public Order GetOrderDisplayDtoById(int id)
-    { 
-        var order = _context.Orders.Include(o => o.Products)
-                                    .ThenInclude(p => p.Product)
-                                   .Include(o => o.Purchaser)
-                                   .Include(o => o.Approver).FirstOrDefault(o => o.OrderId == id);
-
-        if (order == null)
-        {
-            return new Order();
-        }
-        else
-        {
-            return order;
-        }
-    }
-
     public int Create(Order submission)
     {
         //Order order = new()

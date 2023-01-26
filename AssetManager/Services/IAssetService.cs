@@ -10,7 +10,6 @@ namespace AssetManager.Services
         int Create(Asset asset);
         void Delete(int id);
         Asset? GetAssetById(int id);
-        Asset? GetAssetDisplayDtoById(int id);
         void Update(Asset updatedAsset);
         List<Asset> GetAssetsByPersonId(int personId);
     }

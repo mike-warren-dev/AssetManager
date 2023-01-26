@@ -85,8 +85,8 @@ namespace AssetManager.Controllers
                     orderId = (int)vm.Order.OrderId;
                 }
 
-                var dto = _orderService.GetOrderDisplayDtoById(orderId);
-                return PartialView("_RowPartial", dto);
+                var order = _orderService.GetOrderById(orderId);
+                return PartialView("_RowPartial", order);
             }
             catch
             {

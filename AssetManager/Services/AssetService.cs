@@ -49,9 +49,4 @@ public class AssetService : IAssetService
     {
         _assetRepository.Update(updatedAsset);
     }
-    
-    public Asset? GetAssetDisplayDtoById(int id)
-    {
-        return _assetRepository.GetAssetDisplayDtoById(id);
-    }
 }

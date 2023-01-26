@@ -11,7 +11,6 @@ namespace AssetManager.Repos
         int Create(Asset asset);
         void Delete(int id);
         void Update(Asset updatedAsset);
-        Asset? GetAssetDisplayDtoById(int id);
         void CreateAssets(IEnumerable<Asset> assets);
         List<Asset> GetAssetsByPersonId(int personId);
     }

@@ -41,38 +41,6 @@ public class PeopleService : IPeopleService
         }
     }
 
-    public Person GetPersonAddEditDtoById(int id)
-    {
-        Person person = _personRepository.GetPersonById(id);
-
-        if (person == null) 
-        { 
-            return new Person();
-        }
-        else
-        {
-            return person;
-        }
-        //person.PersonId = person.PersonId;
-        //person.FirstName = person.FirstName;
-        //person.LastName = person.LastName;
-        //person.Email = person.Email;
-        //person.Assets = person.Assets.Select(a => new AssetDisplayDto()
-        //{
-        //    AssetId = a.AssetId,
-        //    AssetTypeId = a.AssetTypeId,
-        //    AssetType = a.AssetType.DisplayName,
-        //    ModelId= a.ModelId,
-        //    Model = a.Model.DisplayName,
-        //    SiteId = a.SiteId,
-        //    Site = a.Site.DisplayName,
-        //    PersonId = a.PersonId
-        //}).ToList();
-
-        //return person;
-
-    }
-
     public int Create(Person person)
     {
         return _personRepository.Create(person);

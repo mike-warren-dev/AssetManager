@@ -7,8 +7,8 @@ namespace AssetManager.Repos
     {
         IEnumerable<Person> GetAll();
         Person? GetPersonById(int id);
-        int Create(Person submission);
-        void Update(Person submission);
+        int Create(Person person);
+        void Update(Person updatedPerson);
         void Delete(int id);
         void RemoveAssetMap(int personId, int assetId);
         void AddAssetMap(int personId, int assetId);
