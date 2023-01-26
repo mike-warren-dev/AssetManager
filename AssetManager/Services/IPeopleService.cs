@@ -7,7 +7,7 @@ public interface IPeopleService
 {
     IEnumerable<Person> GetAllPeople();
     PersonGridViewModel GetPageOfPeople(int pageNumber);
-    Person GetPersonById(int id);
+    Person? GetPersonById(int id);
     int Create(Person person);
     void Update(Person person);
     void Delete(int id);
