@@ -2,7 +2,7 @@
 
 `Asset Manager` is a simple web application for managing office equipment, built with ASP.NET Core. You can see a live instance of it [here](https://assetmanager20221118085014.azurewebsites.net/).   
   
-You will likely note that my approach is often overwrought for an app of this size--my intent has not been to implement a given feature with the lightest touch, but rather to improve and showcase my understanding of design patterns and best practices which are commonly used in enterprise applications.   
+You will likely note that my approach is often overwrought for an app of this size--my intent has not been to implement a given feature with the lightest touch, but rather to improve and showcase my understanding of design patterns and best practices.   
     
 ### Implemented features. 
 <ul>
