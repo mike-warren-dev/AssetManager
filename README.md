@@ -6,16 +6,16 @@ You will likely note that my approach is often overwrought for an app of this si
     
 ### Implemented features. 
 <ul>
-<li>Data Persistence with EF Core & SQL Server</li>
-<li>Authentication & Authorization</li>
-<li>Cacheing of select field options, complete with recurring refresh via background service (merged but not deployed)</li>
-<li>AJAX forms with jQuery</li>
-<li>Grid pagination</li>
-<li>Custom controls with dynamic form data (Orders > Add Order > Dynamic Product + Count fields)</li>
+  <li>Data Persistence with EF Core & SQL Server</li>
+  <li>Authentication & Authorization</li>
+  <li>Caching of select field options, complete with recurring refresh via background service (merged but not deployed)</li>
+  <li>AJAX forms with jQuery</li>
+  <li>Custom controls with dynamic form data (Orders > Add Order > Dynamic Product + Count fields)</li>
 </ul>
 
 ### Design patterns
 <ul>
-<li>Dependency Injection</li>
-<li>Service-Repository</li>
+  <li>Model-View-Controller (MVC)</li>
+  <li>Dependency Injection</li>
+  <li>Service-Repository</li>
 </ul>
