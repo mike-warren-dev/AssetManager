@@ -10,7 +10,7 @@ You will likely note that my approach is often overwrought for an app of this si
   <li>Authentication & Authorization</li>
   <li>Caching of select field options, complete with recurring refresh via background service (merged but not deployed)</li>
   <li>AJAX forms with jQuery</li>
-  <li>Custom controls with dynamic form data (Orders > Add Order > Dynamic Product + Count fields)</li>
+  <li>Dynamic forms</li>
 </ul>
 
 ### Design patterns
