@@ -52,4 +52,20 @@ function doAnAlert(alertType) {
     }
 }
 
+function getGridPageFromNumberButtons(el) {
+    var pageNumber = $(el).attr('data-page');
+    var isActive = $(el).hasClass("active");
 
+    if (isActive == false) {
+        getGridPageAjax(pageNumber);
+    }
+}
+
+function getGridPageFromNextPreviousButtons(el) {
+    var pageNumber = $(el).attr('data-page');
+    var isDisabled = $(el).hasClass("disabled");
+
+    if (isDisabled == false) {
+        getGridPageAjax(pageNumber);
+    }
+}

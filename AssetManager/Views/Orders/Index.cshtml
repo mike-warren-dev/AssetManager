@@ -64,24 +64,18 @@
     }
 
     function confirmDelete(orderId){
-        $("#deleteConfirmation").modal("show");
-        $("#deleteOrderButton").attr("data-id", `${orderId}`);
-    }
-
-    function deleteOrder(el){
-        var orderId = $(el).attr("data-id");
-        var url = `/Orders/Delete/${orderId}`;
-
-        $.ajax({
-            method: "DELETE",
-            url: url,
+        if (confirm("Are you sure you want to delete this order?")) {
+            $.ajax({
+             method: "DELETE",
+                url: `/Orders/Delete/${orderId}`,
             success: function (data, textStatus) {
                 if (textStatus == 'success') {
                     doAnAlert("orderDeleteSuccess")
                     $("tbody").children(`[data-id='${orderId}']`).remove();
                 }
             }
-        });
+            });
+        }
     }
 
     function confirmReceive(id) {
@@ -108,26 +102,6 @@
                 doAnAlert("failure");
             }
         });
-    }
-
-    function getGridPageRelative(el) 
-    {
-        var pageNumber = $(el).attr('data-page');
-        var isDisabled = $(el).hasClass("disabled");
-
-        if (isDisabled == false)
-        {
-            getGridPageAjax(pageNumber);
-        }
-    }
-
-    function getGridPageAbsolute(el) {
-        var pageNumber = $(el).attr('data-page');
-        var isActive = $(el).hasClass("active");
-
-        if (isActive == false) {
-            getGridPageAjax(pageNumber);
-        }
     }
 
     function getGridPageAjax(pageNumber) 
