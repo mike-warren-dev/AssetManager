@@ -11,11 +11,11 @@ namespace AssetManager.Controllers
     public class OrdersController : Controller
     {
 
-        private IOrderService _orderService;
-        private IPeopleService _peopleService;
-        private IDictService _dictService;
+        private readonly IOrderService _orderService;
+        private readonly IPeopleService _peopleService;
+        private readonly IDictService _dictService;
 
-        public OrdersController(IOrderRepository repository, IOrderService orderService, IPeopleService peopleService, IDictService dictService)
+        public OrdersController(IOrderService orderService, IPeopleService peopleService, IDictService dictService)
         {
             _orderService = orderService;
             _peopleService = peopleService;
@@ -89,25 +89,6 @@ namespace AssetManager.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
 
         [HttpDelete]
         public async Task<ActionResult> Delete(int id)

@@ -44,7 +44,7 @@
                         @{
                             if (Model?.People != null)
                             {
-                                if (Model.Order.OrderId == null)
+                                if (Model.Order?.OrderId == null)
                                 {
                                     <option disabled selected class="text-muted"></option>
                                 }
@@ -105,7 +105,7 @@
                 <div class="col-6">
                     <container id="productsContainer">
                         @{
-                            if (Model?.Order.Products != null)
+                            if (Model?.Order?.Products != null)
                             {
                                 for (var i = 0; i < Model.Order.Products.Count; i++)
                                 {

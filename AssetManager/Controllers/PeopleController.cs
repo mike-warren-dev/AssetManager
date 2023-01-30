@@ -10,8 +10,8 @@ namespace AssetManager.Controllers;
 [Authorize(Roles = "Admin")]
 public class PeopleController : Controller
 {
-    private IPeopleService _peopleService;
-    private IAssetService _assetService;
+    private readonly IPeopleService _peopleService;
+    private readonly IAssetService _assetService;
 
     public PeopleController(ILogger<PeopleController> logger, IPersonRepository repository, IPeopleService peopleService, IAssetService assetService)
     {
