@@ -13,40 +13,40 @@ public class AssetService : IAssetService
         _assetRepository = assetRepository;
     }
     
-    public List<Asset> GetAllAssets()
+    public async Task<List<Asset>> GetAllAssets()
     {
-        return _assetRepository.GetAllAssets();
+        return await _assetRepository.GetAllAssets();
     }
 
-    public AssetGridViewModel GetPageOfAssets(int pageNumber)
+    public async Task<AssetGridViewModel> GetPageOfAssets(int pageNumber)
     {
         int pageSize = 20;
 
-        return _assetRepository.GetPageOfAssets(pageSize, pageNumber);
+        return await _assetRepository.GetPageOfAssets(pageSize, pageNumber);
     }
 
-    public List<Asset> GetAssetsByPersonId(int personId)
+    public async Task<List<Asset>> GetAssetsByPersonId(int personId)
     {
-        return _assetRepository.GetAssetsByPersonId(personId);
+        return await _assetRepository.GetAssetsByPersonId(personId);
     }
 
-    public Asset? GetAssetById(int id)
+    public async Task<Asset> GetAssetById(int id)
     {
-        return _assetRepository.GetAssetById(id);
+        return await _assetRepository.GetAssetById(id);
     }
 
-    public int Create(Asset asset)
+    public async Task<int> Create(Asset asset)
     {
-        return _assetRepository.Create(asset);
+        return await _assetRepository.Create(asset);
     }
     
-    public void Delete(int id)
+    public async Task Delete(int id)
     {
-        _assetRepository.Delete(id);
+        await _assetRepository.Delete(id);
     }
 
-    public void Update(Asset updatedAsset)
+    public async Task Update(Asset updatedAsset)
     {
-        _assetRepository.Update(updatedAsset);
+        await _assetRepository.Update(updatedAsset);
     }
 }

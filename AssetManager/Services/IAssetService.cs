@@ -1,16 +1,15 @@
 ﻿using AssetManager.Models;
 using AssetManager.ViewModels;
 
-namespace AssetManager.Services
+namespace AssetManager.Services;
+
+public interface IAssetService
 {
-    public interface IAssetService
-    {
-        List<Asset> GetAllAssets();
-        AssetGridViewModel GetPageOfAssets(int pageNumber);
-        int Create(Asset asset);
-        void Delete(int id);
-        Asset? GetAssetById(int id);
-        void Update(Asset updatedAsset);
-        List<Asset> GetAssetsByPersonId(int personId);
-    }
+    Task<List<Asset>> GetAllAssets();
+    Task<AssetGridViewModel> GetPageOfAssets(int pageNumber);
+    Task<int> Create(Asset asset);
+    Task Delete(int id);
+    Task<Asset> GetAssetById(int id);
+    Task Update(Asset updatedAsset);
+    Task<List<Asset>> GetAssetsByPersonId(int personId);
 }

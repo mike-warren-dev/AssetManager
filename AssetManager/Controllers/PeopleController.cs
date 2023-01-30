@@ -106,11 +106,17 @@ public class PeopleController : Controller
         {
             return BadRequest("The Person is not valid.");
         }
-        
-        var asset = _assetService.GetAssetById(assetId);
 
-        if (asset == null) 
+        Asset asset;
+
+        try
+        {
+            asset = await _assetService.GetAssetById(assetId);
+        }
+        catch (ArgumentException)
+        {
             return BadRequest("Enter a valid Asset ID");
+        }            
 
         if (asset.PersonId != null)
         {
