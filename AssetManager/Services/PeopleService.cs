@@ -40,9 +40,9 @@ public class PeopleService : IPeopleService
         return _personRepository.Update(person);
     }
 
-    public Task Delete(int id)
+    public async Task Delete(int id)
     {
-        return _personRepository.Delete(id);
+        await _personRepository.Delete(id);
     }
 
     public Task RemoveAssetMap(int personId, int assetId)

@@ -1,7 +1,6 @@
 ﻿using AssetManager.Models;
 using AssetManager.Repos;
 using AssetManager.ViewModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace AssetManager.Services;
 
@@ -18,29 +17,26 @@ public class OrderService : IOrderService
         _dictRepository = dictRepository;
     }
 
-    public List<Order> GetAllOrders()
+    public async Task<List<Order>> GetAllOrders()
     {
-        return _orderRepository.GetAllOrders();
+        return await _orderRepository.GetAllOrders();
     }
 
-    public OrderGridViewModel GetPageOfOrders(int pageNumber)
+    public async Task<OrderGridViewModel> GetPageOfOrders(int pageNumber)
     {
         int pageSize = 15;
 
-        return _orderRepository.GetPageOfOrders(pageSize,pageNumber);
+        return await _orderRepository.GetPageOfOrders(pageSize,pageNumber);
     }
 
-    public Order GetOrderById(int id)
+    public async Task<Order> GetOrderById(int orderId)
     {
-        var order = _orderRepository.GetOrderById(id);
-
-        if (order == null)
-            throw new InvalidOperationException();
+        var order = await _orderRepository.GetOrderById(orderId);
 
         return order;
     }
 
-    public int Create(Order submission)
+    public async Task<int> Create(Order submission)
     {
         var products = new List<ProductOrder>();
         
@@ -54,10 +50,10 @@ public class OrderService : IOrderService
 
         submission.Products = products;
         
-        return _orderRepository.Create(submission);
+        return await _orderRepository.Create(submission);
     }
 
-    public void Update(Order updatedOrder)
+    public async Task Update(Order updatedOrder)
     {
         List<ProductOrder> products = new();
 
@@ -71,17 +67,17 @@ public class OrderService : IOrderService
 
         updatedOrder.Products = products;
 
-        _orderRepository.Update(updatedOrder);
+        await _orderRepository.Update(updatedOrder);
     }
 
-    public void Delete(int id)
+    public async Task Delete(int orderId)
     {
-        _orderRepository.Delete(id);
+        await _orderRepository.Delete(orderId);
     }
 
-    public void ReceiveOrder(int id)
+    public async Task ReceiveOrder(int orderId)
     {
-        var order = GetOrderById(id);
+        var order = await GetOrderById(orderId);
 
         if (order != null)
         {
@@ -130,7 +126,7 @@ public class OrderService : IOrderService
                 _assetRepository.CreateAssets(assets);
             }
 
-            _orderRepository.ReceiveOrder(id);
+            await _orderRepository.ReceiveOrder(orderId);
         }
     }
 }
