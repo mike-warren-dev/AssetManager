@@ -5,12 +5,12 @@ namespace AssetManager.Services;
 
 public interface IPeopleService
 {
-    IEnumerable<Person> GetAllPeople();
-    PersonGridViewModel GetPageOfPeople(int pageNumber);
-    Person? GetPersonById(int id);
-    int Create(Person person);
-    void Update(Person person);
-    void Delete(int id);
-    void RemoveAssetMap(int personId, int assetId);
-    void AddAssetMap(int personId, int assetId);
+    Task<IEnumerable<Person>> GetAllPeople();
+    Task<PersonGridViewModel> GetPageOfPeople(int pageNumber);
+    Task<Person> GetPersonById(int id);
+    Task<int> Create(Person person);
+    Task Update(Person person);
+    Task Delete(int id);
+    Task RemoveAssetMap(int personId, int assetId);
+    Task AddAssetMap(int personId, int assetId);
 }

@@ -7,7 +7,7 @@
     <form id="orderForm" novalidate="novalidate">
         @Html.AntiForgeryToken()
         <div class="modal-header" style="background-color:#F2F2F2">
-            <h5 class="modal-title text-black">@(Model.Order.OrderId == null ? "Add" : "Edit") Order</h5>
+            <h5 class="modal-title text-black">@(Model.Order?.OrderId == null ? "Add" : "Edit") Order</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -72,7 +72,7 @@
                         @{
                             if (Model?.People != null)
                             {
-                                if (Model.Order.OrderId == null)
+                                if (Model.Order?.OrderId == null)
                                 {
                                     <option disabled selected class="text-muted"></option>
                                 }

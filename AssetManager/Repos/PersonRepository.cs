@@ -14,49 +14,56 @@ public class PersonRepository : IPersonRepository
         _context = context;
     }
 
-    public IEnumerable<Person> GetAll()
+    public async Task<IEnumerable<Person>> GetAll()
     {
-        return _context.People.ToList();
+        return await _context.People.ToListAsync();
     }
 
-    public PersonGridViewModel GetPageofPeople(int pageSize, int pageNumber)
+    public async Task<PersonGridViewModel> GetPageofPeople(int pageSize, int pageNumber)
     {
-        var vm = new PersonGridViewModel();
+        PersonGridViewModel vm = new();
 
         vm.CurrentPage = pageNumber;
 
-        var personCount = _context.People.Count();
-        vm.PageCount = (personCount + pageSize - 1) / pageSize;
+        var personCount = await _context.People.CountAsync();
+        vm.PageCount = (personCount + pageSize - 1) / pageSize; 
 
-        var query = _context.People;
-
-        vm.People = query.Skip((pageNumber-1) * pageSize).Take(pageSize).ToList();   
+        vm.People = await _context.People.Skip((pageNumber - 1) * pageSize)
+                                         .Take(pageSize)
+                                         .ToListAsync();
 
         return vm;
     }
 
-    public Person? GetPersonById(int id)
+    public async Task<Person> GetPersonById(int id)
     {
-        return _context.People.Include(p => p.Assets)
-                                .ThenInclude(a => a.AssetType)
-                              .Include(p => p.Assets)
-                                .ThenInclude(a => a.Model)
-                              .Include(p => p.Assets)
-                                .ThenInclude(a => a.Site).FirstOrDefault(p => p.PersonId == id);
+        var person = await _context.People.Include(p => p.Assets).ThenInclude(a => a.AssetType)
+                                          .Include(p => p.Assets).ThenInclude(a => a.Model)
+                                          .Include(p => p.Assets).ThenInclude(a => a.Site)
+                                          .FirstOrDefaultAsync(p => p.PersonId == id);
+
+        if (person != null) 
+        {
+            return person;
+        }
+        else
+        {
+            throw new ArgumentException();
+        }
     }
 
-    public int Create(Person person)
+    public async Task<int> Create(Person person)
     {
-
         _context.People.Add(person);
-        Save();
+        
+        await _context.SaveChangesAsync();
 
         return person.PersonId;
     }
 
-    public void Update(Person updatedPerson)
+    public async Task Update(Person updatedPerson)
     {
-        var person = _context.People.FirstOrDefault(p => p.PersonId == updatedPerson.PersonId);
+        var person = await _context.People.FirstOrDefaultAsync(p => p.PersonId == updatedPerson.PersonId);
 
         if (person != null)
         {
@@ -64,13 +71,13 @@ public class PersonRepository : IPersonRepository
             person.LastName = updatedPerson.LastName;
             person.Email = updatedPerson.Email;
 
-            Save();
+            await _context.SaveChangesAsync();
         }
     }
 
-    public void Delete(int id)
+    public async Task Delete(int id)
     {
-        var person = _context.People.Include(p => p.Assets).FirstOrDefault(p => p.PersonId == id);
+        var person = await _context.People.Include(p => p.Assets).FirstOrDefaultAsync(p => p.PersonId == id);
 
         if (person != null)
         {
@@ -80,14 +87,14 @@ public class PersonRepository : IPersonRepository
             }
 
             _context.People.Remove(person);
-            Save();
+            await _context.SaveChangesAsync();
         }
 
     }
 
-    public void RemoveAssetMap(int personId, int assetId)
+    public async Task RemoveAssetMap(int personId, int assetId)
     {
-        var person = _context.People.Include(p => p.Assets).FirstOrDefault(p => p.PersonId == personId);
+        var person = await _context.People.Include(p => p.Assets).FirstOrDefaultAsync(p => p.PersonId == personId);
 
         if (person != null)
         {
@@ -96,29 +103,25 @@ public class PersonRepository : IPersonRepository
             if (asset != null)
             {
                 asset.PersonId = null;
-                Save();
+                await _context.SaveChangesAsync();
             }
         }
     }
 
-    public void AddAssetMap(int personId, int assetId)
+    public async Task AddAssetMap(int personId, int assetId)
     {
-        var person = _context.People.Find(personId);
-        var asset = _context.Assets.FirstOrDefault(a => a.AssetId == assetId);
+        var person = await _context.People.FirstOrDefaultAsync(p => p.PersonId == personId);
+        var asset = await _context.Assets.FirstOrDefaultAsync(a => a.AssetId == assetId);
         
         if (asset != null && person != null)
         {
             person.Assets.Add(asset);
-            Save();
+
+            await _context.SaveChangesAsync();
         }
         else
         {
-            throw new InvalidOperationException();
+            throw new ArgumentException();
         }        
-    }
-
-    private void Save()
-    {
-        _context.SaveChanges();
     }
 }

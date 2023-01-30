@@ -1,8 +1,6 @@
 ﻿using AssetManager.Models;
 using AssetManager.Repos;
 using AssetManager.ViewModels;
-using NuGet.ContentModel;
-using NuGet.Protocol.Core.Types;
 
 namespace AssetManager.Services;
 
@@ -15,46 +13,46 @@ public class PeopleService : IPeopleService
         _personRepository = repository;
     }
 
-    public IEnumerable<Person> GetAllPeople()
+    public async Task<IEnumerable<Person>> GetAllPeople()
     {
-        return _personRepository.GetAll();
+        return await _personRepository.GetAll();
     }
 
-    public PersonGridViewModel GetPageOfPeople(int pageNumber)
+    public async Task<PersonGridViewModel> GetPageOfPeople(int pageNumber)
     {
         int pageSize = 20;
 
-        return _personRepository.GetPageofPeople(pageSize, pageNumber);
+        return await _personRepository.GetPageofPeople(pageSize, pageNumber);
     }
 
-    public Person? GetPersonById(int id)
+    public async Task<Person> GetPersonById(int id)
     {
-        return _personRepository.GetPersonById(id);
+        return await _personRepository.GetPersonById(id);
     }
 
-    public int Create(Person person)
+    public async Task<int> Create(Person person)
     {
-        return _personRepository.Create(person);
+        return await _personRepository.Create(person);
     }
 
-    public void Update(Person person)
+    public Task Update(Person person)
     {
-        _personRepository.Update(person);
+        return _personRepository.Update(person);
     }
 
-    public void Delete(int id)
+    public Task Delete(int id)
     {
-        _personRepository.Delete(id);
+        return _personRepository.Delete(id);
     }
 
-    public void RemoveAssetMap(int personId, int assetId)
+    public Task RemoveAssetMap(int personId, int assetId)
     {
-        _personRepository.RemoveAssetMap(personId, assetId);
+        return _personRepository.RemoveAssetMap(personId, assetId);
     }
 
-    public void AddAssetMap(int personId, int assetId)
+    public Task AddAssetMap(int personId, int assetId)
     {
-        _personRepository.AddAssetMap(personId, assetId);
+        return _personRepository.AddAssetMap(personId, assetId);
     }
 
 }

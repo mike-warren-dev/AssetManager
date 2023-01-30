@@ -1,7 +1,6 @@
 ﻿using AssetManager.Models;
 using AssetManager.Repos;
 using AssetManager.Services;
-using AssetManager.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -20,41 +19,39 @@ public class PeopleController : Controller
         _assetService = assetService;
     }
 
-    public ActionResult Index()
+    public async Task<ActionResult> Index()
     {
-        return View(_peopleService.GetPageOfPeople(1));
+        return View(await _peopleService.GetPageOfPeople(1));
     }
 
     [HttpGet("People/GetPageOfPeople/{pageNumber}")]
-    public ActionResult GetPageOfPeople(int pageNumber)
+    public async Task<ActionResult> GetPageOfPeople(int pageNumber)
     {
-        return PartialView("_GridPartial", _peopleService.GetPageOfPeople(pageNumber));
+        return PartialView("_GridPartial", await _peopleService.GetPageOfPeople(pageNumber));
     }
 
     [HttpGet]
-    public ActionResult GetPersonOptions()
+    public async Task<ActionResult> GetPersonOptions()
     {
-        return PartialView("_PersonOptions", _peopleService.GetAllPeople());
+        return PartialView("_PersonOptions", await _peopleService.GetAllPeople());
     }
 
     [HttpGet]
-    public ActionResult AddEdit(int id)
+    public async Task<ActionResult> AddEdit(int id)
     {
 
         if (id == 0)
             return PartialView("_AddEditPersonModal");
-        
-        
-        Person person = new();
+
+        Person person;
 
         try
         {
-                
-            person = _peopleService.GetPersonById(id);
+            person = await _peopleService.GetPersonById(id);
         }
-        catch
+        catch (ArgumentException) 
         {
-            return RedirectToAction(nameof(Index));
+            return BadRequest("Something went wrong. Please refresh and try again.");
         }
 
         return PartialView("_AddEditPersonModal", person);
@@ -62,67 +59,87 @@ public class PeopleController : Controller
     }
 
     [HttpPost] //[ValidateAntiForgeryToken]
-    public ActionResult AddEdit([Bind("PersonId,FirstName,LastName,Email")]Person person)
+    public async Task<ActionResult> AddEdit([Bind("PersonId,FirstName,LastName,Email")]Person person)
     {
         if (person.PersonId == 0)
         {
-            person.PersonId = _peopleService.Create(person);
+            person.PersonId = await _peopleService.Create(person);
 
             return PartialView("_RowPartial", person);
         }
         
-        _peopleService.Update(person);
+        await _peopleService.Update(person);
 
         return PartialView("_RowPartial", person);
     }
 
     [HttpDelete]
-    public ActionResult Delete(int id)
+    public async Task<ActionResult> Delete(int id)
     {
-        _peopleService.Delete(id);
+        await _peopleService.Delete(id);
 
         return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
-    public ActionResult RemoveAsset(int personId, int assetId)
+    public async Task<ActionResult> RemoveAsset(int personId, int assetId)
     {
         
-        _peopleService.RemoveAssetMap(personId, assetId);
+        await _peopleService.RemoveAssetMap(personId, assetId);
 
         return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
-    public ActionResult MapAsset(int personId, int assetId)
+    public async Task<ActionResult> MapAsset(int personId, int assetId)
     {
         if (assetId == 0)
             return BadRequest("Enter a valid Asset ID");
 
-        var person = _peopleService.GetPersonById(personId);
-        var asset = _assetService.GetAssetById(assetId);
+        Person person;
 
-        if (person == null) 
+        try
+        {
+            person = await _peopleService.GetPersonById(personId);                
+        }
+        catch (ArgumentException)
+        {
             return BadRequest("The Person is not valid.");
+        }
+        
+        var asset = _assetService.GetAssetById(assetId);
 
         if (asset == null) 
             return BadRequest("Enter a valid Asset ID");
 
         if (asset.PersonId != null)
-        { 
-            var otherPerson = _peopleService.GetPersonById((int)asset.PersonId);
+        {
+            Person otherPerson;
 
-            if (otherPerson == null)
+            try
+            {
+                otherPerson = await _peopleService.GetPersonById((int)asset.PersonId);
+            }
+            catch
+            {
                 return BadRequest($"The Asset is already mapped.");
-            else
-                return BadRequest($"The Asset is already mapped to {otherPerson.FirstName} {otherPerson.LastName}");
+            }
+
+            return BadRequest($"The Asset is already mapped to {otherPerson.FirstName} {otherPerson.LastName}");    
         }
 
         if (person.Assets.Contains(asset) == true) 
             return BadRequest($"The Asset is already mapped.");
 
-        _peopleService.AddAssetMap(personId, assetId);
-
+        try
+        {
+            await _peopleService.AddAssetMap(personId, assetId);
+        }
+        catch (ArgumentException)
+        {
+            return BadRequest($"Something went wrong. Please refresh and try again.");
+        }
+        
         return Ok(JsonConvert.SerializeObject(asset));
     }
 }

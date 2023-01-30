@@ -59,10 +59,10 @@ namespace AssetManager.Controllers
         
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult AddEdit(int id)
+        public async Task<IActionResult> AddEdit(int id)
         {
             AssetAddEditViewModel vm = new();
-            vm.People = _peopleService.GetAllPeople();
+            vm.People = await _peopleService.GetAllPeople();
             vm.AssetTypeOptions = _dictService.GetDictItems(101);
             vm.ModelOptions = _dictService.GetDictItems(102);
             vm.SiteOptions = _dictService.GetDictItems(103);
