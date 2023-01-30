@@ -5,12 +5,12 @@ namespace AssetManager.Repos
 {
     public interface IOrderRepository
     {
-        List<Order> GetAllOrders();
-        Order GetOrderById(int id);
-        int Create(Order submission);
-        void Update(Order submission);
-        void Delete(int id);
-        void ReceiveOrder(int id);
-        OrderGridViewModel GetPageOfOrders(int pageSize, int pageNumber);
+        Task<List<Order>> GetAllOrders();
+        Task<Order> GetOrderById(int orderId);
+        Task<int> Create(Order submission);
+        Task Update(Order submission);
+        Task Delete(int orderId);
+        Task ReceiveOrder(int orderId);
+        Task<OrderGridViewModel> GetPageOfOrders(int pageSize, int pageNumber);
     }
 }

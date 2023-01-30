@@ -14,38 +14,38 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
 
-    public List<Order> GetAllOrders()
+    public async Task<List<Order>> GetAllOrders()
     {
-        return _context.Orders.Include(o => o.Approver)
-                              .Include(o => o.Purchaser).ToList();
+        return await _context.Orders.Include(o => o.Approver)
+                                    .Include(o => o.Purchaser).ToListAsync();
     }
 
-    public OrderGridViewModel GetPageOfOrders(int pageSize, int pageNumber)
+    public async Task<OrderGridViewModel> GetPageOfOrders(int pageSize, int pageNumber)
     {
         OrderGridViewModel vm = new();
 
         vm.CurrentPage = pageNumber;
 
-        int orderCount = _context.Orders.Count();
+        int orderCount = await _context.Orders.CountAsync();
         vm.PageCount = (orderCount + pageSize - 1 )/ pageSize;
 
-        var query = _context.Orders.Include(o => o.Approver)
-                                   .Include(o => o.Purchaser)
-                                   .Include(o => o.Vendor)
-                                   .Include(o => o.Products)
-                                    .ThenInclude(p => p.Product).AsNoTracking();
-
-        vm.Orders = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+        vm.Orders = await _context.Orders.Include(o => o.Approver)
+                                         .Include(o => o.Purchaser)
+                                         .Include(o => o.Vendor)
+                                         .Include(o => o.Products).ThenInclude(p => p.Product)
+                                         //.AsNoTracking();
+                                         .Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return vm;
     }
 
-    public Order GetOrderById(int id)
+    public async Task<Order> GetOrderById(int orderId)
     {
-        var order = _context.Orders.Include(o => o.Products)
-                                   .Include(o => o.Purchaser)
-                                   .Include(o => o.Approver)
-                                   .FirstOrDefault(o => o.OrderId == id);
+        var order = await _context.Orders.Include(o => o.Approver)
+                                         .Include(o => o.Purchaser)
+                                         .Include(o => o.Vendor)
+                                         .Include(o => o.Products).ThenInclude(p => p.Product)
+                                         .FirstOrDefaultAsync(o => o.OrderId == orderId);
 
         if (order == null)
             return new Order();
@@ -53,19 +53,20 @@ public class OrderRepository : IOrderRepository
         return order;
     }
 
-    public int Create(Order submission)
+    public async Task<int> Create(Order submission)
     {
         _context.Orders.Add(submission);
-        Save();
+
+        await _context.SaveChangesAsync();
 
         return submission.OrderId;
     }
 
-    public void Update(Order submission)
+    public async Task Update(Order submission)
     {
         if (submission != null && submission.OrderId != 0)
         {
-            var order = _context.Orders.FirstOrDefault(o => o.OrderId == submission.OrderId);
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == submission.OrderId);
 
             if (order != null)
             {
@@ -78,39 +79,36 @@ public class OrderRepository : IOrderRepository
                 order.ApprovedDttm = submission.ApprovedDttm;
                 order.ReceivedDttm = submission.ReceivedDttm;
 
-                Save();
+                await _context.SaveChangesAsync();
             }
         }
     }
 
-    public void Delete(int id)
+    public async Task Delete(int orderId)
     {
-        if (id == 0) return;
+        if (orderId == 0) return;
         
-        var order = _context.Orders.Find(id);
+        var order = await _context.Orders.FindAsync(orderId);
 
         if (order != null)
         {
             _context.Orders.Remove(order);
-            Save();
+
+            await _context.SaveChangesAsync();
         }
     }
 
-    public void ReceiveOrder(int id)
+    public async Task ReceiveOrder(int id)
     {
         if (id == 0) return;
 
-        var order = _context.Orders.Find(id);
+        var order = await _context.Orders.FindAsync(id);
 
         if (order != null)
         {
             order.ReceivedDttm = DateTime.Now;
-            Save();
-        }
-    }
 
-    private void Save()
-    {
-        _context.SaveChanges();
+            await _context.SaveChangesAsync();
+        }
     }
 }     

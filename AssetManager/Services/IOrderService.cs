@@ -5,11 +5,11 @@ namespace AssetManager.Services;
 
 public interface IOrderService
 {
-    List<Order> GetAllOrders();
-    int Create(Order submission);
-    void Delete(int id);
-    Order? GetOrderById(int id);
-    void ReceiveOrder(int id);
-    void Update(Order updatedOrder);
-    OrderGridViewModel GetPageOfOrders(int pageNumber);
+    Task<List<Order>> GetAllOrders();
+    Task<int> Create(Order submission);
+    Task Delete(int orderId);
+    Task<Order> GetOrderById(int orderId);
+    Task ReceiveOrder(int orderId);
+    Task Update(Order updatedOrder);
+    Task<OrderGridViewModel> GetPageOfOrders(int pageNumber);
 }

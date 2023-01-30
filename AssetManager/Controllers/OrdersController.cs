@@ -22,15 +22,15 @@ namespace AssetManager.Controllers
             _dictService = dictService;
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View(_orderService.GetPageOfOrders(1));
+            return View(await _orderService.GetPageOfOrders(1));
         }
 
         [HttpGet("Orders/GetPageOfOrders/{pageNumber}")]
-        public ActionResult GetPageOfOrders(int pageNumber)
+        public async Task<ActionResult> GetPageOfOrders(int pageNumber)
         {
-            return PartialView("_GridPartial", _orderService.GetPageOfOrders(pageNumber));
+            return PartialView("_GridPartial", await _orderService.GetPageOfOrders(pageNumber));
         }
 
         public async Task<ActionResult> AddEdit(int id)
@@ -47,7 +47,7 @@ namespace AssetManager.Controllers
             }
             else
             {
-                var order = _orderService.GetOrderById(id);
+                var order = await _orderService.GetOrderById(id);
 
                 if (order != null)
                 {
@@ -63,7 +63,7 @@ namespace AssetManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddEdit(OrderAddEditViewModel vm)
+        public async Task<ActionResult> AddEdit(OrderAddEditViewModel vm)
         {
             if (vm.Order == null) return RedirectToAction(nameof(Index));
 
@@ -73,17 +73,16 @@ namespace AssetManager.Controllers
             {
                 if (vm.Order.OrderId == 0)
                 {
-                    orderId = _orderService.Create(vm.Order);
+                    orderId = await _orderService.Create(vm.Order);
                 }
                 else
                 {
-                    _orderService.Update(vm.Order);
+                    await _orderService.Update(vm.Order);
 
-                    orderId = (int)vm.Order.OrderId;
+                    orderId = vm.Order.OrderId;
                 }
 
-                var order = _orderService.GetOrderById(orderId);
-                return PartialView("_RowPartial", order);
+                return PartialView("_RowPartial", await _orderService.GetOrderById(orderId));
             }
             catch
             {
@@ -91,39 +90,40 @@ namespace AssetManager.Controllers
             }
         }
 
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+        //public ActionResult Edit(int id)
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
         [HttpDelete]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            _orderService.Delete(id);
+            await _orderService.Delete(id);
 
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
-        public ActionResult ReceiveOrder(int id)
+        public async Task<ActionResult> ReceiveOrder(int id)
         {
             if (id > 0)
             {
-                _orderService.ReceiveOrder(id);
+                await _orderService.ReceiveOrder(id);
+                
                 return RedirectToAction(nameof(Index));
             }
             
