@@ -33,11 +33,11 @@ namespace AssetManager.Controllers
             return PartialView("_GridPartial", _orderService.GetPageOfOrders(pageNumber));
         }
 
-        public ActionResult AddEdit(int id)
+        public async Task<ActionResult> AddEdit(int id)
         {
             OrderAddEditViewModel vm = new();
             vm.Order.Products.Add(new ProductOrder());
-            vm.People = _peopleService.GetAllPeople();
+            vm.People = await _peopleService.GetAllPeople();
             vm.VendorOptions = _dictService.GetDictItems(104);
             vm.ProductOptions = _dictService.GetDictItems(102);
 

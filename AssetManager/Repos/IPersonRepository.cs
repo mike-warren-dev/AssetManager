@@ -1,17 +1,16 @@
 ﻿using AssetManager.Models;
 using AssetManager.ViewModels;
 
-namespace AssetManager.Repos
+namespace AssetManager.Repos;
+
+public interface IPersonRepository
 {
-    public interface IPersonRepository
-    {
-        IEnumerable<Person> GetAll();
-        Person? GetPersonById(int id);
-        int Create(Person person);
-        void Update(Person updatedPerson);
-        void Delete(int id);
-        void RemoveAssetMap(int personId, int assetId);
-        void AddAssetMap(int personId, int assetId);
-        PersonGridViewModel GetPageofPeople(int pageSize, int pageNumber);
-    }
+    Task<IEnumerable<Person>> GetAll();
+    Task<Person> GetPersonById(int id);
+    Task<int> Create(Person person);
+    Task Update(Person updatedPerson);
+    Task Delete(int id);
+    Task RemoveAssetMap(int personId, int assetId);
+    Task AddAssetMap(int personId, int assetId);
+    Task<PersonGridViewModel> GetPageofPeople(int pageSize, int pageNumber);
 }
