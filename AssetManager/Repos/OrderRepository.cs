@@ -33,7 +33,6 @@ public class OrderRepository : IOrderRepository
                                          .Include(o => o.Purchaser)
                                          .Include(o => o.Vendor)
                                          .Include(o => o.Products).ThenInclude(p => p.Product)
-                                         //.AsNoTracking();
                                          .Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return vm;

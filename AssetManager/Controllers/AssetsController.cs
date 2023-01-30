@@ -10,9 +10,9 @@ namespace AssetManager.Controllers;
 [Authorize(Roles = "Admin, Basic")]
 public class AssetsController : Controller
 {
-    private IAssetService _assetService;
-    private IPeopleService _peopleService;
-    private IDictService _dictService;
+    private readonly IAssetService _assetService;
+    private readonly IPeopleService _peopleService;
+    private readonly IDictService _dictService;
 
     public AssetsController(IAssetRepository repository, IAssetService assetService, IPeopleService peopleService, IDictService dictService)
     {

@@ -20,16 +20,14 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3 text-dark" style="padding-top: 0px;padding-bottom: 0px;">
             <div class="container-fluid">
                 <div class="ms-3 d-flex align-items-center">
-                    @*<i class="fa-solid fa-server fa-lg"></i>*@
                     <div class="navbar-brand pe-none text-dark ps-2 mb-1" style="display:flex;align-items:center; margin-bottom: 2px;">Asset Manager</div>
-
                 </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex">
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
