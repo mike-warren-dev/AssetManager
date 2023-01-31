@@ -7,7 +7,7 @@ namespace AssetManager.Repos
     {
         Task<List<Order>> GetAllOrders();
         Task<Order> GetOrderById(int orderId);
-        Task<int> Create(Order submission);
+        Task<Order> Create(Order submission);
         Task Update(Order submission);
         Task Delete(int orderId);
         Task ReceiveOrder(int orderId);

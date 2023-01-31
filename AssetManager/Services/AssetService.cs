@@ -6,7 +6,7 @@ namespace AssetManager.Services;
 
 public class AssetService : IAssetService
 {
-    private IAssetRepository _assetRepository;
+    private readonly IAssetRepository _assetRepository;
     
     public AssetService(IAssetRepository assetRepository)
     {

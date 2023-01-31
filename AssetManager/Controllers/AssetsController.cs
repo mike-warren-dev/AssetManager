@@ -113,7 +113,7 @@ public class AssetsController : Controller
     {
         await _assetService.Delete(id);
 
-        return RedirectToAction(nameof(Index));
+        return Ok();
     }
 
 }

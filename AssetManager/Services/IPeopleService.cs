@@ -12,5 +12,5 @@ public interface IPeopleService
     Task Update(Person person);
     Task Delete(int id);
     Task RemoveAssetMap(int personId, int assetId);
-    Task AddAssetMap(int personId, int assetId);
+    Task<Asset> MapAssetToPerson(int personId, int assetId);
 }
