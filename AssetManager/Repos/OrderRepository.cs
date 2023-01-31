@@ -52,62 +52,62 @@ public class OrderRepository : IOrderRepository
         return order;
     }
 
-    public async Task<int> Create(Order submission)
+    public async Task<Order> Create(Order submission)
     {
         _context.Orders.Add(submission);
 
         await _context.SaveChangesAsync();
 
-        return submission.OrderId;
+        return submission;
     }
 
     public async Task Update(Order submission)
     {
-        if (submission != null && submission.OrderId != 0)
-        {
-            var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == submission.OrderId);
+        if (submission == null || submission.OrderId == 0)
+            throw new ArgumentException();
 
-            if (order != null)
-            {
-                order.ExternalOrderId = submission.ExternalOrderId;
-                order.VendorId = submission.VendorId;
-                order.Products = submission.Products == null ? new List<ProductOrder>() : submission.Products;
-                order.Cost = submission.Cost;
-                order.PurchaserId = submission.PurchaserId;
-                order.ApproverId = submission.ApproverId;
-                order.ApprovedDttm = submission.ApprovedDttm;
-                order.ReceivedDttm = submission.ReceivedDttm;
+        var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == submission.OrderId);
 
-                await _context.SaveChangesAsync();
-            }
-        }
+        if (order == null)
+            throw new ArgumentException();
+        
+        order.ExternalOrderId = submission.ExternalOrderId;
+        order.VendorId = submission.VendorId;
+        order.Products = submission.Products == null ? new List<ProductOrder>() : submission.Products;
+        order.Cost = submission.Cost;
+        order.PurchaserId = submission.PurchaserId;
+        order.ApproverId = submission.ApproverId;
+        order.ApprovedDttm = submission.ApprovedDttm;
+        order.ReceivedDttm = submission.ReceivedDttm;
+
+        await _context.SaveChangesAsync();
     }
 
     public async Task Delete(int orderId)
     {
-        if (orderId == 0) return;
-        
+        if (orderId == 0)
+            throw new ArgumentException();
+
         var order = await _context.Orders.FindAsync(orderId);
 
-        if (order != null)
-        {
-            _context.Orders.Remove(order);
-
-            await _context.SaveChangesAsync();
-        }
+        if (order == null)
+            throw new ArgumentException();
+        
+        _context.Orders.Remove(order);
+        await _context.SaveChangesAsync();
     }
 
     public async Task ReceiveOrder(int id)
     {
-        if (id == 0) return;
+        if (id == 0)
+            throw new ArgumentException();
 
         var order = await _context.Orders.FindAsync(id);
 
-        if (order != null)
-        {
-            order.ReceivedDttm = DateTime.Now;
-
-            await _context.SaveChangesAsync();
-        }
+        if (order == null)
+            throw new ArgumentException();
+        
+        order.ReceivedDttm = DateTime.Now;
+        await _context.SaveChangesAsync();
     }
 }     

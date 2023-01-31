@@ -6,15 +6,13 @@ namespace AssetManager.Services;
 
 public class OrderService : IOrderService
 {
-    private IOrderRepository _orderRepository;
-    private IAssetRepository _assetRepository;
-    private IDictRepository _dictRepository;
+    private readonly IOrderRepository _orderRepository;
+    private readonly IAssetRepository _assetRepository;
 
-    public OrderService(IOrderRepository orderRepository, IAssetRepository assetRepository, IDictRepository dictRepository)
+    public OrderService(IOrderRepository orderRepository, IAssetRepository assetRepository)
     {
         _orderRepository = orderRepository;
         _assetRepository = assetRepository;
-        _dictRepository = dictRepository;
     }
 
     public async Task<List<Order>> GetAllOrders()
@@ -31,14 +29,12 @@ public class OrderService : IOrderService
 
     public async Task<Order> GetOrderById(int orderId)
     {
-        var order = await _orderRepository.GetOrderById(orderId);
-
-        return order;
+        return await _orderRepository.GetOrderById(orderId);
     }
 
-    public async Task<int> Create(Order submission)
+    public async Task<Order> Create(Order submission)
     {
-        var products = new List<ProductOrder>();
+        List<ProductOrder> products = new();
         
         foreach (var item in submission.Products)
         {
@@ -77,56 +73,59 @@ public class OrderService : IOrderService
 
     public async Task ReceiveOrder(int orderId)
     {
+        if (orderId == 0)
+            throw new ArgumentException();
+        
         var order = await GetOrderById(orderId);
 
-        if (order != null)
+        if (order == null)
+            throw new ArgumentException();
+
+        foreach (var p in order.Products)
         {
-            foreach (var p in order.Products)
+            List<Asset> assets = new();
+
+            for (var i = 0; i < p.Count; i++)
             {
-                List<Asset> assets = new();
-
-                for (var i = 0; i < p.Count; i++)
+                assets.Add(new Asset()
                 {
-                    assets.Add(new Asset()
+                    // disgusting
+                    AssetTypeId = p.ProductId switch
                     {
-                        // disgusting--will fix after implementing dict cacheing. 
-                        AssetTypeId = p.ProductId switch
-                        {
-                            201 => 201,
-                            202 => 201,
-                            203 => 201,
-                            204 => 201,
-                            205 => 201,
-                            301 => 201,
-                            302 => 201,
-                            303 => 201,
-                            304 => 201,
-                            305 => 201,
-                            306 => 201,
-                            307 => 201,
-                            308 => 201,
-                            309 => 201,
-                            401 => 201,
-                            402 => 201,
-                            403 => 201,
-                            404 => 201,
-                            501 => 201,
-                            502 => 201,
-                            503 => 201,
-                            504 => 201,
-                            505 => 201,
-                            _ => 201
-                        },
-                        ModelId = p.ProductId,
-                        SiteId = 401,
-                        PersonId = null
-                    });
-                }
-
-                _assetRepository.CreateAssets(assets);
+                        201 => 201,
+                        202 => 201,
+                        203 => 201,
+                        204 => 201,
+                        205 => 201,
+                        301 => 201,
+                        302 => 201,
+                        303 => 201,
+                        304 => 201,
+                        305 => 201,
+                        306 => 201,
+                        307 => 201,
+                        308 => 201,
+                        309 => 201,
+                        401 => 201,
+                        402 => 201,
+                        403 => 201,
+                        404 => 201,
+                        501 => 201,
+                        502 => 201,
+                        503 => 201,
+                        504 => 201,
+                        505 => 201,
+                          _ => 201
+                    },
+                    ModelId = p.ProductId,
+                    SiteId = 401,
+                    PersonId = null
+                });
             }
 
-            await _orderRepository.ReceiveOrder(orderId);
+            await _assetRepository.CreateAssets(assets);
         }
+
+        await _orderRepository.ReceiveOrder(orderId);
     }
 }

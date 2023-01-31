@@ -44,10 +44,10 @@ public class AssetRepository : IAssetRepository
             throw new ArgumentException();
         
         var asset = await _context.Assets.Include(a => a.Person)
-                                            .Include(a => a.AssetType)
-                                            .Include(a => a.Model)
-                                            .Include(a => a.Site)
-                                            .FirstOrDefaultAsync(a => a.AssetId == id);
+                                         .Include(a => a.AssetType)
+                                         .Include(a => a.Model)
+                                         .Include(a => a.Site)
+                                         .FirstOrDefaultAsync(a => a.AssetId == id);
 
         if (asset == null) 
             throw new ArgumentException();
@@ -108,6 +108,5 @@ public class AssetRepository : IAssetRepository
             _context.Assets.Remove(asset);
             await _context.SaveChangesAsync();
         }
-            
     }
 }

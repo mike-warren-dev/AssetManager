@@ -1,5 +1,4 @@
-﻿using AssetManager.Repos;
-using AssetManager.Models;
+﻿using AssetManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using AssetManager.Services;
 using AssetManager.ViewModels;
@@ -34,60 +33,47 @@ namespace AssetManager.Controllers
         }
 
         public async Task<ActionResult> AddEdit(int id)
-        {
-            OrderAddEditViewModel vm = new();
+        {   
+            OrderAddEditViewModel vm = new()
+            {
+                People = await _peopleService.GetAllPeople(),
+                VendorOptions = _dictService.GetDictItems(104),
+                ProductOptions = _dictService.GetDictItems(102)
+            };
+
             vm.Order.Products.Add(new ProductOrder());
-            vm.People = await _peopleService.GetAllPeople();
-            vm.VendorOptions = _dictService.GetDictItems(104);
-            vm.ProductOptions = _dictService.GetDictItems(102);
 
             if (id == 0)
-            {
                 return PartialView("_AddEditOrderModal", vm);
-            }
-            else
-            {
-                var order = await _orderService.GetOrderById(id);
 
-                if (order != null)
-                {
-                    vm.Order = order;
-                    return PartialView("_AddEditOrderModal", vm);
-                }
-                else
-                {
-                    return PartialView("_AddEditOrderModal", vm);
-                }
-            }
+            vm.Order = await _orderService.GetOrderById(id);
+    
+            return PartialView("_AddEditOrderModal", vm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddEdit(OrderAddEditViewModel vm)
         {
-            if (vm.Order == null) return RedirectToAction(nameof(Index));
+            if (vm.Order == null) 
+                return RedirectToAction(nameof(Index));
 
             int orderId;
 
-            try
+            if (vm.Order.OrderId == 0)
             {
-                if (vm.Order.OrderId == 0)
-                {
-                    orderId = await _orderService.Create(vm.Order);
-                }
-                else
-                {
-                    await _orderService.Update(vm.Order);
+                var order = await _orderService.Create(vm.Order);
 
-                    orderId = vm.Order.OrderId;
-                }
-
-                return PartialView("_RowPartial", await _orderService.GetOrderById(orderId));
+                orderId = order.OrderId;
             }
-            catch
+            else
             {
-                return RedirectToAction(nameof(Index));
+                await _orderService.Update(vm.Order);
+
+                orderId = vm.Order.OrderId;
             }
+
+            return PartialView("_RowPartial", await _orderService.GetOrderById(orderId));
         }
 
         [HttpDelete]
@@ -95,21 +81,22 @@ namespace AssetManager.Controllers
         {
             await _orderService.Delete(id);
 
-            return RedirectToAction(nameof(Index));
+            return Ok();
         }
 
         [HttpPost]
         public async Task<ActionResult> ReceiveOrder(int id)
         {
-            if (id > 0)
+            try
             {
                 await _orderService.ReceiveOrder(id);
-                
-                return RedirectToAction(nameof(Index));
+
+                return Ok();
             }
-            
-            return RedirectToAction(nameof(Index));
-            
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }

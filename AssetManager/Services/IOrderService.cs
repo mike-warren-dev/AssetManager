@@ -6,7 +6,7 @@ namespace AssetManager.Services;
 public interface IOrderService
 {
     Task<List<Order>> GetAllOrders();
-    Task<int> Create(Order submission);
+    Task<Order> Create(Order submission);
     Task Delete(int orderId);
     Task<Order> GetOrderById(int orderId);
     Task ReceiveOrder(int orderId);

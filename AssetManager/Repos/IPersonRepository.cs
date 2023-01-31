@@ -11,6 +11,7 @@ public interface IPersonRepository
     Task Update(Person updatedPerson);
     Task Delete(int id);
     Task RemoveAssetMap(int personId, int assetId);
-    Task AddAssetMap(int personId, int assetId);
+    //Task AddAssetMap(int personId, int assetId);
+    Task AddAssetMap(Person person, Asset asset);
     Task<PersonGridViewModel> GetPageofPeople(int pageSize, int pageNumber);
 }
